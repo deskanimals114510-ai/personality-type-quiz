@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>性格・恋愛・仕事タイプ診断</title>
+<meta name="description" content="AIとチャットするだけの3分診断。性格・恋愛・仕事でタイプが変わるかも?動物・天気・乗り物にたとえてお届けします。">
+
+<!-- OGP (Facebook/LINE等) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="性格・恋愛・仕事タイプ診断">
+<meta property="og:description" content="AIとチャットするだけの3分診断。性格・恋愛・仕事でタイプが変わるかも?動物・天気・乗り物にたとえてお届けします。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:url" content="https://deskanimals114510-ai.github.io/personality-type-quiz/">
+<!-- TODO: og-image.png(1200x630目安、Midjourneyで生成予定)ができたらog:image/twitter:imageを追加してください -->
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="性格・恋愛・仕事タイプ診断">
+<meta name="twitter:description" content="AIとチャットするだけの3分診断。性格・恋愛・仕事でタイプが変わるかも?">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔮</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<!--
+  アクセス解析(任意): Google Analytics 4を使う場合は script.js の GA_MEASUREMENT_ID に
+  測定IDを設定してください(空文字の間は解析コードを読み込みません、追加コストなし)。
+-->
+</head>
+<body>
+<div class="bg-blobs" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="blob blob-4"></div>
+</div>
+<div class="sparkles" aria-hidden="true">
+  <span class="sparkle">✨</span>
+  <span class="sparkle">💗</span>
+  <span class="sparkle">🌸</span>
+  <span class="sparkle">⭐</span>
+  <span class="sparkle">💫</span>
+  <span class="sparkle">🎀</span>
+  <span class="sparkle">✨</span>
+  <span class="sparkle">💕</span>
+</div>
+
+<div id="app">
+
+  <!-- スタート画面 -->
+  <section id="screen-start" class="screen active">
+    <div class="start-card">
+      <div class="lang-toggle">
+        <button id="btn-lang-ja" class="lang-btn active">日本語</button>
+        <button id="btn-lang-en" class="lang-btn">English</button>
+      </div>
+      <div class="start-emoji">🔮</div>
+      <span id="start-eyebrow" class="eyebrow">FREE PERSONALITY TEST</span>
+      <h1 id="start-title">あなたの<span class="grad-text">3つの顔</span>、診断します</h1>
+      <p id="start-lead" class="lead">AIとチャットしながら答えるだけ。<br>「性格」「恋愛」「仕事」でタイプが変わる、<br>ちょっと不思議な診断です。</p>
+      <div id="start-badges" class="badges">
+        <span class="badge">🐢 動物</span>
+        <span class="badge">☀️ 天気</span>
+        <span class="badge">🚃 乗り物</span>
+        <span class="badge">でたとえます</span>
+      </div>
+      <button id="btn-start" class="btn-primary">診断をはじめる ✨</button>
+      <p id="start-sub" class="sub">全30問・所要時間 約3分</p>
+    </div>
+  </section>
+
+  <!-- チャット画面 -->
+  <section id="screen-chat" class="screen">
+    <div class="chat-header">
+      <span id="block-label" class="block-label">性格編</span>
+      <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+      <span id="progress-text" class="progress-text">1 / 30</span>
+    </div>
+    <div id="chat-log" class="chat-log"></div>
+    <div id="chat-options" class="chat-options"></div>
+  </section>
+
+  <!-- 結果画面 -->
+  <section id="screen-result" class="screen">
+    <div class="result-header">
+      <span id="result-eyebrow" class="eyebrow">RESULT</span>
+      <h1 id="result-title-el" class="result-title">診断結果 <span class="grad-text">できました</span></h1>
+    </div>
+    <div id="result-cards" class="result-cards"></div>
+    <div class="result-actions">
+      <button id="btn-share" class="btn-primary">結果をXでシェア 🚀</button>
+      <button id="btn-share-line" class="btn-secondary btn-line">LINEでシェア</button>
+      <button id="btn-restart" class="btn-secondary">もう一度診断する</button>
+    </div>
+  </section>
+
+  <footer id="site-footer" class="site-footer">
+    <p id="footer-disclaimer">本診断はエンタメ目的のコンテンツです。科学的な心理診断や実際の占い・鑑定に代わるものではありません。</p>
+    <p id="footer-affiliate">🔖 本ページの「ラッキーアイテム」リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。</p>
+  </footer>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>
