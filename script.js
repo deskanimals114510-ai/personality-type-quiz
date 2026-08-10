@@ -616,6 +616,7 @@ const UI_TEXT = {
     footerDisclaimer: '本診断はエンタメ目的のコンテンツです。科学的な心理診断や実際の占い・鑑定に代わるものではありません。',
     footerAffiliate: '🔖 本ページの「ラッキーアイテム」リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。',
     followLabel: '🐹 ミニチュア動物の動画も見てみる',
+    followLabel2: '🔮 他の診断もチェックする',
   },
   en: {
     eyebrow: 'FREE PERSONALITY TEST',
@@ -638,6 +639,7 @@ const UI_TEXT = {
     footerDisclaimer: 'This test is for entertainment purposes only and is not a substitute for a scientific psychological assessment or professional reading.',
     footerAffiliate: '🔖 The "Lucky Item" links on this page are affiliate (ad) links. We may earn a commission on purchases made through these links.',
     followLabel: '🐹 More tiny animal videos',
+    followLabel2: '🔮 Try another quiz',
   },
 };
 
@@ -657,6 +659,7 @@ function applyLangUI() {
   document.getElementById('footer-disclaimer').textContent = t.footerDisclaimer;
   document.getElementById('footer-affiliate').textContent = t.footerAffiliate;
   document.getElementById('follow-label').textContent = t.followLabel;
+  document.getElementById('follow-label-2').textContent = t.followLabel2;
   document.documentElement.lang = LANG;
 }
 
