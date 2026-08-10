@@ -462,6 +462,34 @@ body {
 }
 .btn-line:hover { background: rgba(6, 199, 85, 0.16); }
 
+.follow-links {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+.follow-label {
+  font-size: 0.74rem;
+  color: var(--text-sub);
+  margin: 0 0 8px;
+}
+.follow-btns {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.follow-link {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  background: #fff;
+  border: 1.5px solid var(--border);
+  padding: 6px 16px;
+  border-radius: 999px;
+  text-decoration: none;
+}
+.follow-link:hover { border-color: var(--primary); }
+
 .site-footer {
   max-width: 480px;
   margin: 0 auto;
