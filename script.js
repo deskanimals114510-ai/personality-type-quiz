@@ -521,8 +521,11 @@ const TYPE_ELEMENT = {
 };
 
 // アフィリエイトタグ未設定の間は通常の商品検索リンクとして機能する
-// (Amazonアソシエイト等のタグが決まったら AFFILIATE_TAG に設定してください)
-const AFFILIATE_TAG = ''; // 例: 'yourtag-22'
+// AFFILIATE_TAG: Amazonアソシエイト(日本, amazon.co.jp用)。取得済み(2026-08-10)
+// AFFILIATE_TAG_EN: Amazon Associates(US, amazon.com用)。国ごとに別プログラムのため、
+// 日本のタグはamazon.comには使えない。US版を取得したらここに設定してください
+const AFFILIATE_TAG = 'tinywonders-22';
+const AFFILIATE_TAG_EN = ''; // 例: 'yourtag-20'
 
 // カテゴリ×五行属性でラッキーアイテムを分ける(同じ属性が複数カテゴリで重なっても被らないように)
 const LUCKY_ITEM_MAP = {
@@ -578,7 +581,8 @@ const LUCKY_ITEM_MAP_EN = {
 function affiliateUrl(keyword) {
   const domain = LANG === 'en' ? 'www.amazon.com' : 'www.amazon.co.jp';
   const base = `https://${domain}/s?k=${encodeURIComponent(keyword)}`;
-  return AFFILIATE_TAG ? `${base}&tag=${encodeURIComponent(AFFILIATE_TAG)}` : base;
+  const tag = LANG === 'en' ? AFFILIATE_TAG_EN : AFFILIATE_TAG;
+  return tag ? `${base}&tag=${encodeURIComponent(tag)}` : base;
 }
 
 // ===== 言語 =====
