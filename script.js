@@ -620,7 +620,7 @@ const UI_TEXT = {
     lineBtn: 'LINEでシェア',
     footerDisclaimer: '本診断はエンタメ目的のコンテンツです。科学的な心理診断や実際の占い・鑑定に代わるものではありません。',
     footerAffiliate: '🔖 本ページの「ラッキーアイテム」リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。',
-    followLabel: '🐹 ミニチュア動物の動画も見てみる',
+    followLabel: '🐹 Desk Animalsをフォローする',
     followLabel2: '🔮 他の診断もチェックする',
   },
   en: {
@@ -643,7 +643,7 @@ const UI_TEXT = {
     lineBtn: 'Share on LINE',
     footerDisclaimer: 'This test is for entertainment purposes only and is not a substitute for a scientific psychological assessment or professional reading.',
     footerAffiliate: '🔖 The "Lucky Item" links on this page are affiliate (ad) links. We may earn a commission on purchases made through these links.',
-    followLabel: '🐹 More tiny animal videos',
+    followLabel: '🐹 Follow Desk Animals',
     followLabel2: '🔮 Try another quiz',
   },
 };
