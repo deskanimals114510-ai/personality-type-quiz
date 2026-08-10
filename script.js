@@ -520,6 +520,11 @@ const TYPE_ELEMENT = {
   ESTP: '火', ESTJ: '火', ENTJ: '火',
 };
 
+// 性格タイプ(ANIMAL_MAP)の結果文中で言及される「ラッキーカラー」と一致させる
+// (このカラー名は結果文には出るが、これまでAmazon検索キーワードには反映されていなかった)
+const ELEMENT_COLOR = { '木': '若草色', '火': '朱色', '土': '黄土色', '金': '白金色', '水': '藍色' };
+const ELEMENT_COLOR_EN = { '木': 'moss green', '火': 'vermillion', '土': 'ochre', '金': 'platinum', '水': 'indigo' };
+
 // アフィリエイトタグ未設定の間は通常の商品検索リンクとして機能する
 // AFFILIATE_TAG: Amazonアソシエイト(日本, amazon.co.jp用)。取得済み(2026-08-10)
 // AFFILIATE_TAG_EN: Amazon Associates(US, amazon.com用)。国ごとに別プログラムのため、
@@ -788,6 +793,9 @@ function showResult() {
     const meta = blockMeta[block];
     const element = TYPE_ELEMENT[type];
     const lucky = luckyMap[block][element];
+    // 性格タイプの結果文で明言している「ラッキーカラー」を、実際の商品検索にも反映する
+    const colorWord = block === 'personality' ? (LANG === 'en' ? ELEMENT_COLOR_EN[element] : ELEMENT_COLOR[element]) : null;
+    const luckyKeyword = colorWord ? `${lucky.keyword} ${colorWord}` : lucky.keyword;
 
     const card = document.createElement('div');
     card.className = 'result-card';
@@ -799,7 +807,7 @@ function showResult() {
       <div class="type-name">${label}</div>
       <div class="mbti-code">${t.mbtiElementLine(type, getElementName(element))}</div>
       <div class="desc">${desc}</div>
-      <a class="lucky-item" href="${affiliateUrl(lucky.keyword)}" target="_blank" rel="noopener sponsored">
+      <a class="lucky-item" href="${affiliateUrl(luckyKeyword)}" target="_blank" rel="noopener sponsored">
         <span class="lucky-emoji">${lucky.emoji}</span>
         <span class="lucky-text"><span class="lucky-label">${t.luckyLabel}<span class="lucky-pr-tag">${t.prTag}</span></span><span class="lucky-name">${t.luckySeeMore(lucky.name)}</span></span>
         <span class="lucky-arrow">›</span>
