@@ -618,6 +618,8 @@ const UI_TEXT = {
     catLine: (catName, mapName) => `${catName}(${mapName}にたとえると)`,
     shareText: (p, l, w) => `性格・恋愛・仕事タイプ診断やってみた!\n性格: ${p} / 恋愛: ${l} / 仕事: ${w}\n#性格診断 #MBTI診断`,
     lineBtn: 'LINEでシェア',
+    copyUrlBtn: '結果URLをコピー 🔗',
+    copiedLabel: 'コピーしました ✓',
     footerDisclaimer: '本診断はエンタメ目的のコンテンツです。科学的な心理診断や実際の占い・鑑定に代わるものではありません。',
     footerAffiliate: '🔖 本ページの「ラッキーアイテム」リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。',
     followLabel: '🐹 Desk Animalsをフォローする',
@@ -641,6 +643,8 @@ const UI_TEXT = {
     catLine: (catName, mapName) => `${catName} — ${mapName} Edition`,
     shareText: (p, l, w) => `I just took a Personality / Love / Career type test!\nPersonality: ${p} / Love: ${l} / Career: ${w}\n#PersonalityTest #MBTI`,
     lineBtn: 'Share on LINE',
+    copyUrlBtn: 'Copy Result URL 🔗',
+    copiedLabel: 'Copied ✓',
     footerDisclaimer: 'This test is for entertainment purposes only and is not a substitute for a scientific psychological assessment or professional reading.',
     footerAffiliate: '🔖 The "Lucky Item" links on this page are affiliate (ad) links. We may earn a commission on purchases made through these links.',
     followLabel: '🐹 Follow Desk Animals',
@@ -660,6 +664,7 @@ function applyLangUI() {
   document.getElementById('result-title-el').innerHTML = t.resultTitleHtml;
   document.getElementById('btn-share').textContent = t.shareBtn;
   document.getElementById('btn-share-line').textContent = t.lineBtn;
+  document.getElementById('btn-copy-url').textContent = t.copyUrlBtn;
   document.getElementById('btn-restart').textContent = t.restartBtn;
   document.getElementById('footer-disclaimer').textContent = t.footerDisclaimer;
   document.getElementById('footer-affiliate').textContent = t.footerAffiliate;
@@ -776,8 +781,50 @@ function computeType(block) {
   return type;
 }
 
+let lastResult = null; // { personality, love, work } 各4文字のMBTIタイプコード
+
 function showResult() {
   showScreen('result');
+  lastResult = {
+    personality: computeType('personality'),
+    love: computeType('love'),
+    work: computeType('work'),
+  };
+  renderResultCards(lastResult);
+}
+
+// 生年月日等の入力を持たないため、確定した3タイプ(各4文字)をそのままURLに載せる
+// (MBTIタイプは元々公開して問題ない情報なので、黒曜診断のような追加の符号化は不要)
+function buildResultCode(types) {
+  return `${types.personality}${types.love}${types.work}`;
+}
+
+function decodeResultCode(code) {
+  if (!/^[A-Z]{12}$/.test(code)) return null;
+  return {
+    personality: code.slice(0, 4),
+    love: code.slice(4, 8),
+    work: code.slice(8, 12),
+  };
+}
+
+function resultUrl() {
+  if (!lastResult) return location.href;
+  return location.origin + location.pathname + '?r=' + buildResultCode(lastResult);
+}
+
+function copyResultUrl() {
+  if (!lastResult) return;
+  const t = UI_TEXT[LANG];
+  const btn = document.getElementById('btn-copy-url');
+  navigator.clipboard.writeText(resultUrl()).then(() => {
+    const original = btn.textContent;
+    btn.textContent = t.copiedLabel;
+    setTimeout(() => { btn.textContent = original; }, 2000);
+  });
+}
+
+function renderResultCards(types) {
   const t = UI_TEXT[LANG];
   const blockMap = getBlockMap();
   const blockMeta = getBlockMeta();
@@ -787,7 +834,7 @@ function showResult() {
   resultCards.innerHTML = '';
 
   ['personality', 'love', 'work'].forEach((block, i) => {
-    const type = computeType(block);
+    const type = types[block];
     const map = blockMap[block];
     const [emoji, label, desc] = map[type] || ['❓', '???', 'Unexpected data during diagnosis'];
     const meta = blockMeta[block];
@@ -818,18 +865,21 @@ function showResult() {
 }
 
 function shareResult() {
+  if (!lastResult) return;
   const t = UI_TEXT[LANG];
   const blockMap = getBlockMap();
-  const p = computeType('personality'), l = computeType('love'), w = computeType('work');
-  const pLabel = blockMap.personality[p][1], lLabel = blockMap.love[l][1], wLabel = blockMap.work[w][1];
+  const pLabel = blockMap.personality[lastResult.personality][1];
+  const lLabel = blockMap.love[lastResult.love][1];
+  const wLabel = blockMap.work[lastResult.work][1];
   const text = t.shareText(pLabel, lLabel, wLabel);
-  const url = encodeURIComponent(location.href);
+  const url = encodeURIComponent(resultUrl());
   const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`;
   window.open(shareUrl, '_blank', 'noopener,noreferrer');
 }
 
 function shareResultLine() {
-  const url = encodeURIComponent(location.href);
+  if (!lastResult) return;
+  const url = encodeURIComponent(resultUrl());
   const shareUrl = `https://social-plugins.line.me/lineit/share?url=${url}`;
   window.open(shareUrl, '_blank', 'noopener,noreferrer');
 }
@@ -855,6 +905,18 @@ if (GA_MEASUREMENT_ID) {
 document.getElementById('btn-start').addEventListener('click', startQuiz);
 document.getElementById('btn-share').addEventListener('click', shareResult);
 document.getElementById('btn-share-line').addEventListener('click', shareResultLine);
+document.getElementById('btn-copy-url').addEventListener('click', copyResultUrl);
 document.getElementById('btn-restart').addEventListener('click', restartQuiz);
 document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('ja'));
+
+// 結果URL(?r=符号)で直接開かれた場合は、その場で同じ結果を再現して表示する
+(function loadFromResultCode() {
+  const code = new URLSearchParams(location.search).get('r');
+  if (!code) return;
+  const types = decodeResultCode(code);
+  if (!types) return;
+  lastResult = types;
+  showScreen('result');
+  renderResultCards(types);
+})();
 document.getElementById('btn-lang-en').addEventListener('click', () => setLang('en'));
