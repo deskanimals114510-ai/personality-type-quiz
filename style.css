@@ -451,6 +451,29 @@ body {
   color: #d18b2a;
   flex: none;
 }
+.result-card-preview {
+  margin-bottom: 22px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 14px 34px rgba(120, 90, 130, 0.22);
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.4);
+}
+.result-card-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.result-card-preview-hint {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-sub);
+  margin: -14px 0 24px;
+}
+
 .result-actions {
   margin-top: 28px;
 }

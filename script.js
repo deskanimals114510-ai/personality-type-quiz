@@ -626,6 +626,7 @@ const UI_TEXT = {
     cardEyebrow: 'わたしの3つのタイプ',
     cardCta: 'あなたは何タイプ？ 無料3分診断',
     cardBrand: 'Desk Animals | 性格・恋愛・仕事タイプ診断',
+    cardPreviewHint: '画像を長押し(スマホ)または右クリックで保存できます',
     footerDisclaimer: '本診断はエンタメ目的のコンテンツです。科学的な心理診断や実際の占い・鑑定に代わるものではありません。',
     footerAffiliate: '🔖 本ページの「ラッキーアイテム」リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。',
     followLabel: '🐹 Desk Animalsをフォローする',
@@ -657,6 +658,7 @@ const UI_TEXT = {
     cardEyebrow: 'My 3 Types',
     cardCta: "What's your type? Free 3-min quiz",
     cardBrand: 'Desk Animals | Personality / Love / Career Quiz',
+    cardPreviewHint: 'Long-press (mobile) or right-click the image to save it',
     footerDisclaimer: 'This test is for entertainment purposes only and is not a substitute for a scientific psychological assessment or professional reading.',
     footerAffiliate: '🔖 The "Lucky Item" links on this page are affiliate (ad) links. We may earn a commission on purchases made through these links.',
     followLabel: '🐹 Follow Desk Animals',
@@ -680,6 +682,7 @@ function applyLangUI() {
   document.getElementById('btn-restart').textContent = t.restartBtn;
   document.getElementById('btn-save-card').textContent = t.saveCardBtn;
   document.getElementById('btn-save-card-story').textContent = t.saveCardStoryBtn;
+  document.getElementById('result-card-preview-hint').textContent = t.cardPreviewHint;
   document.getElementById('footer-disclaimer').textContent = t.footerDisclaimer;
   document.getElementById('footer-affiliate').textContent = t.footerAffiliate;
   document.getElementById('follow-label').textContent = t.followLabel;
@@ -805,6 +808,7 @@ function showResult() {
     work: computeType('work'),
   };
   renderResultCards(lastResult);
+  renderCardPreview(lastResult);
 }
 
 // 生年月日等の入力を持たないため、確定した3タイプ(各4文字)をそのままURLに載せる
@@ -1165,6 +1169,23 @@ async function buildResultCardCanvas(types, mode) {
   return canvas;
 }
 
+// 結果画面に常時イラストを表示する(ダウンロードボタンを押すまで中身が見えない状態を避けるため)。
+// <img>化しておくことで、スマホの長押し保存やPCの右クリック保存もそのまま使える。
+async function renderCardPreview(types) {
+  const preview = document.getElementById('result-card-preview');
+  preview.innerHTML = '';
+  try {
+    const canvas = await buildResultCardCanvas(types, 'x');
+    const img = document.createElement('img');
+    img.src = canvas.toDataURL('image/png');
+    img.alt = 'result card preview';
+    preview.appendChild(img);
+  } catch (e) {
+    console.error('結果カードプレビューの生成に失敗しました', e);
+    preview.remove();
+  }
+}
+
 async function downloadResultCard(mode) {
   if (!lastResult) return;
   const t = UI_TEXT[LANG];
@@ -1252,5 +1273,6 @@ document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('
   lastResult = types;
   showScreen('result');
   renderResultCards(types);
+  renderCardPreview(types);
 })();
 document.getElementById('btn-lang-en').addEventListener('click', () => setLang('en'));
