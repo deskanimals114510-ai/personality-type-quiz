@@ -809,6 +809,15 @@ function showResult() {
   };
   renderResultCards(lastResult);
   renderCardPreview(lastResult);
+  updateCompatLink(lastResult);
+}
+
+// 相性診断サイトへ自分の結果コードを引き継ぐ(?me=)。相性診断側はこのコードを
+// 「あなたの結果コード」欄に自動入力し、お相手のコード入力または推測クイズへ進む。
+function updateCompatLink(types) {
+  const link = document.getElementById('link-compat');
+  if (!link) return;
+  link.href = `https://deskanimals114510-ai.github.io/aisho-shindan/?me=${buildResultCode(types)}`;
 }
 
 // 生年月日等の入力を持たないため、確定した3タイプ(各4文字)をそのままURLに載せる
@@ -1274,5 +1283,6 @@ document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('
   showScreen('result');
   renderResultCards(types);
   renderCardPreview(types);
+  updateCompatLink(types);
 })();
 document.getElementById('btn-lang-en').addEventListener('click', () => setLang('en'));
