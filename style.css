@@ -454,6 +454,14 @@ body {
 .result-actions {
   margin-top: 28px;
 }
+.result-actions-card {
+  margin-top: 14px;
+}
+.result-actions-card .btn-secondary {
+  font-size: 0.88rem;
+  padding: 11px 22px;
+  opacity: 0.9;
+}
 
 .btn-line {
   background: rgba(6, 199, 85, 0.08);

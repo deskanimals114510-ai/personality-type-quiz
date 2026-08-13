@@ -620,6 +620,12 @@ const UI_TEXT = {
     lineBtn: 'LINEでシェア',
     copyUrlBtn: '結果URLをコピー 🔗',
     copiedLabel: 'コピーしました ✓',
+    saveCardBtn: '結果カードを保存 🖼️',
+    saveCardStoryBtn: 'ストーリーズ用に保存 📱',
+    generatingLabel: '生成中…',
+    cardEyebrow: 'わたしの3つのタイプ',
+    cardCta: 'あなたは何タイプ？ 無料3分診断',
+    cardBrand: 'Desk Animals | 性格・恋愛・仕事タイプ診断',
     footerDisclaimer: '本診断はエンタメ目的のコンテンツです。科学的な心理診断や実際の占い・鑑定に代わるものではありません。',
     footerAffiliate: '🔖 本ページの「ラッキーアイテム」リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。',
     followLabel: '🐹 Desk Animalsをフォローする',
@@ -645,6 +651,12 @@ const UI_TEXT = {
     lineBtn: 'Share on LINE',
     copyUrlBtn: 'Copy Result URL 🔗',
     copiedLabel: 'Copied ✓',
+    saveCardBtn: 'Save Result Card 🖼️',
+    saveCardStoryBtn: 'Save for Stories 📱',
+    generatingLabel: 'Generating…',
+    cardEyebrow: 'My 3 Types',
+    cardCta: "What's your type? Free 3-min quiz",
+    cardBrand: 'Desk Animals | Personality / Love / Career Quiz',
     footerDisclaimer: 'This test is for entertainment purposes only and is not a substitute for a scientific psychological assessment or professional reading.',
     footerAffiliate: '🔖 The "Lucky Item" links on this page are affiliate (ad) links. We may earn a commission on purchases made through these links.',
     followLabel: '🐹 Follow Desk Animals',
@@ -666,6 +678,8 @@ function applyLangUI() {
   document.getElementById('btn-share-line').textContent = t.lineBtn;
   document.getElementById('btn-copy-url').textContent = t.copyUrlBtn;
   document.getElementById('btn-restart').textContent = t.restartBtn;
+  document.getElementById('btn-save-card').textContent = t.saveCardBtn;
+  document.getElementById('btn-save-card-story').textContent = t.saveCardStoryBtn;
   document.getElementById('footer-disclaimer').textContent = t.footerDisclaimer;
   document.getElementById('footer-affiliate').textContent = t.footerAffiliate;
   document.getElementById('follow-label').textContent = t.followLabel;
@@ -864,6 +878,324 @@ function renderResultCards(types) {
   });
 }
 
+// ===== 結果カード画像生成(Canvas、サーバー不要) =====
+// Pinterest配布中のイラスト(pinterest/illustrations/)と同一のseedで生成した動物イラストを
+// img/animals/<MBTIコード>.jpg として軽量化・同梱している。結果カードでも同じ絵を使うことで
+// Pinterest経由の流入者が「見たことある絵」を再認識できるようにする(意図的な連動)。
+const CARD_PAL = {
+  bg1: '#ffe9f3', bg2: '#f4e9ff', bg3: '#fff6e9',
+  primaryDark: '#ef6b96', text: '#55404f', sub: '#a3899e',
+};
+
+function cardRoundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function cardDrawBackground(ctx, w, h) {
+  const g = ctx.createLinearGradient(0, 0, w, h);
+  g.addColorStop(0, CARD_PAL.bg1);
+  g.addColorStop(0.55, CARD_PAL.bg2);
+  g.addColorStop(1, CARD_PAL.bg3);
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, w, h);
+  const blobs = [
+    [w * 0.85, h * 0.15, w * 0.30, '#ffd8e8'],
+    [w * 0.15, h * 0.92, w * 0.28, '#e2d4ff'],
+    [w * 0.65, h * 0.88, w * 0.22, '#fff0d8'],
+  ];
+  blobs.forEach(([x, y, r, c]) => {
+    const rg = ctx.createRadialGradient(x, y, 0, x, y, r);
+    rg.addColorStop(0, c);
+    rg.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = rg;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  });
+}
+
+function cardCoverImage(ctx, img, x, y, w, h) {
+  const s = Math.max(w / img.width, h / img.height);
+  const dw = img.width * s, dh = img.height * s;
+  ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+}
+
+// 指定フォントサイズでmaxWidthに収まるよう、単語(英語)または文字(日本語など)単位で行分割する。
+function cardWrapAtSize(ctx, text, maxWidth, weight, family, size) {
+  ctx.font = `${weight} ${size}px ${family}`;
+  const hasSpaces = /\s/.test(text);
+  const units = hasSpaces ? text.split(' ') : text.split('');
+  const sep = hasSpaces ? ' ' : '';
+  const lines = [];
+  let cur = '';
+  units.forEach((u) => {
+    const trial = cur ? cur + sep + u : u;
+    if (!cur || ctx.measureText(trial).width <= maxWidth) {
+      cur = trial;
+    } else {
+      lines.push(cur);
+      cur = u;
+    }
+  });
+  if (cur) lines.push(cur);
+  return lines;
+}
+
+// maxLines行に収まるまでフォントサイズをmaxからminへ1pxずつ縮めながら折り返す。
+// 日本語のニックネームは最長21字程度で1行に収まるが、英語版は最長75字前後あるため
+// (例: "The Experimental Vehicle More Interested in the Engine Than the Destination")、
+// 縮小だけでなく複数行への折り返しが必須。それでもmaxLinesに収まらない場合は最終行を省略記号で切る。
+function cardFitTextMultiline(ctx, text, maxWidth, weight, family, maxSize, minSize, maxLines) {
+  let size = maxSize;
+  let lines = cardWrapAtSize(ctx, text, maxWidth, weight, family, size);
+  while (lines.length > maxLines && size > minSize) {
+    size -= 1;
+    lines = cardWrapAtSize(ctx, text, maxWidth, weight, family, size);
+  }
+  if (lines.length > maxLines) {
+    lines = lines.slice(0, maxLines);
+    ctx.font = `${weight} ${size}px ${family}`;
+    let last = lines[maxLines - 1];
+    while (last.length > 1 && ctx.measureText(last + '…').width > maxWidth) {
+      last = last.slice(0, -1);
+    }
+    lines[maxLines - 1] = last + '…';
+  }
+  return { size, lines };
+}
+
+function cardPill(ctx, x, y, text, color, fontSize) {
+  ctx.font = `700 ${fontSize}px 'Zen Maru Gothic', sans-serif`;
+  const tw = ctx.measureText(text).width;
+  const pw = tw + fontSize * 1.6, ph = fontSize * 1.9;
+  ctx.fillStyle = color;
+  cardRoundRect(ctx, x, y, pw, ph, ph / 2);
+  ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'left';
+  ctx.fillText(text, x + fontSize * 0.8, y + ph / 2 + 1);
+  return pw;
+}
+
+function loadCardImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+
+function buildCardCats(types) {
+  const t = UI_TEXT[LANG];
+  const blockMap = getBlockMap();
+  const blockMeta = getBlockMeta();
+  const blockMapName = getBlockMapName();
+  return ['personality', 'love', 'work'].map((block) => {
+    const type = types[block];
+    const [emoji, label] = blockMap[block][type];
+    return { block, emoji, label, color: blockMeta[block].color, catLabel: blockMeta[block].catName, mapName: blockMapName[block] };
+  });
+}
+
+function drawResultCardX(ctx, img, cats) {
+  const t = UI_TEXT[LANG];
+  const W = 1200, H = 630;
+  cardDrawBackground(ctx, W, H);
+
+  const ix = 56, iy = 45, iw = 372, ih = 540;
+  ctx.save();
+  ctx.shadowColor = 'rgba(120,90,130,0.28)';
+  ctx.shadowBlur = 34;
+  ctx.shadowOffsetY = 10;
+  ctx.fillStyle = '#fff';
+  cardRoundRect(ctx, ix, iy, iw, ih, 32);
+  ctx.fill();
+  ctx.restore();
+  ctx.save();
+  cardRoundRect(ctx, ix, iy, iw, ih, 32);
+  ctx.clip();
+  cardCoverImage(ctx, img, ix, iy, iw, ih);
+  ctx.restore();
+
+  const cx = 486, rightMax = 1144;
+  const maxTextWidth = rightMax - cx;
+
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'left';
+  ctx.fillStyle = CARD_PAL.sub;
+  ctx.font = "700 25px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(t.cardEyebrow, cx, 74);
+
+  // ピルをタイプ名の上に置く構成にすることで、タイプ名は幅いっぱい(maxTextWidth)を使って
+  // 折り返せる(ピル横並びだとピル分の残り幅しか使えず、長い英語ニックネームで破綻するため)。
+  const rowSizes = [
+    { maxFont: 38, minFont: 22, pillFont: 20, lineHeight: 1.14, maxLines: 2 }, // 性格(強調)
+    { maxFont: 27, minFont: 17, pillFont: 16, lineHeight: 1.16, maxLines: 2 }, // 恋愛
+    { maxFont: 27, minFont: 17, pillFont: 16, lineHeight: 1.16, maxLines: 2 }, // 仕事
+  ];
+  let y = 118;
+  cats.forEach((c, i) => {
+    const rs = rowSizes[i];
+    cardPill(ctx, cx, y, c.catLabel.replace(/タイプ$|Type$/, ''), c.color, rs.pillFont);
+    y += rs.pillFont * 1.9 + rs.pillFont * 0.55;
+
+    const prefix = `${c.emoji} `;
+    ctx.font = `700 ${rs.maxFont}px 'Zen Maru Gothic', 'Segoe UI Emoji', sans-serif`;
+    const prefixWidth = ctx.measureText(prefix).width;
+    const fit = cardFitTextMultiline(ctx, c.label, maxTextWidth - prefixWidth, '700', "'Zen Maru Gothic', 'Segoe UI Emoji', sans-serif", rs.maxFont, rs.minFont, rs.maxLines);
+    ctx.fillStyle = CARD_PAL.text;
+    ctx.font = `700 ${fit.size}px 'Zen Maru Gothic', 'Segoe UI Emoji', sans-serif`;
+    const lineStep = fit.size * rs.lineHeight;
+    fit.lines.forEach((line, li) => {
+      ctx.fillText(li === 0 ? prefix + line : line, cx, y + li * lineStep + fit.size * 0.5);
+    });
+    y += fit.lines.length * lineStep + rs.pillFont * 1.1;
+  });
+
+  y += 6;
+  ctx.strokeStyle = 'rgba(160,130,175,0.28)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(cx, y);
+  ctx.lineTo(rightMax, y);
+  ctx.stroke();
+
+  ctx.fillStyle = CARD_PAL.primaryDark;
+  ctx.font = "700 26px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(t.cardCta, cx, y + 44);
+  ctx.fillStyle = CARD_PAL.sub;
+  ctx.font = "600 19px Poppins, sans-serif";
+  ctx.fillText(t.cardBrand, cx, y + 80);
+}
+
+function drawResultCardStory(ctx, img, cats) {
+  const t = UI_TEXT[LANG];
+  const W = 1080, H = 1920;
+  cardDrawBackground(ctx, W, H);
+
+  const ih = 1180;
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(0, 0, W, ih);
+  ctx.clip();
+  cardCoverImage(ctx, img, 0, 0, W, ih);
+  const fade = ctx.createLinearGradient(0, ih - 320, 0, ih);
+  fade.addColorStop(0, 'rgba(250,240,248,0)');
+  fade.addColorStop(1, CARD_PAL.bg2);
+  ctx.fillStyle = fade;
+  ctx.fillRect(0, ih - 320, W, 320);
+  ctx.restore();
+
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'center';
+  ctx.fillStyle = CARD_PAL.sub;
+  ctx.font = "700 34px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(t.cardEyebrow, W / 2, 1245);
+
+  const maxTextWidth = W - 160;
+  const rowSizes = [
+    { maxFont: 50, minFont: 28, pillFont: 24, lineHeight: 1.16, maxLines: 2 }, // 性格(強調)
+    { maxFont: 36, minFont: 22, pillFont: 20, lineHeight: 1.18, maxLines: 2 },
+    { maxFont: 36, minFont: 22, pillFont: 20, lineHeight: 1.18, maxLines: 2 },
+  ];
+  let y = 1330;
+  cats.forEach((c, i) => {
+    const rs = rowSizes[i];
+    ctx.textAlign = 'center';
+    ctx.font = `700 ${rs.pillFont}px 'Zen Maru Gothic', sans-serif`;
+    const label = c.catLabel.replace(/タイプ$|Type$/, '');
+    const lw = ctx.measureText(label).width + rs.pillFont * 1.9;
+    y += rs.pillFont * 1.3;
+    ctx.fillStyle = c.color;
+    cardRoundRect(ctx, W / 2 - lw / 2, y - rs.pillFont * 0.75, lw, rs.pillFont * 1.5, rs.pillFont * 0.75);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.fillText(label, W / 2, y);
+    y += rs.pillFont * 1.5;
+
+    const prefix = `${c.emoji} `;
+    ctx.font = `700 ${rs.maxFont}px 'Zen Maru Gothic', 'Segoe UI Emoji', sans-serif`;
+    const prefixWidth = ctx.measureText(prefix).width;
+    const fit = cardFitTextMultiline(ctx, c.label, maxTextWidth - prefixWidth, '700', "'Zen Maru Gothic', 'Segoe UI Emoji', sans-serif", rs.maxFont, rs.minFont, rs.maxLines);
+    ctx.fillStyle = CARD_PAL.text;
+    ctx.font = `700 ${fit.size}px 'Zen Maru Gothic', 'Segoe UI Emoji', sans-serif`;
+    const lineStep = fit.size * rs.lineHeight;
+    y += fit.size * 0.6;
+    fit.lines.forEach((line, li) => {
+      ctx.fillText(li === 0 ? prefix + line : line, W / 2, y + li * lineStep);
+    });
+    y += (fit.lines.length - 1) * lineStep + fit.size * 0.9;
+  });
+
+  y += 14;
+  ctx.strokeStyle = 'rgba(160,130,175,0.3)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(150, y);
+  ctx.lineTo(930, y);
+  ctx.stroke();
+  ctx.fillStyle = CARD_PAL.primaryDark;
+  ctx.font = "700 36px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(t.cardCta, W / 2, y + 55);
+  ctx.textAlign = 'left';
+}
+
+async function buildResultCardCanvas(types, mode) {
+  if (document.fonts && document.fonts.ready) {
+    try { await document.fonts.ready; } catch (e) { /* フォント読み込み待ちに失敗しても既定フォントで続行 */ }
+  }
+  const img = await loadCardImage(`img/animals/${types.personality}.jpg`);
+  const cats = buildCardCats(types);
+  const canvas = document.createElement('canvas');
+  if (mode === 'story') {
+    canvas.width = 1080; canvas.height = 1920;
+    drawResultCardStory(canvas.getContext('2d'), img, cats);
+  } else {
+    canvas.width = 1200; canvas.height = 630;
+    drawResultCardX(canvas.getContext('2d'), img, cats);
+  }
+  return canvas;
+}
+
+async function downloadResultCard(mode) {
+  if (!lastResult) return;
+  const t = UI_TEXT[LANG];
+  const btnId = mode === 'story' ? 'btn-save-card-story' : 'btn-save-card';
+  const btn = document.getElementById(btnId);
+  const original = btn.textContent;
+  btn.textContent = t.generatingLabel;
+  btn.disabled = true;
+  try {
+    const canvas = await buildResultCardCanvas(lastResult, mode);
+    await new Promise((resolve) => {
+      canvas.toBlob((blob) => {
+        const a = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        a.href = url;
+        a.download = `deskanimals-quiz-${lastResult.personality}-${mode}.png`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 4000);
+        resolve();
+      }, 'image/png');
+    });
+  } catch (e) {
+    console.error('結果カード生成に失敗しました', e);
+  } finally {
+    btn.textContent = original;
+    btn.disabled = false;
+  }
+}
+
 function shareResult() {
   if (!lastResult) return;
   const t = UI_TEXT[LANG];
@@ -907,6 +1239,8 @@ document.getElementById('btn-share').addEventListener('click', shareResult);
 document.getElementById('btn-share-line').addEventListener('click', shareResultLine);
 document.getElementById('btn-copy-url').addEventListener('click', copyResultUrl);
 document.getElementById('btn-restart').addEventListener('click', restartQuiz);
+document.getElementById('btn-save-card').addEventListener('click', () => downloadResultCard('x'));
+document.getElementById('btn-save-card-story').addEventListener('click', () => downloadResultCard('story'));
 document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('ja'));
 
 // 結果URL(?r=符号)で直接開かれた場合は、その場で同じ結果を再現して表示する
