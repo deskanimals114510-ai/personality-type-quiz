@@ -533,26 +533,29 @@ const AFFILIATE_TAG = 'tinywonders-22';
 const AFFILIATE_TAG_EN = ''; // 例: 'yourtag-20'
 
 // カテゴリ×五行属性でラッキーアイテムを分ける(同じ属性が複数カテゴリで重なっても被らないように)
+// 2026-08-15改訂: ターゲット(女性)に対して価格帯が高すぎる・トレンド訴求が弱い品目を、
+// 女性人気×低価格帯(概ね¥1,000〜3,000)のものに入れ替えた(元は香水・アロマディフューザー・
+// 光目覚まし時計・「高級」文房具セットなど単価が上がりやすい/女性向け訴求が弱い品目が混在していた)。
 const LUCKY_ITEM_MAP = {
   personality: {
     '木': { emoji: '🪴', name: '観葉植物', keyword: '観葉植物 卓上 ミニ' },
-    '火': { emoji: '🌸', name: '香水・フレグランス', keyword: '香水 フレグランス' },
-    '土': { emoji: '☕', name: '陶器のマグカップ', keyword: '陶器 マグカップ' },
-    '金': { emoji: '💼', name: 'アクセサリーケース', keyword: 'アクセサリーケース' },
-    '水': { emoji: '🕯️', name: 'アロマディフューザー', keyword: 'アロマディフューザー' },
+    '火': { emoji: '💄', name: 'リップティント', keyword: 'リップティント プチプラ' },
+    '土': { emoji: '☕', name: 'おしゃれなマグカップ', keyword: 'マグカップ おしゃれ 北欧' },
+    '金': { emoji: '💼', name: 'アクセサリーケース', keyword: 'アクセサリーケース プチプラ' },
+    '水': { emoji: '💦', name: 'フェイスミスト', keyword: 'フェイスミスト 保湿' },
   },
   love: {
     '木': { emoji: '🍵', name: 'ハーブティーセット', keyword: 'ハーブティー ギフトセット' },
-    '火': { emoji: '💍', name: '赤いアクセサリー', keyword: 'アクセサリー レッド' },
+    '火': { emoji: '💅', name: '赤いネイルポリッシュ', keyword: 'ネイルポリッシュ レッド プチプラ' },
     '土': { emoji: '🍶', name: 'ペアマグカップ', keyword: 'ペアマグカップ' },
-    '金': { emoji: '✨', name: 'シルバー・ゴールドのネックレス', keyword: 'ネックレス シルバー ゴールド' },
-    '水': { emoji: '🌊', name: '水辺で使えるタンブラー', keyword: 'タンブラー おしゃれ' },
+    '金': { emoji: '✨', name: 'シルバー・ゴールドのネックレス', keyword: 'ネックレス レディース プチプラ' },
+    '水': { emoji: '🥤', name: 'おしゃれなタンブラー', keyword: 'タンブラー おしゃれ' },
   },
   work: {
     '木': { emoji: '🌱', name: 'デスク用ミニ観葉植物', keyword: 'デスク 観葉植物 ミニ' },
-    '火': { emoji: '⏰', name: 'モーニングライト(光目覚まし)', keyword: '光目覚まし時計' },
+    '火': { emoji: '🕯️', name: 'デスク用アロマストーン', keyword: 'アロマストーン デスク' },
     '土': { emoji: '🗂️', name: 'デスクオーガナイザー', keyword: 'デスクオーガナイザー 収納' },
-    '金': { emoji: '🖋️', name: '高級文房具セット', keyword: '高級 文房具 ギフト' },
+    '金': { emoji: '🖋️', name: 'かわいい文房具セット', keyword: '文房具セット かわいい' },
     '水': { emoji: '🍶', name: 'おしゃれな水筒', keyword: '水筒 おしゃれ' },
   },
 };
@@ -562,23 +565,23 @@ const ELEMENT_NAME_EN = { '木': 'Wood', '火': 'Fire', '土': 'Earth', '金': '
 const LUCKY_ITEM_MAP_EN = {
   personality: {
     '木': { emoji: '🪴', name: 'a small potted plant', keyword: 'small desk plant' },
-    '火': { emoji: '🌸', name: 'a signature fragrance', keyword: 'perfume fragrance' },
-    '土': { emoji: '☕', name: 'a ceramic mug', keyword: 'ceramic mug' },
-    '金': { emoji: '💼', name: 'a jewelry case', keyword: 'jewelry case accessory' },
-    '水': { emoji: '🕯️', name: 'an aroma diffuser', keyword: 'aroma diffuser' },
+    '火': { emoji: '💄', name: 'a tinted lip balm', keyword: 'tinted lip balm affordable' },
+    '土': { emoji: '☕', name: 'a cute ceramic mug', keyword: 'cute ceramic mug affordable' },
+    '金': { emoji: '💼', name: 'a jewelry case', keyword: 'jewelry case accessory affordable' },
+    '水': { emoji: '💦', name: 'a hydrating face mist', keyword: 'hydrating face mist' },
   },
   love: {
     '木': { emoji: '🍵', name: 'a herbal tea gift set', keyword: 'herbal tea gift set' },
-    '火': { emoji: '💍', name: 'a red accessory', keyword: 'red jewelry accessory' },
+    '火': { emoji: '💅', name: 'a red nail polish', keyword: 'red nail polish affordable' },
     '土': { emoji: '🍶', name: 'matching couple mugs', keyword: 'matching couple mugs' },
-    '金': { emoji: '✨', name: 'a silver or gold necklace', keyword: 'silver gold necklace' },
-    '水': { emoji: '🌊', name: 'a stylish tumbler', keyword: 'stylish tumbler' },
+    '金': { emoji: '✨', name: 'an affordable necklace', keyword: 'affordable necklace women' },
+    '水': { emoji: '🥤', name: 'a stylish tumbler', keyword: 'stylish tumbler' },
   },
   work: {
     '木': { emoji: '🌱', name: 'a small desk plant', keyword: 'small desk plant' },
-    '火': { emoji: '⏰', name: 'a sunrise alarm clock', keyword: 'sunrise light alarm clock' },
+    '火': { emoji: '🕯️', name: 'a desk aroma stone', keyword: 'aroma stone desk no electricity' },
     '土': { emoji: '🗂️', name: 'a desk organizer', keyword: 'desk organizer' },
-    '金': { emoji: '🖋️', name: 'a premium stationery set', keyword: 'premium stationery gift set' },
+    '金': { emoji: '🖋️', name: 'a cute stationery set', keyword: 'cute stationery gift set affordable' },
     '水': { emoji: '🍶', name: 'a stylish water bottle', keyword: 'stylish water bottle tumbler' },
   },
 };
