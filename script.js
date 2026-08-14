@@ -536,27 +536,90 @@ const AFFILIATE_TAG_EN = ''; // 例: 'yourtag-20'
 // 2026-08-15改訂: ターゲット(女性)に対して価格帯が高すぎる・トレンド訴求が弱い品目を、
 // 女性人気×低価格帯(概ね¥1,000〜3,000)のものに入れ替えた(元は香水・アロマディフューザー・
 // 光目覚まし時計・「高級」文房具セットなど単価が上がりやすい/女性向け訴求が弱い品目が混在していた)。
+// 2026-08-15追記: 各属性を単一アイテムから3候補の配列に変更、結果画面を表示するたびランダムに
+// 1つ選ぶ(pickLuckyItem)ようにした。属性そのものはMBTIタイプで決定的に決まる(五行の文脈を維持)、
+// ランダムなのはその属性内でどのアイテムが出るか、という2段構成。
 const LUCKY_ITEM_MAP = {
   personality: {
-    '木': { emoji: '🪴', name: '観葉植物', keyword: '観葉植物 卓上 ミニ' },
-    '火': { emoji: '💄', name: 'リップティント', keyword: 'リップティント プチプラ' },
-    '土': { emoji: '☕', name: 'おしゃれなマグカップ', keyword: 'マグカップ おしゃれ 北欧' },
-    '金': { emoji: '💼', name: 'アクセサリーケース', keyword: 'アクセサリーケース プチプラ' },
-    '水': { emoji: '💦', name: 'フェイスミスト', keyword: 'フェイスミスト 保湿' },
+    '木': [
+      { emoji: '🪴', name: '観葉植物', keyword: '観葉植物 卓上 ミニ' },
+      { emoji: '🌿', name: 'ハンドクリーム', keyword: 'ハンドクリーム 保湿 プチプラ' },
+      { emoji: '🍀', name: 'アロマキャンドル', keyword: 'アロマキャンドル ミニ プチプラ' },
+    ],
+    '火': [
+      { emoji: '💄', name: 'リップティント', keyword: 'リップティント プチプラ' },
+      { emoji: '💋', name: 'チーク', keyword: 'チーク 頬紅 プチプラ' },
+      { emoji: '👛', name: 'ミニポーチ', keyword: 'ミニポーチ 可愛い プチプラ' },
+    ],
+    '土': [
+      { emoji: '☕', name: 'おしゃれなマグカップ', keyword: 'マグカップ おしゃれ 北欧' },
+      { emoji: '🧦', name: 'あったかルームソックス', keyword: 'ルームソックス 可愛い プチプラ' },
+      { emoji: '🧺', name: '布製収納ボックス', keyword: '収納ボックス おしゃれ 布' },
+    ],
+    '金': [
+      { emoji: '💼', name: 'アクセサリーケース', keyword: 'アクセサリーケース プチプラ' },
+      { emoji: '💍', name: 'ピアス・イヤリング', keyword: 'ピアス レディース プチプラ' },
+      { emoji: '👛', name: 'コインケース', keyword: 'コインケース レディース プチプラ' },
+    ],
+    '水': [
+      { emoji: '💦', name: 'フェイスミスト', keyword: 'フェイスミスト 保湿' },
+      { emoji: '🛁', name: 'バスソルト', keyword: 'バスソルト ギフト プチプラ' },
+      { emoji: '💧', name: 'リップオイル', keyword: 'リップオイル 保湿 プチプラ' },
+    ],
   },
   love: {
-    '木': { emoji: '🍵', name: 'ハーブティーセット', keyword: 'ハーブティー ギフトセット' },
-    '火': { emoji: '💅', name: '赤いネイルポリッシュ', keyword: 'ネイルポリッシュ レッド プチプラ' },
-    '土': { emoji: '🍶', name: 'ペアマグカップ', keyword: 'ペアマグカップ' },
-    '金': { emoji: '✨', name: 'シルバー・ゴールドのネックレス', keyword: 'ネックレス レディース プチプラ' },
-    '水': { emoji: '🥤', name: 'おしゃれなタンブラー', keyword: 'タンブラー おしゃれ' },
+    '木': [
+      { emoji: '🍵', name: 'ハーブティーセット', keyword: 'ハーブティー ギフトセット' },
+      { emoji: '🍫', name: 'ちょっと贅沢なチョコレート', keyword: 'チョコレート ギフト おしゃれ' },
+      { emoji: '🌸', name: 'ミニプリザーブドフラワー', keyword: 'プリザーブドフラワー ミニ プチプラ' },
+    ],
+    '火': [
+      { emoji: '💅', name: '赤いネイルポリッシュ', keyword: 'ネイルポリッシュ レッド プチプラ' },
+      { emoji: '💄', name: 'レッドのティントリップ', keyword: 'ティントリップ レッド プチプラ' },
+      { emoji: '👝', name: 'レッドのミニポーチ', keyword: 'ポーチ レッド プチプラ' },
+    ],
+    '土': [
+      { emoji: '🍶', name: 'ペアマグカップ', keyword: 'ペアマグカップ' },
+      { emoji: '🧸', name: 'ペアキーホルダー', keyword: 'ペアキーホルダー プチプラ' },
+      { emoji: '🧦', name: 'ペアソックス', keyword: 'ペアソックス プチプラ' },
+    ],
+    '金': [
+      { emoji: '✨', name: 'シルバー・ゴールドのネックレス', keyword: 'ネックレス レディース プチプラ' },
+      { emoji: '💫', name: 'ブレスレット', keyword: 'ブレスレット レディース プチプラ' },
+      { emoji: '🌟', name: 'リング', keyword: 'リング レディース プチプラ' },
+    ],
+    '水': [
+      { emoji: '🥤', name: 'おしゃれなタンブラー', keyword: 'タンブラー おしゃれ' },
+      { emoji: '🫧', name: 'バスボム', keyword: 'バスボム ギフト おしゃれ' },
+      { emoji: '🧣', name: 'ミニスカーフ', keyword: 'ミニスカーフ プチプラ' },
+    ],
   },
   work: {
-    '木': { emoji: '🌱', name: 'デスク用ミニ観葉植物', keyword: 'デスク 観葉植物 ミニ' },
-    '火': { emoji: '🕯️', name: 'デスク用アロマストーン', keyword: 'アロマストーン デスク' },
-    '土': { emoji: '🗂️', name: 'デスクオーガナイザー', keyword: 'デスクオーガナイザー 収納' },
-    '金': { emoji: '🖋️', name: 'かわいい文房具セット', keyword: '文房具セット かわいい' },
-    '水': { emoji: '🍶', name: 'おしゃれな水筒', keyword: '水筒 おしゃれ' },
+    '木': [
+      { emoji: '🌱', name: 'デスク用ミニ観葉植物', keyword: 'デスク 観葉植物 ミニ' },
+      { emoji: '🌵', name: 'ミニ多肉植物', keyword: '多肉植物 デスク ミニ' },
+      { emoji: '🖼️', name: '卓上フォトフレーム', keyword: '卓上フォトフレーム おしゃれ' },
+    ],
+    '火': [
+      { emoji: '🕯️', name: 'デスク用アロマストーン', keyword: 'アロマストーン デスク' },
+      { emoji: '☕', name: '保温マグカップ', keyword: '保温マグカップ おしゃれ プチプラ' },
+      { emoji: '🧣', name: 'オフィス用ひざ掛け', keyword: 'ひざ掛け オフィス プチプラ' },
+    ],
+    '土': [
+      { emoji: '🗂️', name: 'デスクオーガナイザー', keyword: 'デスクオーガナイザー 収納' },
+      { emoji: '📱', name: 'おしゃれなスマホスタンド', keyword: 'スマホスタンド おしゃれ プチプラ' },
+      { emoji: '🖇️', name: '付箋・クリップセット', keyword: '付箋 クリップ セット かわいい' },
+    ],
+    '金': [
+      { emoji: '🖋️', name: 'かわいい文房具セット', keyword: '文房具セット かわいい' },
+      { emoji: '🖊️', name: 'かわいいボールペン', keyword: 'ボールペン かわいい プチプラ' },
+      { emoji: '📔', name: 'おしゃれな手帳', keyword: '手帳 おしゃれ プチプラ' },
+    ],
+    '水': [
+      { emoji: '🍶', name: 'おしゃれな水筒', keyword: '水筒 おしゃれ' },
+      { emoji: '🫖', name: '保冷保温マイボトル', keyword: 'マイボトル 保冷保温 プチプラ' },
+      { emoji: '🍵', name: '水出し茶ボトル', keyword: '水出し茶 ボトル おしゃれ' },
+    ],
   },
 };
 
@@ -564,27 +627,94 @@ const LUCKY_ITEM_MAP = {
 const ELEMENT_NAME_EN = { '木': 'Wood', '火': 'Fire', '土': 'Earth', '金': 'Metal', '水': 'Water' };
 const LUCKY_ITEM_MAP_EN = {
   personality: {
-    '木': { emoji: '🪴', name: 'a small potted plant', keyword: 'small desk plant' },
-    '火': { emoji: '💄', name: 'a tinted lip balm', keyword: 'tinted lip balm affordable' },
-    '土': { emoji: '☕', name: 'a cute ceramic mug', keyword: 'cute ceramic mug affordable' },
-    '金': { emoji: '💼', name: 'a jewelry case', keyword: 'jewelry case accessory affordable' },
-    '水': { emoji: '💦', name: 'a hydrating face mist', keyword: 'hydrating face mist' },
+    '木': [
+      { emoji: '🪴', name: 'a small potted plant', keyword: 'small desk plant' },
+      { emoji: '🌿', name: 'a hand cream', keyword: 'hand cream moisturizing affordable' },
+      { emoji: '🍀', name: 'a mini aroma candle', keyword: 'mini aroma candle affordable' },
+    ],
+    '火': [
+      { emoji: '💄', name: 'a tinted lip balm', keyword: 'tinted lip balm affordable' },
+      { emoji: '💋', name: 'a cream blush', keyword: 'cream blush affordable' },
+      { emoji: '👛', name: 'a cute mini pouch', keyword: 'cute mini pouch affordable' },
+    ],
+    '土': [
+      { emoji: '☕', name: 'a cute ceramic mug', keyword: 'cute ceramic mug affordable' },
+      { emoji: '🧦', name: 'cozy room socks', keyword: 'cozy room socks cute' },
+      { emoji: '🧺', name: 'a fabric storage box', keyword: 'fabric storage box cute' },
+    ],
+    '金': [
+      { emoji: '💼', name: 'a jewelry case', keyword: 'jewelry case accessory affordable' },
+      { emoji: '💍', name: 'earrings', keyword: 'earrings women affordable' },
+      { emoji: '👛', name: 'a coin purse', keyword: 'coin purse women affordable' },
+    ],
+    '水': [
+      { emoji: '💦', name: 'a hydrating face mist', keyword: 'hydrating face mist' },
+      { emoji: '🛁', name: 'bath salts', keyword: 'bath salts gift affordable' },
+      { emoji: '💧', name: 'a lip oil', keyword: 'lip oil moisturizing affordable' },
+    ],
   },
   love: {
-    '木': { emoji: '🍵', name: 'a herbal tea gift set', keyword: 'herbal tea gift set' },
-    '火': { emoji: '💅', name: 'a red nail polish', keyword: 'red nail polish affordable' },
-    '土': { emoji: '🍶', name: 'matching couple mugs', keyword: 'matching couple mugs' },
-    '金': { emoji: '✨', name: 'an affordable necklace', keyword: 'affordable necklace women' },
-    '水': { emoji: '🥤', name: 'a stylish tumbler', keyword: 'stylish tumbler' },
+    '木': [
+      { emoji: '🍵', name: 'a herbal tea gift set', keyword: 'herbal tea gift set' },
+      { emoji: '🍫', name: 'a nice box of chocolates', keyword: 'chocolate gift box' },
+      { emoji: '🌸', name: 'a mini preserved flower', keyword: 'mini preserved flower affordable' },
+    ],
+    '火': [
+      { emoji: '💅', name: 'a red nail polish', keyword: 'red nail polish affordable' },
+      { emoji: '💄', name: 'a red tinted lip', keyword: 'red tinted lip affordable' },
+      { emoji: '👝', name: 'a red mini pouch', keyword: 'red mini pouch affordable' },
+    ],
+    '土': [
+      { emoji: '🍶', name: 'matching couple mugs', keyword: 'matching couple mugs' },
+      { emoji: '🧸', name: 'matching keychains', keyword: 'matching couple keychains affordable' },
+      { emoji: '🧦', name: 'matching socks', keyword: 'matching couple socks affordable' },
+    ],
+    '金': [
+      { emoji: '✨', name: 'an affordable necklace', keyword: 'affordable necklace women' },
+      { emoji: '💫', name: 'a bracelet', keyword: 'bracelet women affordable' },
+      { emoji: '🌟', name: 'a ring', keyword: 'ring women affordable' },
+    ],
+    '水': [
+      { emoji: '🥤', name: 'a stylish tumbler', keyword: 'stylish tumbler' },
+      { emoji: '🫧', name: 'bath bombs', keyword: 'bath bombs gift set' },
+      { emoji: '🧣', name: 'a mini scarf', keyword: 'mini scarf affordable' },
+    ],
   },
   work: {
-    '木': { emoji: '🌱', name: 'a small desk plant', keyword: 'small desk plant' },
-    '火': { emoji: '🕯️', name: 'a desk aroma stone', keyword: 'aroma stone desk no electricity' },
-    '土': { emoji: '🗂️', name: 'a desk organizer', keyword: 'desk organizer' },
-    '金': { emoji: '🖋️', name: 'a cute stationery set', keyword: 'cute stationery gift set affordable' },
-    '水': { emoji: '🍶', name: 'a stylish water bottle', keyword: 'stylish water bottle tumbler' },
+    '木': [
+      { emoji: '🌱', name: 'a small desk plant', keyword: 'small desk plant' },
+      { emoji: '🌵', name: 'a mini succulent', keyword: 'mini succulent desk' },
+      { emoji: '🖼️', name: 'a small desk photo frame', keyword: 'small desk photo frame cute' },
+    ],
+    '火': [
+      { emoji: '🕯️', name: 'a desk aroma stone', keyword: 'aroma stone desk no electricity' },
+      { emoji: '☕', name: 'an insulated mug', keyword: 'insulated mug cute affordable' },
+      { emoji: '🧣', name: 'a small office blanket', keyword: 'small office blanket affordable' },
+    ],
+    '土': [
+      { emoji: '🗂️', name: 'a desk organizer', keyword: 'desk organizer' },
+      { emoji: '📱', name: 'a cute phone stand', keyword: 'cute phone stand affordable' },
+      { emoji: '🖇️', name: 'a sticky note and clip set', keyword: 'cute sticky note clip set' },
+    ],
+    '金': [
+      { emoji: '🖋️', name: 'a cute stationery set', keyword: 'cute stationery gift set affordable' },
+      { emoji: '🖊️', name: 'a cute ballpoint pen', keyword: 'cute ballpoint pen affordable' },
+      { emoji: '📔', name: 'a stylish notebook', keyword: 'stylish notebook affordable' },
+    ],
+    '水': [
+      { emoji: '🍶', name: 'a stylish water bottle', keyword: 'stylish water bottle tumbler' },
+      { emoji: '🫖', name: 'an insulated bottle', keyword: 'insulated water bottle affordable' },
+      { emoji: '🍵', name: 'a cold-brew tea bottle', keyword: 'cold brew tea bottle stylish' },
+    ],
   },
 };
+
+// 属性(五行)自体はMBTIタイプで決定的に決まるが、その属性内のどのアイテムを見せるかは
+// 結果画面を表示するたびランダムに選ぶ(同じ属性でも毎回同じ商品にならないようにするため)。
+function pickLuckyItem(luckyMap, block, element) {
+  const candidates = luckyMap[block][element];
+  return candidates[Math.floor(Math.random() * candidates.length)];
+}
 
 function affiliateUrl(keyword) {
   const domain = LANG === 'en' ? 'www.amazon.com' : 'www.amazon.co.jp';
@@ -869,7 +999,7 @@ function renderResultCards(types) {
     const [emoji, label, desc] = map[type] || ['❓', '???', 'Unexpected data during diagnosis'];
     const meta = blockMeta[block];
     const element = TYPE_ELEMENT[type];
-    const lucky = luckyMap[block][element];
+    const lucky = pickLuckyItem(luckyMap, block, element);
     // 性格タイプの結果文で明言している「ラッキーカラー」を、実際の商品検索にも反映する
     const colorWord = block === 'personality' ? (LANG === 'en' ? ELEMENT_COLOR_EN[element] : ELEMENT_COLOR[element]) : null;
     const luckyKeyword = colorWord ? `${lucky.keyword} ${colorWord}` : lucky.keyword;
