@@ -539,59 +539,64 @@ const AFFILIATE_TAG_EN = ''; // 例: 'yourtag-20'
 // 2026-08-15追記: 各属性を単一アイテムから3候補の配列に変更、結果画面を表示するたびランダムに
 // 1つ選ぶ(pickLuckyItem)ようにした。属性そのものはMBTIタイプで決定的に決まる(五行の文脈を維持)、
 // ランダムなのはその属性内でどのアイテムが出るか、という2段構成。
+// 2026-08-15再改訂: 「プチプラ」という願望頼みのキーワードをやめ、価格帯・レビュー順はURL側
+// (affiliateUrl)で強制するように変更。品目自体もPerplexity調査(20〜30代女性への1000〜3000円
+// ギフトで人気の5大ジャンル: 美容・コスメ/文房具・雑貨/バスグッズ・リラックス/アロマ/お菓子。
+// 「自分では買わないけどもらうと嬉しいプチ贅沢感」が鍵、デパコスミニ・波佐見焼・今治タオル・
+// KINTOのような具体的トレンドワードが有効)に基づいて選定し直した。
 const LUCKY_ITEM_MAP = {
   personality: {
     '木': [
       { emoji: '🪴', name: '観葉植物', keyword: '観葉植物 卓上 ミニ' },
-      { emoji: '🌿', name: 'ハンドクリーム', keyword: 'ハンドクリーム 保湿 プチプラ' },
-      { emoji: '🍀', name: 'アロマキャンドル', keyword: 'アロマキャンドル ミニ プチプラ' },
+      { emoji: '🌿', name: 'ハンドクリームギフト', keyword: 'ハンドクリーム ギフト' },
+      { emoji: '🍀', name: 'アロマキャンドル', keyword: 'アロマキャンドル ギフト' },
     ],
     '火': [
-      { emoji: '💄', name: 'リップティント', keyword: 'リップティント プチプラ' },
-      { emoji: '💋', name: 'チーク', keyword: 'チーク 頬紅 プチプラ' },
-      { emoji: '👛', name: 'ミニポーチ', keyword: 'ミニポーチ 可愛い プチプラ' },
+      { emoji: '💄', name: 'デパコスミニリップ', keyword: 'デパコス ミニ リップ' },
+      { emoji: '💋', name: 'チーク', keyword: 'チーク 頬紅 デパコス' },
+      { emoji: '👛', name: 'ミニポーチ', keyword: 'ミニポーチ 可愛い' },
     ],
     '土': [
-      { emoji: '☕', name: 'おしゃれなマグカップ', keyword: 'マグカップ おしゃれ 北欧' },
-      { emoji: '🧦', name: 'あったかルームソックス', keyword: 'ルームソックス 可愛い プチプラ' },
-      { emoji: '🧺', name: '布製収納ボックス', keyword: '収納ボックス おしゃれ 布' },
+      { emoji: '☕', name: '波佐見焼マグカップ', keyword: 'マグカップ 波佐見焼' },
+      { emoji: '🧦', name: 'あったかルームソックス', keyword: 'ルームソックス 可愛い' },
+      { emoji: '🧺', name: '今治タオル', keyword: '今治タオル ギフト' },
     ],
     '金': [
-      { emoji: '💼', name: 'アクセサリーケース', keyword: 'アクセサリーケース プチプラ' },
-      { emoji: '💍', name: 'ピアス・イヤリング', keyword: 'ピアス レディース プチプラ' },
-      { emoji: '👛', name: 'コインケース', keyword: 'コインケース レディース プチプラ' },
+      { emoji: '💼', name: 'コスメのコフレギフト', keyword: 'コスメ コフレ ギフト' },
+      { emoji: '💍', name: 'ピアス・イヤリング', keyword: 'ピアス レディース' },
+      { emoji: '👛', name: 'コインケース', keyword: 'コインケース レディース' },
     ],
     '水': [
       { emoji: '💦', name: 'フェイスミスト', keyword: 'フェイスミスト 保湿' },
-      { emoji: '🛁', name: 'バスソルト', keyword: 'バスソルト ギフト プチプラ' },
-      { emoji: '💧', name: 'リップオイル', keyword: 'リップオイル 保湿 プチプラ' },
+      { emoji: '🛁', name: 'バスソルトギフトセット', keyword: 'バスソルト ギフトセット' },
+      { emoji: '💧', name: 'リップオイル', keyword: 'リップオイル デパコス' },
     ],
   },
   love: {
     '木': [
-      { emoji: '🍵', name: 'ハーブティーセット', keyword: 'ハーブティー ギフトセット' },
-      { emoji: '🍫', name: 'ちょっと贅沢なチョコレート', keyword: 'チョコレート ギフト おしゃれ' },
-      { emoji: '🌸', name: 'ミニプリザーブドフラワー', keyword: 'プリザーブドフラワー ミニ プチプラ' },
+      { emoji: '🍵', name: '紅茶ギフトセット', keyword: '紅茶 ギフトセット' },
+      { emoji: '🍫', name: 'ちょっと贅沢なチョコレート', keyword: 'チョコレート ギフト 高級' },
+      { emoji: '🌸', name: 'ミニプリザーブドフラワー', keyword: 'プリザーブドフラワー ミニ' },
     ],
     '火': [
-      { emoji: '💅', name: '赤いネイルポリッシュ', keyword: 'ネイルポリッシュ レッド プチプラ' },
-      { emoji: '💄', name: 'レッドのティントリップ', keyword: 'ティントリップ レッド プチプラ' },
-      { emoji: '👝', name: 'レッドのミニポーチ', keyword: 'ポーチ レッド プチプラ' },
+      { emoji: '💅', name: '赤いネイルポリッシュ', keyword: 'ネイルポリッシュ レッド' },
+      { emoji: '💄', name: 'レッドのティントリップ', keyword: 'ティントリップ レッド' },
+      { emoji: '👝', name: 'レッドのミニポーチ', keyword: 'ポーチ レッド' },
     ],
     '土': [
-      { emoji: '🍶', name: 'ペアマグカップ', keyword: 'ペアマグカップ' },
-      { emoji: '🧸', name: 'ペアキーホルダー', keyword: 'ペアキーホルダー プチプラ' },
-      { emoji: '🧦', name: 'ペアソックス', keyword: 'ペアソックス プチプラ' },
+      { emoji: '🍶', name: '波佐見焼ペアマグカップ', keyword: 'ペアマグカップ 波佐見焼' },
+      { emoji: '🧸', name: 'ペアキーホルダー', keyword: 'ペアキーホルダー' },
+      { emoji: '🧦', name: 'ペアソックス', keyword: 'ペアソックス' },
     ],
     '金': [
-      { emoji: '✨', name: 'シルバー・ゴールドのネックレス', keyword: 'ネックレス レディース プチプラ' },
-      { emoji: '💫', name: 'ブレスレット', keyword: 'ブレスレット レディース プチプラ' },
-      { emoji: '🌟', name: 'リング', keyword: 'リング レディース プチプラ' },
+      { emoji: '✨', name: 'シルバー・ゴールドのネックレス', keyword: 'ネックレス レディース' },
+      { emoji: '💫', name: 'ブレスレット', keyword: 'ブレスレット レディース' },
+      { emoji: '🌟', name: 'リング', keyword: 'リング レディース' },
     ],
     '水': [
-      { emoji: '🥤', name: 'おしゃれなタンブラー', keyword: 'タンブラー おしゃれ' },
-      { emoji: '🫧', name: 'バスボム', keyword: 'バスボム ギフト おしゃれ' },
-      { emoji: '🧣', name: 'ミニスカーフ', keyword: 'ミニスカーフ プチプラ' },
+      { emoji: '🥤', name: 'おしゃれなタンブラー', keyword: 'タンブラー おしゃれ KINTO' },
+      { emoji: '🫧', name: '入浴剤ギフトセット', keyword: '入浴剤 ギフトセット' },
+      { emoji: '🧣', name: 'ミニスカーフ', keyword: 'ミニスカーフ' },
     ],
   },
   work: {
@@ -602,22 +607,22 @@ const LUCKY_ITEM_MAP = {
     ],
     '火': [
       { emoji: '🕯️', name: 'デスク用アロマストーン', keyword: 'アロマストーン デスク' },
-      { emoji: '☕', name: '保温マグカップ', keyword: '保温マグカップ おしゃれ プチプラ' },
-      { emoji: '🧣', name: 'オフィス用ひざ掛け', keyword: 'ひざ掛け オフィス プチプラ' },
+      { emoji: '☕', name: '保温マグカップ', keyword: '保温マグカップ おしゃれ' },
+      { emoji: '🧣', name: 'オフィス用ひざ掛け', keyword: 'ひざ掛け オフィス' },
     ],
     '土': [
       { emoji: '🗂️', name: 'デスクオーガナイザー', keyword: 'デスクオーガナイザー 収納' },
-      { emoji: '📱', name: 'おしゃれなスマホスタンド', keyword: 'スマホスタンド おしゃれ プチプラ' },
-      { emoji: '🖇️', name: '付箋・クリップセット', keyword: '付箋 クリップ セット かわいい' },
+      { emoji: '📱', name: 'おしゃれなスマホスタンド', keyword: 'スマホスタンド おしゃれ' },
+      { emoji: '🪞', name: 'おしゃれな卓上ミラー', keyword: '卓上ミラー おしゃれ' },
     ],
     '金': [
-      { emoji: '🖋️', name: 'かわいい文房具セット', keyword: '文房具セット かわいい' },
-      { emoji: '🖊️', name: 'かわいいボールペン', keyword: 'ボールペン かわいい プチプラ' },
-      { emoji: '📔', name: 'おしゃれな手帳', keyword: '手帳 おしゃれ プチプラ' },
+      { emoji: '🎀', name: 'おしゃれなマスキングテープセット', keyword: 'マスキングテープ セット おしゃれ' },
+      { emoji: '🖊️', name: 'おしゃれなボールペン', keyword: 'ボールペン おしゃれ ギフト' },
+      { emoji: '📔', name: 'おしゃれな手帳', keyword: '手帳 おしゃれ' },
     ],
     '水': [
-      { emoji: '🍶', name: 'おしゃれな水筒', keyword: '水筒 おしゃれ' },
-      { emoji: '🫖', name: '保冷保温マイボトル', keyword: 'マイボトル 保冷保温 プチプラ' },
+      { emoji: '🍶', name: 'KINTOの水筒', keyword: 'KINTO 水筒' },
+      { emoji: '🫖', name: '保冷保温マイボトル', keyword: 'マイボトル 保冷保温' },
       { emoji: '🍵', name: '水出し茶ボトル', keyword: '水出し茶 ボトル おしゃれ' },
     ],
   },
@@ -716,9 +721,17 @@ function pickLuckyItem(luckyMap, block, element) {
   return candidates[Math.floor(Math.random() * candidates.length)];
 }
 
+// 2026-08-15: 「プチプラ」等のキーワードだけでは価格帯や品質を保証できず、Amazon検索結果が
+// 何を返すかは運任せだったため、URLパラメータで価格帯とレビュー評価順を実際に強制するよう変更。
+// rh=p_36:100000-300000 は¥1,000〜¥3,000(100倍した整数で指定するAmazon.co.jpの仕様)、
+// s=review-rank はレビュー評価の高い順ソート。実際にamazon.co.jpで動作確認済み。
+// amazon.com(EN)側は同じパラメータの動作を未検証のため、日本語版のみ適用する。
 function affiliateUrl(keyword) {
   const domain = LANG === 'en' ? 'www.amazon.com' : 'www.amazon.co.jp';
-  const base = `https://${domain}/s?k=${encodeURIComponent(keyword)}`;
+  let base = `https://${domain}/s?k=${encodeURIComponent(keyword)}`;
+  if (LANG !== 'en') {
+    base += '&rh=p_36%3A100000-300000&s=review-rank';
+  }
   const tag = LANG === 'en' ? AFFILIATE_TAG_EN : AFFILIATE_TAG;
   return tag ? `${base}&tag=${encodeURIComponent(tag)}` : base;
 }
