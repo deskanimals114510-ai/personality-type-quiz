@@ -585,18 +585,18 @@ const LUCKY_ITEM_MAP = {
     ],
     '土': [
       { emoji: '🍶', name: '波佐見焼ペアマグカップ', keyword: 'ペアマグカップ 波佐見焼' },
-      { emoji: '🧸', name: 'ペアキーホルダー', keyword: 'ペアキーホルダー' },
+      { emoji: '🧸', name: 'ペアキーホルダー', keyword: 'ペアキーホルダー カップル ハート' },
       { emoji: '🧦', name: 'ペアソックス', keyword: 'ペアソックス' },
     ],
     '金': [
-      { emoji: '✨', name: 'シルバー・ゴールドのネックレス', keyword: 'ネックレス レディース' },
-      { emoji: '💫', name: 'ブレスレット', keyword: 'ブレスレット レディース' },
-      { emoji: '🌟', name: 'リング', keyword: 'リング レディース' },
+      { emoji: '✨', name: 'シルバー・ゴールドのネックレス', keyword: 'ネックレス レディース シンプル 華奢' },
+      { emoji: '💫', name: 'ブレスレット', keyword: 'ブレスレット レディース シンプル' },
+      { emoji: '🌟', name: 'リング', keyword: 'リング レディース シンプル' },
     ],
     '水': [
       { emoji: '🥤', name: 'おしゃれなタンブラー', keyword: 'タンブラー おしゃれ KINTO' },
       { emoji: '🫧', name: '入浴剤ギフトセット', keyword: '入浴剤 ギフトセット' },
-      { emoji: '🧣', name: 'ミニスカーフ', keyword: 'ミニスカーフ' },
+      { emoji: '🧣', name: 'ミニスカーフ', keyword: 'スカーフ レディース おしゃれ 小さめ' },
     ],
   },
   work: {
