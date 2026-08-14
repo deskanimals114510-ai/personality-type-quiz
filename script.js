@@ -586,7 +586,7 @@ const LUCKY_ITEM_MAP = {
     '土': [
       { emoji: '🍶', name: '波佐見焼ペアマグカップ', keyword: 'ペアマグカップ 波佐見焼' },
       { emoji: '🧸', name: 'ペアキーホルダー', keyword: 'ペアキーホルダー カップル ハート' },
-      { emoji: '🧦', name: 'ペアソックス', keyword: 'ペアソックス' },
+      { emoji: '🧦', name: 'ペアソックス', keyword: 'カップルソックス お揃い' },
     ],
     '金': [
       { emoji: '✨', name: 'シルバー・ゴールドのネックレス', keyword: 'ネックレス レディース シンプル 華奢' },
@@ -594,7 +594,7 @@ const LUCKY_ITEM_MAP = {
       { emoji: '🌟', name: 'リング', keyword: 'リング レディース シンプル' },
     ],
     '水': [
-      { emoji: '🥤', name: 'おしゃれなタンブラー', keyword: 'タンブラー おしゃれ KINTO' },
+      { emoji: '🥤', name: 'おしゃれなタンブラー', keyword: 'ガラスタンブラー おしゃれ ギフト' },
       { emoji: '🫧', name: '入浴剤ギフトセット', keyword: '入浴剤 ギフトセット' },
       { emoji: '🧣', name: 'ミニスカーフ', keyword: 'スカーフ レディース おしゃれ 小さめ' },
     ],
@@ -603,7 +603,7 @@ const LUCKY_ITEM_MAP = {
     '木': [
       { emoji: '🌱', name: 'デスク用ミニ観葉植物', keyword: 'デスク 観葉植物 ミニ' },
       { emoji: '🌵', name: 'ミニ多肉植物', keyword: '多肉植物 デスク ミニ' },
-      { emoji: '🖼️', name: '卓上フォトフレーム', keyword: '卓上フォトフレーム おしゃれ' },
+      { emoji: '🖼️', name: '卓上フォトフレーム', keyword: 'フォトフレーム おしゃれ ゴールド 卓上' },
     ],
     '火': [
       { emoji: '🕯️', name: 'デスク用アロマストーン', keyword: 'アロマストーン デスク' },
@@ -611,7 +611,7 @@ const LUCKY_ITEM_MAP = {
       { emoji: '🧣', name: 'オフィス用ひざ掛け', keyword: 'ひざ掛け オフィス' },
     ],
     '土': [
-      { emoji: '🗂️', name: 'デスクオーガナイザー', keyword: 'デスクオーガナイザー 収納' },
+      { emoji: '🗂️', name: 'デスクオーガナイザー', keyword: 'デスク収納 おしゃれ かわいい' },
       { emoji: '📱', name: 'おしゃれなスマホスタンド', keyword: 'スマホスタンド おしゃれ' },
       { emoji: '🪞', name: 'おしゃれな卓上ミラー', keyword: '卓上ミラー おしゃれ' },
     ],
