@@ -597,3 +597,90 @@ body {
 @media (min-width: 520px) {
   .start-card { padding: 48px 40px 40px; }
 }
+
+/* ---- タイプ別解説ページ(/types/) ---- */
+.type-page { padding: 26px 18px 36px; }
+.type-page-sub {
+  font-size: 0.82rem;
+  color: var(--text-sub);
+  margin: 6px 0 0;
+}
+.type-page-card .cat-name { display: block; }
+.type-page-note {
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--text-sub);
+  background: rgba(255,255,255,0.6);
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin: 20px 0;
+}
+.type-nav {
+  margin: 28px 0 8px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 20px;
+  padding: 16px;
+}
+.type-nav-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin: 0 0 10px;
+}
+.type-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.type-nav-link {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 2px;
+}
+.type-nav-link.active {
+  background: linear-gradient(135deg, var(--primary), var(--accent2));
+  color: #fff;
+  border-color: transparent;
+}
+.type-hub-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.type-hub-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text);
+  background: rgba(255,255,255,0.85);
+  border-radius: 18px;
+  padding: 18px 10px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(255,255,255,0.7);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.type-hub-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); }
+.type-hub-emoji { font-size: 1.8rem; }
+.type-hub-code {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+.type-hub-title {
+  font-size: 0.72rem;
+  color: var(--text-sub);
+  line-height: 1.4;
+}
