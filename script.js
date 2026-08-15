@@ -645,7 +645,7 @@ const LUCKY_ITEM_MAP_EN = {
     '土': [
       { emoji: '☕', name: 'a cute ceramic mug', keyword: 'cute ceramic mug affordable' },
       { emoji: '🧦', name: 'cozy room socks', keyword: 'cozy room socks cute' },
-      { emoji: '🧺', name: 'a fabric storage box', keyword: 'fabric storage box cute' },
+      { emoji: '🧺', name: 'a fabric storage box', keyword: 'small fabric storage basket cute gift' },
     ],
     '金': [
       { emoji: '💼', name: 'a jewelry case', keyword: 'jewelry case accessory affordable' },
@@ -675,13 +675,13 @@ const LUCKY_ITEM_MAP_EN = {
       { emoji: '🧦', name: 'matching socks', keyword: 'matching couple socks affordable' },
     ],
     '金': [
-      { emoji: '✨', name: 'an affordable necklace', keyword: 'affordable necklace women' },
+      { emoji: '✨', name: 'an affordable necklace', keyword: 'simple necklace women gift' },
       { emoji: '💫', name: 'a bracelet', keyword: 'bracelet women affordable' },
       { emoji: '🌟', name: 'a ring', keyword: 'ring women affordable' },
     ],
     '水': [
       { emoji: '🥤', name: 'a stylish tumbler', keyword: 'stylish tumbler' },
-      { emoji: '🫧', name: 'bath bombs', keyword: 'bath bombs gift set' },
+      { emoji: '🫧', name: 'bath bombs', keyword: 'bath bombs gift set for women' },
       { emoji: '🧣', name: 'a mini scarf', keyword: 'mini scarf affordable' },
     ],
   },
@@ -694,11 +694,11 @@ const LUCKY_ITEM_MAP_EN = {
     '火': [
       { emoji: '🕯️', name: 'a desk aroma stone', keyword: 'aroma stone desk no electricity' },
       { emoji: '☕', name: 'an insulated mug', keyword: 'insulated mug cute affordable' },
-      { emoji: '🧣', name: 'a small office blanket', keyword: 'small office blanket affordable' },
+      { emoji: '🧣', name: 'a small office blanket', keyword: 'small lap blanket desk cute' },
     ],
     '土': [
       { emoji: '🗂️', name: 'a desk organizer', keyword: 'desk organizer' },
-      { emoji: '📱', name: 'a cute phone stand', keyword: 'cute phone stand affordable' },
+      { emoji: '📱', name: 'a cute phone stand', keyword: 'cute desk phone holder pink' },
       { emoji: '🖇️', name: 'a sticky note and clip set', keyword: 'cute sticky note clip set' },
     ],
     '金': [
@@ -722,14 +722,19 @@ function pickLuckyItem(luckyMap, block, element) {
 }
 
 // 2026-08-15: 「プチプラ」等のキーワードだけでは価格帯や品質を保証できず、Amazon検索結果が
-// 何を返すかは運任せだったため、URLパラメータで価格帯とレビュー評価順を実際に強制するよう変更。
-// rh=p_36:100000-300000 は¥1,000〜¥3,000(100倍した整数で指定するAmazon.co.jpの仕様)、
+// 何を返すかは運任せだったため、URLパラメータで価格帯を実際に強制するよう変更。
+// JA(amazon.co.jp): rh=p_36:100000-300000 は¥1,000〜¥3,000(100倍した整数で指定する仕様)、
 // s=review-rank はレビュー評価の高い順ソート。実際にamazon.co.jpで動作確認済み。
-// amazon.com(EN)側は同じパラメータの動作を未検証のため、日本語版のみ適用する。
+// EN(amazon.com): rh=p_36:1000-3000 は$10〜$30(セント単位)相当、実機で動作確認済み。
+// ただしEN側にs=review-rankを付けると、ジュエリー等で遺灰・追悼(cremation)アイテムのような
+// 特定ニッチカテゴリがレビュー数で上位を独占してしまう副作用を実地で確認したため、
+// EN側は価格帯フィルタのみ適用しソートは既定(関連度順)のままにする。
 function affiliateUrl(keyword) {
   const domain = LANG === 'en' ? 'www.amazon.com' : 'www.amazon.co.jp';
   let base = `https://${domain}/s?k=${encodeURIComponent(keyword)}`;
-  if (LANG !== 'en') {
+  if (LANG === 'en') {
+    base += '&rh=p_36%3A1000-3000';
+  } else {
     base += '&rh=p_36%3A100000-300000&s=review-rank';
   }
   const tag = LANG === 'en' ? AFFILIATE_TAG_EN : AFFILIATE_TAG;
