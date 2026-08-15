@@ -576,6 +576,23 @@ const LUCKY_BRIDGE_EN = {
 };
 function getLuckyBridge() { return LANG === 'en' ? LUCKY_BRIDGE_EN : LUCKY_BRIDGE; }
 
+// 2026-08-15: ラッキーアイテムのカードが絵文字のみで「何の商品か」が視覚的に伝わりにくい
+// というユーザー目線レビューの指摘への対応。90件それぞれの実商品写真ではなく、
+// Midjourney生成のパステル系アイコンイラスト(9カテゴリ、img/lucky-icons/)で代替する
+// 低コスト案(実商品との齟齬が起きない・保守が軽い)。全40種の絵文字を9カテゴリに集約。
+const LUCKY_ICON_MAP = {
+  '🪴': 'plant', '🌸': 'plant', '🌱': 'plant', '🌵': 'plant',
+  '🌿': 'bath', '🛁': 'bath', '🍫': 'bath', '🫧': 'bath',
+  '🍀': 'candle', '🕯️': 'candle',
+  '💄': 'cosmetics', '💋': 'cosmetics', '💦': 'cosmetics', '💧': 'cosmetics', '💅': 'cosmetics',
+  '👛': 'pouch', '👝': 'pouch', '🧸': 'pouch',
+  '☕': 'mug', '🍵': 'mug', '🍶': 'mug', '🥤': 'mug', '🫖': 'mug',
+  '🧦': 'textile', '🧺': 'textile', '🧣': 'textile',
+  '💼': 'jewelry', '💍': 'jewelry', '✨': 'jewelry', '💫': 'jewelry', '🌟': 'jewelry',
+  '🖼️': 'stationery', '🗂️': 'stationery', '📱': 'stationery', '🪞': 'stationery',
+  '🎀': 'stationery', '🖊️': 'stationery', '📔': 'stationery', '🖇️': 'stationery', '🖋️': 'stationery',
+};
+
 // アフィリエイトタグ未設定の間は通常の商品検索リンクとして機能する
 // AFFILIATE_TAG: Amazonアソシエイト(日本, amazon.co.jp用)。取得済み(2026-08-10)
 // AFFILIATE_TAG_EN: Amazon Associates(US, amazon.com用)。国ごとに別プログラムのため、
@@ -1088,7 +1105,7 @@ function renderResultCards(types) {
       <div class="desc">${desc}</div>
       <div class="lucky-bridge">${luckyBridge}</div>
       <a class="lucky-item" href="${affiliateUrl(luckyKeyword)}" target="_blank" rel="noopener sponsored">
-        <span class="lucky-emoji">${lucky.emoji}</span>
+        <span class="lucky-emoji">${LUCKY_ICON_MAP[lucky.emoji] ? `<img src="img/lucky-icons/${LUCKY_ICON_MAP[lucky.emoji]}.jpg" alt="" loading="lazy">` : lucky.emoji}</span>
         <span class="lucky-text"><span class="lucky-label">${t.luckyLabel}<span class="lucky-pr-tag">${t.prTag}</span></span><span class="lucky-name">${t.luckySeeMore(lucky.name)}</span><span class="lucky-price">${t.luckyPriceHint}</span></span>
         <span class="lucky-arrow">›</span>
       </a>
