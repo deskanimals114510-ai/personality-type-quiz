@@ -764,6 +764,7 @@ const UI_TEXT = {
     restartBtn: 'もう一度診断する',
     luckyLabel: '🍀 今日のラッキーアイテム',
     prTag: 'PR',
+    luckyPriceHint: '¥1,000〜3,000で買えるプチギフト',
     luckySeeMore: (name) => `${name}を見てみる`,
     mbtiElementLine: (type, element) => `MBTI: ${type} ・ 五行: ${element}`,
     catLine: (catName, mapName) => `${catName}(${mapName}にたとえると)`,
@@ -796,6 +797,7 @@ const UI_TEXT = {
     restartBtn: 'Take the Test Again',
     luckyLabel: "🍀 Today's Lucky Item",
     prTag: 'AD',
+    luckyPriceHint: 'A cute $10–30 treat',
     luckySeeMore: (name) => `Shop ${name}`,
     mbtiElementLine: (type, element) => `MBTI: ${type} · Element: ${element}`,
     catLine: (catName, mapName) => `${catName} — ${mapName} Edition`,
@@ -1034,7 +1036,7 @@ function renderResultCards(types) {
       <div class="desc">${desc}</div>
       <a class="lucky-item" href="${affiliateUrl(luckyKeyword)}" target="_blank" rel="noopener sponsored">
         <span class="lucky-emoji">${lucky.emoji}</span>
-        <span class="lucky-text"><span class="lucky-label">${t.luckyLabel}<span class="lucky-pr-tag">${t.prTag}</span></span><span class="lucky-name">${t.luckySeeMore(lucky.name)}</span></span>
+        <span class="lucky-text"><span class="lucky-label">${t.luckyLabel}<span class="lucky-pr-tag">${t.prTag}</span></span><span class="lucky-name">${t.luckySeeMore(lucky.name)}</span><span class="lucky-price">${t.luckyPriceHint}</span></span>
         <span class="lucky-arrow">›</span>
       </a>
     `;

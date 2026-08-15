@@ -446,6 +446,17 @@ body {
   font-weight: 700;
   color: var(--text);
 }
+.lucky-price {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #2f9e6e;
+  background: #eafaf0;
+  border-radius: 6px;
+  padding: 1px 7px;
+  margin-top: 1px;
+}
 .lucky-arrow {
   font-size: 1.3rem;
   color: #d18b2a;
