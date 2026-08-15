@@ -525,6 +525,57 @@ const TYPE_ELEMENT = {
 const ELEMENT_COLOR = { '木': '若草色', '火': '朱色', '土': '黄土色', '金': '白金色', '水': '藍色' };
 const ELEMENT_COLOR_EN = { '木': 'moss green', '火': 'vermillion', '土': 'ochre', '金': 'platinum', '水': 'indigo' };
 
+// 2026-08-15: 診断結果の文章とラッキーアイテムのリンクが唐突に見える(何のつながりもない)という
+// ユーザー目線レビューでの指摘への対応。商品名には触れず、カテゴリ×五行属性(15パターン)の
+// 気質に合わせた一言だけを結果文とアイテムリンクの間に挟む(Fable執筆)。
+const LUCKY_BRIDGE = {
+  personality: {
+    '木': '誰かを気づかう毎日の合間に、自分の心にも水をやる小さな贈り物を。',
+    '火': '全速力で駆けるあなたの毎日に、一瞬だけ足を止めたくなるご褒美を。',
+    '土': '使い込んだ定番を愛するあなたの棚に、次の定番候補をひとつ。',
+    '金': '細部まで妥協しないその審美眼に、あえて試してほしい一品があります。',
+    '水': '今日のひらめきの続きは、思いがけない小さな出会いから始まるかもしれません。',
+  },
+  love: {
+    '木': '相手の気持ちを先に考えるあなたへ、たまには自分を甘やかす口実を。',
+    '火': 'まっすぐな愛情表現のあなたなら、想いはこんな形にしても伝わります。',
+    '土': '言葉より積み重ねで愛を示すあなたの日常に、ささやかな彩りをひとつ。',
+    '金': '多くを語らないあなたの代わりに、センスが語ってくれる贈り物もあります。',
+    '水': '型にはまらない二人の関係には、誰も予想しない小さなサプライズを。',
+  },
+  work: {
+    '木': '人を育て、支えるあなたこそ、頑張った自分をねぎらう時間とご褒美を。',
+    '火': '走り続けるあなたのデスクに、次の一歩を後押しする小さな相棒を。',
+    '土': 'コツコツ積み上げた一日の終わりには、確かな品質のご褒美がよく似合います。',
+    '金': '道具にこだわる人ほど、仕事は磨かれる。あなたの基準に挑むプチギフトを。',
+    '水': '発想の泉にも、ときどき補給を。机の上に小さな遊び心をひとつ。',
+  },
+};
+const LUCKY_BRIDGE_EN = {
+  personality: {
+    '木': 'You spend so much of each day caring for everyone else — maybe today, a small treat can be the one thing that is just for you.',
+    '火': 'You move through life at full speed, so here is a little reward worth slowing down for, even if only for a moment.',
+    '土': 'You love the things that have earned their place through years of use — perhaps this small find could become your next well-worn favorite.',
+    '金': 'Your eye for detail rarely lets anything slide, so consider this a little something chosen to stand up to your standards.',
+    '水': 'Your best ideas tend to arrive from unexpected places — and sometimes a small surprise is exactly where the next one begins.',
+  },
+  love: {
+    '木': "You always put your partner's feelings first, so let this be your gentle excuse to spoil yourself a little today.",
+    '火': 'Your love is bold and direct, and when words are not quite enough, a small gift can carry that straightforward warmth just as well.',
+    '土': 'You show love through steady, everyday devotion — one small addition to that shared routine might say more than any grand gesture.',
+    '金': 'You are not one for saying much out loud, but a thoughtfully chosen little gift can speak with all the taste you carry quietly.',
+    '水': "Your relationship has never followed anyone else's script, so why not add one more small, delightful surprise nobody saw coming?",
+  },
+  work: {
+    '木': 'You spend your working hours helping others grow — today, let a small reward remind you that your own effort deserves tending, too.',
+    '火': 'You never stop moving, so give your desk a tiny companion that cheers you on toward whatever comes next.',
+    '土': 'You build your work brick by steady brick — at the end of a day like that, you have earned a treat of dependable quality.',
+    '金': 'People who care about their tools tend to do sharper work — here is a little something bold enough to face your exacting standards.',
+    '水': 'Even a wellspring of ideas needs refilling now and then, so keep a small spark of playfulness within arm’s reach of your desk.',
+  },
+};
+function getLuckyBridge() { return LANG === 'en' ? LUCKY_BRIDGE_EN : LUCKY_BRIDGE; }
+
 // アフィリエイトタグ未設定の間は通常の商品検索リンクとして機能する
 // AFFILIATE_TAG: Amazonアソシエイト(日本, amazon.co.jp用)。取得済み(2026-08-10)
 // AFFILIATE_TAG_EN: Amazon Associates(US, amazon.com用)。国ごとに別プログラムのため、
@@ -1023,6 +1074,7 @@ function renderResultCards(types) {
     // 性格タイプの結果文で明言している「ラッキーカラー」を、実際の商品検索にも反映する
     const colorWord = block === 'personality' ? (LANG === 'en' ? ELEMENT_COLOR_EN[element] : ELEMENT_COLOR[element]) : null;
     const luckyKeyword = colorWord ? `${lucky.keyword} ${colorWord}` : lucky.keyword;
+    const luckyBridge = getLuckyBridge()[block][element];
 
     const card = document.createElement('div');
     card.className = 'result-card';
@@ -1034,6 +1086,7 @@ function renderResultCards(types) {
       <div class="type-name">${label}</div>
       <div class="mbti-code">${t.mbtiElementLine(type, getElementName(element))}</div>
       <div class="desc">${desc}</div>
+      <div class="lucky-bridge">${luckyBridge}</div>
       <a class="lucky-item" href="${affiliateUrl(luckyKeyword)}" target="_blank" rel="noopener sponsored">
         <span class="lucky-emoji">${lucky.emoji}</span>
         <span class="lucky-text"><span class="lucky-label">${t.luckyLabel}<span class="lucky-pr-tag">${t.prTag}</span></span><span class="lucky-name">${t.luckySeeMore(lucky.name)}</span><span class="lucky-price">${t.luckyPriceHint}</span></span>
