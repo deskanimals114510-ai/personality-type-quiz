@@ -836,7 +836,7 @@ const UI_TEXT = {
     luckySeeMore: (name) => `${name}を見てみる`,
     mbtiElementLine: (type, element) => `MBTI: ${type} ・ 五行: ${element}`,
     catLine: (catName, mapName) => `${catName}(${mapName}にたとえると)`,
-    shareText: (p, l, w) => `性格・恋愛・仕事タイプ診断やってみた!\n性格: ${p} / 恋愛: ${l} / 仕事: ${w}\n#性格診断 #MBTI診断`,
+    shareText: (p, l, w) => `性格・恋愛・仕事タイプ診断やってみた!\n性格: ${p} / 恋愛: ${l} / 仕事: ${w}\nあなたのタイプもチェック→\n#性格診断 #MBTI診断`,
     lineBtn: 'LINEでシェア',
     copyUrlBtn: '結果URLをコピー 🔗',
     copiedLabel: 'コピーしました ✓',
@@ -869,7 +869,7 @@ const UI_TEXT = {
     luckySeeMore: (name) => `Shop ${name}`,
     mbtiElementLine: (type, element) => `MBTI: ${type} · Element: ${element}`,
     catLine: (catName, mapName) => `${catName} — ${mapName} Edition`,
-    shareText: (p, l, w) => `I just took a Personality / Love / Career type test!\nPersonality: ${p} / Love: ${l} / Career: ${w}\n#PersonalityTest #MBTI`,
+    shareText: (p, l, w) => `I just took a Personality / Love / Career type test!\nPersonality: ${p} / Love: ${l} / Career: ${w}\nTry yours →\n#PersonalityTest #MBTI`,
     lineBtn: 'Share on LINE',
     copyUrlBtn: 'Copy Result URL 🔗',
     copiedLabel: 'Copied ✓',
@@ -1464,8 +1464,14 @@ function shareResult() {
 
 function shareResultLine() {
   if (!lastResult) return;
+  const t = UI_TEXT[LANG];
+  const blockMap = getBlockMap();
+  const pLabel = blockMap.personality[lastResult.personality][1];
+  const lLabel = blockMap.love[lastResult.love][1];
+  const wLabel = blockMap.work[lastResult.work][1];
+  const text = t.shareText(pLabel, lLabel, wLabel);
   const url = encodeURIComponent(resultUrl());
-  const shareUrl = `https://social-plugins.line.me/lineit/share?url=${url}`;
+  const shareUrl = `https://social-plugins.line.me/lineit/share?url=${url}&text=${encodeURIComponent(text)}`;
   window.open(shareUrl, '_blank', 'noopener,noreferrer');
 }
 
