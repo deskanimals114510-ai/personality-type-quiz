@@ -822,7 +822,7 @@ const UI_TEXT = {
   ja: {
     eyebrow: 'FREE PERSONALITY TEST',
     titleHtml: 'あなたの<span class="grad-text">3つの顔</span>、診断します',
-    lead: 'AIとチャットしながら答えるだけ。<br>「性格」「恋愛」「仕事」でタイプが変わる、<br>ちょっと不思議な診断です。',
+    lead: 'AIとチャットしながら答えるだけの、MBTIベースの診断。<br>「性格」「恋愛」「仕事」でタイプが変わる、<br>ちょっと不思議な診断です。',
     badges: ['🐢 動物', '☀️ 天気', '🚃 乗り物', 'でたとえます'],
     startBtn: '診断をはじめる ✨',
     sub: '全30問・所要時間 約3分',

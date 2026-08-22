@@ -398,7 +398,7 @@ body {
   font-size: 0.76rem;
   font-weight: 700;
   color: var(--accent);
-  margin-bottom: 4px;
+  margin: 0 0 4px;
 }
 .result-card .type-name {
   font-family: "Poppins", "Zen Maru Gothic", sans-serif;
