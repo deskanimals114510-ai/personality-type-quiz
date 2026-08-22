@@ -518,6 +518,12 @@ body {
   color: var(--text-sub);
   margin: -14px 0 24px;
 }
+.lang-note {
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--text-sub);
+  margin: 6px 0 0;
+}
 
 .result-actions {
   margin-top: 28px;

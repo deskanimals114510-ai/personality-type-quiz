@@ -851,6 +851,8 @@ const UI_TEXT = {
     footerAffiliate: '🔖 本ページの「ラッキーアイテム」リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。',
     followLabel: '🐹 Desk Animalsをフォローする',
     followLabel2: '🔮 他の診断もチェックする',
+    linkCompatBtn: '🔮 お相手との相性を見る',
+    jpOnlyNote: '',
   },
   en: {
     eyebrow: 'FREE PERSONALITY TEST',
@@ -884,6 +886,8 @@ const UI_TEXT = {
     footerAffiliate: '🔖 The "Lucky Item" links on this page are affiliate (ad) links. We may earn a commission on purchases made through these links.',
     followLabel: '🐹 Follow Desk Animals',
     followLabel2: '🔮 Try another quiz',
+    linkCompatBtn: '🔮 Check Compatibility',
+    jpOnlyNote: 'Available in Japanese only',
   },
 };
 
@@ -908,6 +912,13 @@ function applyLangUI() {
   document.getElementById('footer-affiliate').textContent = t.footerAffiliate;
   document.getElementById('follow-label').textContent = t.followLabel;
   document.getElementById('follow-label-2').textContent = t.followLabel2;
+  document.getElementById('link-compat').textContent = t.linkCompatBtn;
+  const linkCompatNoteEl = document.getElementById('link-compat-note');
+  linkCompatNoteEl.textContent = t.jpOnlyNote;
+  linkCompatNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
+  const followNote2El = document.getElementById('follow-note-2');
+  followNote2El.textContent = t.jpOnlyNote;
+  followNote2El.style.display = t.jpOnlyNote ? '' : 'none';
   document.documentElement.lang = LANG;
 }
 
