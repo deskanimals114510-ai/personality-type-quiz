@@ -850,8 +850,10 @@ const UI_TEXT = {
     footerDisclaimer: '本診断はエンタメ目的のコンテンツです。科学的な心理診断や実際の占い・鑑定に代わるものではありません。',
     footerAffiliate: '🔖 本ページの「ラッキーアイテム」リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。',
     followLabel: '🐹 Desk Animalsをフォローする',
-    followLabel2: '🔮 他の診断もチェックする',
+    followLabel2: '🔮 黒曜診断で、生年月日から占ってもらう',
     linkCompatBtn: '🔮 お相手との相性を見る',
+    nanderePromoLabel: '💘 「デレ」軸×動物で診断する新作もチェック',
+    nanderePromoLink: '何デレ診断(ツンデレ・クーデレ等)へ',
     jpOnlyNote: '',
   },
   en: {
@@ -887,6 +889,8 @@ const UI_TEXT = {
     followLabel: '🐹 Follow Desk Animals',
     followLabel2: '🔮 Try another quiz',
     linkCompatBtn: '🔮 Check Compatibility',
+    nanderePromoLabel: '💘 Also try our new "Dere Type" quiz',
+    nanderePromoLink: 'Take the Dere Type Quiz',
     jpOnlyNote: 'Available in Japanese only',
   },
 };
@@ -919,6 +923,11 @@ function applyLangUI() {
   const followNote2El = document.getElementById('follow-note-2');
   followNote2El.textContent = t.jpOnlyNote;
   followNote2El.style.display = t.jpOnlyNote ? '' : 'none';
+  document.getElementById('nandere-promo-label').textContent = t.nanderePromoLabel;
+  document.getElementById('nandere-promo-link').textContent = t.nanderePromoLink;
+  const nanderePromoNoteEl = document.getElementById('nandere-promo-note');
+  nanderePromoNoteEl.textContent = t.jpOnlyNote;
+  nanderePromoNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
   document.documentElement.lang = LANG;
 }
 
