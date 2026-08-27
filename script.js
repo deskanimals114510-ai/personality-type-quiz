@@ -820,6 +820,8 @@ function getElementName(el) { return LANG === 'en' ? ELEMENT_NAME_EN[el] : el; }
 
 const UI_TEXT = {
   ja: {
+    pageTitle: 'MBTI性格・恋愛・仕事タイプ診断',
+    pageDescription: 'AIとチャットするだけの3分診断。性格・恋愛・仕事でタイプが変わるかも?動物・天気・乗り物にたとえてお届けします。',
     eyebrow: 'FREE PERSONALITY TEST',
     titleHtml: 'あなたの<span class="grad-text">3つの顔</span>、診断します',
     lead: 'AIとチャットしながら答えるだけの、MBTIベースの診断。<br>「性格」「恋愛」「仕事」でタイプが変わる、<br>ちょっと不思議な診断です。',
@@ -860,6 +862,8 @@ const UI_TEXT = {
     jpOnlyNote: '',
   },
   en: {
+    pageTitle: 'MBTI Personality, Love & Career Type Quiz',
+    pageDescription: 'A 3-minute quiz you take by chatting with AI. Your Personality, Love, and Career types might all be different — described through animals, weather, and vehicles.',
     eyebrow: 'FREE PERSONALITY TEST',
     titleHtml: 'Reveal Your <span class="grad-text">3 Hidden Sides</span>',
     lead: 'Just chat with the AI to find out.<br>Your Personality, Love, and Career types<br>might all be different — a curiously accurate test.',
@@ -903,6 +907,9 @@ const UI_TEXT = {
 
 function applyLangUI() {
   const t = UI_TEXT[LANG];
+  document.title = t.pageTitle;
+  const metaDescEl = document.querySelector('meta[name="description"]');
+  if (metaDescEl) metaDescEl.setAttribute('content', t.pageDescription);
   document.getElementById('start-eyebrow').textContent = t.eyebrow;
   document.getElementById('start-title').innerHTML = t.titleHtml;
   document.getElementById('start-lead').innerHTML = t.lead;
