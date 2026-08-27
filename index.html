@@ -25,6 +25,8 @@
 <meta name="twitter:description" content="AIとチャットするだけの3分診断。性格・恋愛・仕事でタイプが変わるかも?">
 <meta name="twitter:image" content="https://deskanimals114510-ai.github.io/personality-type-quiz/og-image.jpg">
 
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔮</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -76,6 +78,15 @@
       </div>
       <button id="btn-start" class="btn-primary">診断をはじめる ✨</button>
       <p id="start-sub" class="sub">全30問・所要時間 約3分</p>
+      <a id="hub-cta-start" class="hub-cta" href="types/">
+        <span class="hub-cta-emoji">🧭</span>
+        <span class="hub-cta-text">
+          <span id="hub-cta-start-title" class="hub-cta-title">MBTI 16タイプ一覧を見る</span>
+          <span id="hub-cta-start-sub" class="hub-cta-sub">診断前に全タイプの性格・恋愛・仕事をチェック</span>
+        </span>
+        <span class="hub-cta-arrow" aria-hidden="true">›</span>
+      </a>
+      <p id="hub-cta-start-note" class="lang-note" style="display:none;"></p>
     </div>
   </section>
 
@@ -96,6 +107,15 @@
       <span id="result-eyebrow" class="eyebrow">RESULT</span>
       <p id="result-title-el" class="result-title">診断結果 <span class="grad-text">できました</span></p>
     </div>
+    <a id="hub-cta-result" class="hub-cta" href="types/">
+      <span class="hub-cta-emoji">🧭</span>
+      <span class="hub-cta-text">
+        <span id="hub-cta-result-title" class="hub-cta-title">MBTI 16タイプ一覧を見る</span>
+        <span id="hub-cta-result-sub" class="hub-cta-sub">気になる他のタイプの性格・恋愛・仕事もチェック</span>
+      </span>
+      <span class="hub-cta-arrow" aria-hidden="true">›</span>
+    </a>
+    <p id="hub-cta-result-note" class="lang-note" style="display:none;"></p>
     <div id="result-card-preview" class="result-card-preview"></div>
     <p id="result-card-preview-hint" class="result-card-preview-hint">画像を長押し(スマホ)または右クリックで保存できます</p>
     <div id="result-cards" class="result-cards"></div>
@@ -140,7 +160,7 @@
   <footer id="site-footer" class="site-footer">
     <p id="footer-disclaimer">本診断はエンタメ目的のコンテンツです。科学的な心理診断や実際の占い・鑑定に代わるものではありません。</p>
     <p id="footer-affiliate">🔖 本ページの「ラッキーアイテム」リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。</p>
-    <p><a href="types/" style="color:var(--text-sub);">MBTI 16タイプ一覧を見る</a></p>
+    <p><a href="types/" style="color:var(--primary-dark);font-weight:700;">MBTI 16タイプ一覧を見る</a></p>
   </footer>
 
 </div>

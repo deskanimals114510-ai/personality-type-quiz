@@ -854,6 +854,9 @@ const UI_TEXT = {
     linkCompatBtn: '🔮 お相手との相性を見る',
     nanderePromoLabel: '💘 「デレ」軸×動物で診断する新作もチェック',
     nanderePromoLink: '何デレ診断(ツンデレ・クーデレ等)へ',
+    hubCtaTitle: 'MBTI 16タイプ一覧を見る',
+    hubCtaSubStart: '診断前に全タイプの性格・恋愛・仕事をチェック',
+    hubCtaSubResult: '気になる他のタイプの性格・恋愛・仕事もチェック',
     jpOnlyNote: '',
   },
   en: {
@@ -891,6 +894,9 @@ const UI_TEXT = {
     linkCompatBtn: '🔮 Check Compatibility',
     nanderePromoLabel: '💘 Also try our new "Dere Type" quiz',
     nanderePromoLink: 'Take the Dere Type Quiz',
+    hubCtaTitle: 'Browse All 16 MBTI Types',
+    hubCtaSubStart: 'Preview every type before you start',
+    hubCtaSubResult: 'Check out the other types too',
     jpOnlyNote: 'Available in Japanese only',
   },
 };
@@ -928,6 +934,16 @@ function applyLangUI() {
   const nanderePromoNoteEl = document.getElementById('nandere-promo-note');
   nanderePromoNoteEl.textContent = t.jpOnlyNote;
   nanderePromoNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
+  document.getElementById('hub-cta-start-title').textContent = t.hubCtaTitle;
+  document.getElementById('hub-cta-start-sub').textContent = t.hubCtaSubStart;
+  const hubCtaStartNoteEl = document.getElementById('hub-cta-start-note');
+  hubCtaStartNoteEl.textContent = t.jpOnlyNote;
+  hubCtaStartNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
+  document.getElementById('hub-cta-result-title').textContent = t.hubCtaTitle;
+  document.getElementById('hub-cta-result-sub').textContent = t.hubCtaSubResult;
+  const hubCtaResultNoteEl = document.getElementById('hub-cta-result-note');
+  hubCtaResultNoteEl.textContent = t.jpOnlyNote;
+  hubCtaResultNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
   document.documentElement.lang = LANG;
 }
 
@@ -1125,7 +1141,7 @@ function renderResultCards(types) {
       <div class="desc">${desc}</div>
       <div class="lucky-bridge">${luckyBridge}</div>
       <a class="lucky-item" href="${affiliateUrl(luckyKeyword)}" target="_blank" rel="noopener sponsored">
-        <span class="lucky-emoji">${LUCKY_ICON_MAP[lucky.emoji] ? `<img src="img/lucky-icons/${LUCKY_ICON_MAP[lucky.emoji]}.jpg" alt="" loading="lazy">` : lucky.emoji}</span>
+        <span class="lucky-emoji">${LUCKY_ICON_MAP[lucky.emoji] ? `<img src="img/lucky-icons/${LUCKY_ICON_MAP[lucky.emoji]}.jpg" alt="" width="42" height="42" loading="lazy">` : lucky.emoji}</span>
         <span class="lucky-text"><span class="lucky-label">${t.luckyLabel}<span class="lucky-pr-tag">${t.prTag}</span></span><span class="lucky-name">${t.luckySeeMore(lucky.name)}</span><span class="lucky-price">${t.luckyPriceHint}</span></span>
         <span class="lucky-arrow">›</span>
       </a>
@@ -1431,6 +1447,8 @@ async function renderCardPreview(types) {
     const img = document.createElement('img');
     img.src = canvas.toDataURL('image/png');
     img.alt = 'result card preview';
+    img.width = 1200;
+    img.height = 630;
     preview.appendChild(img);
   } catch (e) {
     console.error('結果カードプレビューの生成に失敗しました', e);

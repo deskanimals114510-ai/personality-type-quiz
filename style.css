@@ -544,6 +544,25 @@ body {
 }
 .btn-line:hover { background: rgba(6, 199, 85, 0.16); }
 
+.hub-cta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(255,143,179,0.14), rgba(184,146,255,0.14));
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.hub-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(120,90,130,0.18); }
+.hub-cta-emoji { font-size: 1.6rem; flex: none; }
+.hub-cta-text { flex: 1; display: flex; flex-direction: column; gap: 2px; text-align: left; }
+.hub-cta-title { font-size: 0.92rem; font-weight: 700; color: var(--text); }
+.hub-cta-sub { font-size: 0.76rem; color: var(--text); opacity: 0.75; }
+.hub-cta-arrow { font-size: 1.3rem; font-weight: 700; color: var(--primary-dark); flex: none; }
+
 .follow-links {
   margin-top: 22px;
   padding-top: 18px;
@@ -606,6 +625,15 @@ body {
 
 /* ---- タイプ別解説ページ(/types/) ---- */
 .type-page { padding: 26px 18px 36px; }
+.type-page-hero-img {
+  display: block;
+  width: 120px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 20px;
+  margin: 0 auto 12px;
+  box-shadow: 0 10px 24px rgba(120, 90, 130, 0.22);
+}
 .type-page-sub {
   font-size: 0.82rem;
   color: var(--text-sub);

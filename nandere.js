@@ -519,6 +519,8 @@ if (typeof document !== 'undefined') {
         const img = document.createElement('img');
         img.src = canvas.toDataURL('image/png');
         img.alt = 'nandere result card preview';
+        img.width = 1200;
+        img.height = 630;
         preview.appendChild(img);
       } catch (e) {
         console.error('結果カードプレビューの生成に失敗しました', e);
