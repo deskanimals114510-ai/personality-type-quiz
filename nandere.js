@@ -121,6 +121,74 @@ const NANDERE_COMPAT = {
   nanairo: { partner: 'nanairo', percent: 99, note: '出現率5%同士が出会う確率、もはや奇跡。毎日違うデレが飛び交うから、一生飽きが来ません。伝説の生き物同士、今日も新しい二人を更新中。' },
 };
 
+// ---- ラッキーアイテム(Amazonアソシエイト。script.jsの仕組みを踏襲した独立実装) ----
+// AFFILIATE_TAG: script.jsと同じ'tinywonders-22'(取得済みJAタグ)を流用。何デレ診断は
+// JA単独ページ(LANG切り替えなし)なのでUS向けタグ分岐は持たない。
+const AFFILIATE_TAG = 'tinywonders-22';
+
+// script.jsのaffiliateUrl()と同仕様: ¥1,000〜3,000の価格帯フィルタ+レビュー評価順ソートを
+// URLパラメータで強制する(amazon.co.jpで動作確認済み)。
+function affiliateUrl(keyword) {
+  let base = `https://www.amazon.co.jp/s?k=${encodeURIComponent(keyword)}`;
+  base += '&rh=p_36%3A100000-300000&s=review-rank';
+  return AFFILIATE_TAG ? `${base}&tag=${encodeURIComponent(AFFILIATE_TAG)}` : base;
+}
+
+// script.jsのLUCKY_ICON_MAP(img/lucky-icons/、9カテゴリ)を再利用。何デレ側で新規に使う
+// 絵文字だけを最小限マッピングしている(該当なしの絵文字はそのまま素の絵文字で表示される)。
+const NANDERE_LUCKY_ICON_MAP = {
+  '🌿': 'bath', '☕': 'mug', '🥤': 'mug', '🍀': 'candle', '💫': 'jewelry',
+  '🌸': 'plant', '💅': 'cosmetics', '🧦': 'textile', '💄': 'cosmetics',
+  '💼': 'jewelry', '🌟': 'jewelry', '💧': 'cosmetics',
+};
+
+// 診断結果とラッキーアイテムをつなぐ一言(script.jsのLUCKY_BRIDGE相当)。タイプの気質ごとに固定。
+const NANDERE_LUCKY_BRIDGE = {
+  tsun: 'そのトゲ、誰にも見せない不器用な優しさですね。今日はその手に、ちょっとだけご褒美を。',
+  cool: '静かなあなたの奥に眠る熱は、案外近くにあるもので温まるかもしれません。',
+  yan: 'あふれる愛情表現、たまには自分自身にも向けてみませんか。',
+  kenage: 'コツコツ積み上げてきた優しさに、今日はあなたがご褒美をもらう番です。',
+  nanairo: '出現率5%のあなたには、同じくらいレアな特別感のある一品を。',
+};
+
+// 20〜30代女性向け・¥1,000〜3,000のギフトを想定し、タイプの気質に合わせて1〜3候補を用意。
+// 結果画面のたびランダムに1つ選ぶ(script.jsのpickLuckyItemと同じ2段構成)。
+// 2026-08-27、全キーワードをAmazon.co.jpで実際に検索して目視確認済み(価格帯¥1,000〜3,000・
+// レビュー評価順フィルタ適用の上、宗教モチーフ・追悼グッズ・子供向け商品等の不適切な混入がないことを確認。
+// 検証時に「ハートモチーフ」系キーワードで宗教ジュエリーが、「レターセット」「ひざ掛け」系キーワードで
+// 子供・ベビー向け商品が混入したため、それらは避けて別カテゴリに差し替え済み)。
+const NANDERE_LUCKY_ITEMS = {
+  tsun: [
+    { emoji: '🌿', name: 'SHIROのハンドクリーム', keyword: 'SHIRO ハンドクリーム ギフト' },
+    { emoji: '☕', name: '波佐見焼のマグカップ', keyword: 'マグカップ 波佐見焼 シンプル' },
+    { emoji: '🔑', name: '本革のキーホルダー', keyword: 'キーホルダー 本革 シンプル' },
+  ],
+  cool: [
+    { emoji: '🍀', name: '無香のアロマストーン', keyword: 'アロマストーン 卓上 無香' },
+    { emoji: '🥤', name: 'KINTOの保冷保温タンブラー', keyword: 'KINTO タンブラー 保冷保温' },
+    { emoji: '💫', name: 'シルバーの華奢ブレスレット', keyword: 'ブレスレット シルバー シンプル' },
+  ],
+  yan: [
+    { emoji: '🌸', name: 'プリザーブドフラワーのミニブーケ', keyword: 'プリザーブドフラワー ミニブーケ ギフト' },
+    { emoji: '💅', name: 'デパコスの赤いネイルポリッシュ', keyword: 'ネイルポリッシュ レッド デパコス' },
+  ],
+  kenage: [
+    { emoji: '🧦', name: 'あったかルームソックス', keyword: 'ルームソックス あったか 可愛い' },
+    { emoji: '☕', name: '保温マグカップ', keyword: '保温マグカップ おしゃれ シンプル' },
+    { emoji: '💄', name: 'ハンドクリーム&リップのギフトセット', keyword: 'ハンドクリーム リップ ギフトセット' },
+  ],
+  nanairo: [
+    { emoji: '💼', name: 'コスメのコフレギフト', keyword: 'コスメ コフレ ギフト 限定' },
+    { emoji: '🌟', name: '華奢リング', keyword: 'リング レディース 華奢 ギフト' },
+    { emoji: '💧', name: 'デパコスのミニ香水', keyword: 'デパコス 香水 ミニ ギフトセット' },
+  ],
+};
+
+function pickNandereLuckyItem(id) {
+  const candidates = NANDERE_LUCKY_ITEMS[id];
+  return candidates[Math.floor(Math.random() * candidates.length)];
+}
+
 // ---- スコア計算(純粋関数。Node側でも brute-force 検証できるよう副作用なしにしている) ----
 function computeNandereScores(answers) {
   let sunao = 0, netsu = 0;
@@ -269,6 +337,19 @@ if (typeof document !== 'undefined') {
       document.getElementById('compat-name').textContent = partner.name;
       document.getElementById('compat-percent').textContent = `相性 ${compat.percent}%`;
       document.getElementById('compat-note').textContent = compat.note;
+
+      const lucky = pickNandereLuckyItem(result.id);
+      const luckyIcon = NANDERE_LUCKY_ICON_MAP[lucky.emoji]
+        ? `<img src="img/lucky-icons/${NANDERE_LUCKY_ICON_MAP[lucky.emoji]}.jpg" alt="" width="42" height="42" loading="lazy">`
+        : lucky.emoji;
+      document.getElementById('nandere-lucky').innerHTML = `
+        <div class="lucky-bridge">${NANDERE_LUCKY_BRIDGE[result.id]}</div>
+        <a class="lucky-item" href="${affiliateUrl(lucky.keyword)}" target="_blank" rel="noopener sponsored">
+          <span class="lucky-emoji">${luckyIcon}</span>
+          <span class="lucky-text"><span class="lucky-label">🍀 今日のラッキーアイテム<span class="lucky-pr-tag">PR</span></span><span class="lucky-name">${lucky.name}を見てみる</span><span class="lucky-price">¥1,000〜3,000で買えるプチギフト</span></span>
+          <span class="lucky-arrow">›</span>
+        </a>
+      `;
     }
 
     function resultUrl(result) {
