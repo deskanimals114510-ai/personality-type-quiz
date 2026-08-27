@@ -944,6 +944,8 @@ function applyLangUI() {
   const hubCtaResultNoteEl = document.getElementById('hub-cta-result-note');
   hubCtaResultNoteEl.textContent = t.jpOnlyNote;
   hubCtaResultNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
+  const footerHubLinkEl = document.getElementById('footer-hub-link');
+  if (footerHubLinkEl) footerHubLinkEl.textContent = t.hubCtaTitle;
   document.documentElement.lang = LANG;
 }
 

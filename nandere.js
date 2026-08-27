@@ -139,7 +139,7 @@ function affiliateUrl(keyword) {
 const NANDERE_LUCKY_ICON_MAP = {
   '🌿': 'bath', '☕': 'mug', '🥤': 'mug', '🍀': 'candle', '💫': 'jewelry',
   '🌸': 'plant', '💅': 'cosmetics', '🧦': 'textile', '💄': 'cosmetics',
-  '💼': 'jewelry', '🌟': 'jewelry', '💧': 'cosmetics',
+  '💼': 'jewelry', '🌟': 'jewelry', '💧': 'cosmetics', '🔑': 'pouch',
 };
 
 // 診断結果とラッキーアイテムをつなぐ一言(script.jsのLUCKY_BRIDGE相当)。タイプの気質ごとに固定。
