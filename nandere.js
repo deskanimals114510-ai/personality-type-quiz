@@ -368,7 +368,7 @@ if (typeof document !== 'undefined') {
 
     function shareText(result) {
       const t = NANDERE_TYPES[result.id];
-      return `【何デレ診断】私は「${t.emoji}${t.name}」でした!(${t.nickname})\n#何デレ診断 #deskanimals`;
+      return `【恋愛タイプ診断】私は「${t.emoji}${t.name}」でした!(${t.nickname})\n#何デレ診断 #恋愛タイプ診断 #ラブタイプ診断`;
     }
 
     function shareResultX() {
@@ -668,7 +668,8 @@ if (typeof document !== 'undefined') {
 
     // ===== アクセス解析(メインサイトと同一GA4プロパティ) =====
     const GA_MEASUREMENT_ID = 'G-GH850PJWLP';
-    if (GA_MEASUREMENT_ID && !document.getElementById('ga-gtag-script')) {
+    const isLocalDev = ['localhost', '127.0.0.1', ''].includes(location.hostname);
+    if (GA_MEASUREMENT_ID && !isLocalDev && !document.getElementById('ga-gtag-script')) {
       const gaScript = document.createElement('script');
       gaScript.id = 'ga-gtag-script';
       gaScript.async = true;

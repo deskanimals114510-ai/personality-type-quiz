@@ -860,6 +860,11 @@ const UI_TEXT = {
     hubCtaSubStart: '診断前に全タイプの性格・恋愛・仕事をチェック',
     hubCtaSubResult: '気になる他のタイプの性格・恋愛・仕事もチェック',
     jpOnlyNote: '',
+    loveCardLabel: '💘 恋愛タイプだけシェアする',
+    loveShareBtn: '💘 恋愛タイプをXでシェア',
+    loveSaveCardBtn: '💘 恋愛タイプカードを保存 🖼️',
+    loveCardEyebrow: 'わたしの恋愛タイプ',
+    loveShareText: (l) => `恋愛タイプは『${l}』でした💘\nあなたの恋愛タイプは?→\n#恋愛タイプ診断 #ラブタイプ診断 #MBTI診断`,
   },
   en: {
     pageTitle: 'MBTI Personality, Love & Career Type Quiz',
@@ -902,6 +907,11 @@ const UI_TEXT = {
     hubCtaSubStart: 'Preview every type before you start',
     hubCtaSubResult: 'Check out the other types too',
     jpOnlyNote: 'Available in Japanese only',
+    loveCardLabel: '💘 Share just your Love Type',
+    loveShareBtn: '💘 Share Love Type on X',
+    loveSaveCardBtn: '💘 Save Love Type Card 🖼️',
+    loveCardEyebrow: 'My Love Type',
+    loveShareText: (l) => `My love type is "${l}" 💘\nWhat's yours? →\n#LoveTypeQuiz #LoveType #MBTI`,
   },
 };
 
@@ -924,6 +934,9 @@ function applyLangUI() {
   document.getElementById('btn-restart').textContent = t.restartBtn;
   document.getElementById('btn-save-card').textContent = t.saveCardBtn;
   document.getElementById('btn-save-card-story').textContent = t.saveCardStoryBtn;
+  document.getElementById('love-card-label').textContent = t.loveCardLabel;
+  document.getElementById('btn-share-love').textContent = t.loveShareBtn;
+  document.getElementById('btn-save-love-card').textContent = t.loveSaveCardBtn;
   document.getElementById('result-card-preview-hint').textContent = t.cardPreviewHint;
   document.getElementById('footer-disclaimer').textContent = t.footerDisclaimer;
   document.getElementById('footer-affiliate').textContent = t.footerAffiliate;
@@ -1446,6 +1459,110 @@ async function buildResultCardCanvas(types, mode) {
   return canvas;
 }
 
+// ===== 恋愛タイプ単体のシェアカード(2026-08-28、「恋愛タイプ診断」トレンド対応) =====
+// 性格・恋愛・仕事3タイプまとめカードとは別に、恋愛タイプだけを大きく見せる単体カードを用意する。
+// 天気メタファーの専用イラストは無いため、既存の絵文字(blockMap.loveの1要素目)を主役にした
+// 文字主体のデザインにすることで、新規画像アセットの追加なしに実装できるようにしている。
+function buildLoveCardCat(types) {
+  const blockMap = getBlockMap();
+  const [emoji, label] = blockMap.love[types.love];
+  return { emoji, label };
+}
+
+function drawLoveCardX(ctx, cat) {
+  const t = UI_TEXT[LANG];
+  const W = 1200, H = 630;
+  cardDrawBackground(ctx, W, H);
+
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = CARD_PAL.sub;
+  ctx.font = "700 28px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(t.loveCardEyebrow, W / 2, 84);
+
+  ctx.font = "170px 'Segoe UI Emoji', sans-serif";
+  ctx.fillText(cat.emoji, W / 2, 268);
+
+  const fit = cardFitTextMultiline(ctx, cat.label, W - 200, '700', "'Zen Maru Gothic', sans-serif", 60, 32, 2);
+  ctx.fillStyle = CARD_PAL.text;
+  ctx.font = `700 ${fit.size}px 'Zen Maru Gothic', sans-serif`;
+  const lineStep = fit.size * 1.16;
+  const startY = 452 - ((fit.lines.length - 1) * lineStep) / 2;
+  fit.lines.forEach((line, li) => {
+    ctx.fillText(line, W / 2, startY + li * lineStep);
+  });
+
+  ctx.strokeStyle = 'rgba(160,130,175,0.28)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(W / 2 - 260, 548);
+  ctx.lineTo(W / 2 + 260, 548);
+  ctx.stroke();
+
+  ctx.fillStyle = CARD_PAL.primaryDark;
+  ctx.font = "700 25px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(t.cardCta, W / 2, 583);
+  ctx.fillStyle = CARD_PAL.sub;
+  ctx.font = "600 18px Poppins, sans-serif";
+  ctx.fillText(t.cardBrand, W / 2, 612);
+  ctx.textAlign = 'left';
+}
+
+function drawLoveCardStory(ctx, cat) {
+  const t = UI_TEXT[LANG];
+  const W = 1080, H = 1920;
+  cardDrawBackground(ctx, W, H);
+
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = CARD_PAL.sub;
+  ctx.font = "700 40px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(t.loveCardEyebrow, W / 2, 300);
+
+  ctx.font = "380px 'Segoe UI Emoji', sans-serif";
+  ctx.fillText(cat.emoji, W / 2, 760);
+
+  const fit = cardFitTextMultiline(ctx, cat.label, W - 160, '700', "'Zen Maru Gothic', sans-serif", 84, 44, 2);
+  ctx.fillStyle = CARD_PAL.text;
+  ctx.font = `700 ${fit.size}px 'Zen Maru Gothic', sans-serif`;
+  const lineStep = fit.size * 1.18;
+  const startY = 1080 - ((fit.lines.length - 1) * lineStep) / 2;
+  fit.lines.forEach((line, li) => {
+    ctx.fillText(line, W / 2, startY + li * lineStep);
+  });
+
+  ctx.strokeStyle = 'rgba(160,130,175,0.3)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(150, 1220);
+  ctx.lineTo(930, 1220);
+  ctx.stroke();
+
+  ctx.fillStyle = CARD_PAL.primaryDark;
+  ctx.font = "700 38px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(t.cardCta, W / 2, 1280);
+  ctx.fillStyle = CARD_PAL.sub;
+  ctx.font = "600 26px Poppins, sans-serif";
+  ctx.fillText(t.cardBrand, W / 2, 1330);
+  ctx.textAlign = 'left';
+}
+
+async function buildLoveCardCanvas(types, mode) {
+  if (document.fonts && document.fonts.ready) {
+    try { await document.fonts.ready; } catch (e) { /* フォント読み込み待ちに失敗しても既定フォントで続行 */ }
+  }
+  const cat = buildLoveCardCat(types);
+  const canvas = document.createElement('canvas');
+  if (mode === 'story') {
+    canvas.width = 1080; canvas.height = 1920;
+    drawLoveCardStory(canvas.getContext('2d'), cat);
+  } else {
+    canvas.width = 1200; canvas.height = 630;
+    drawLoveCardX(canvas.getContext('2d'), cat);
+  }
+  return canvas;
+}
+
 // 結果画面に常時イラストを表示する(ダウンロードボタンを押すまで中身が見えない状態を避けるため)。
 // <img>化しておくことで、スマホの長押し保存やPCの右クリック保存もそのまま使える。
 async function renderCardPreview(types) {
@@ -1522,6 +1639,47 @@ function shareResultLine() {
   window.open(shareUrl, '_blank', 'noopener,noreferrer');
 }
 
+async function downloadLoveCard() {
+  if (!lastResult) return;
+  const t = UI_TEXT[LANG];
+  const btn = document.getElementById('btn-save-love-card');
+  const original = btn.textContent;
+  btn.textContent = t.generatingLabel;
+  btn.disabled = true;
+  try {
+    const canvas = await buildLoveCardCanvas(lastResult, 'x');
+    await new Promise((resolve) => {
+      canvas.toBlob((blob) => {
+        const a = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        a.href = url;
+        a.download = `deskanimals-love-${lastResult.love}.png`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 4000);
+        resolve();
+      }, 'image/png');
+    });
+  } catch (e) {
+    console.error('恋愛タイプカード生成に失敗しました', e);
+  } finally {
+    btn.textContent = original;
+    btn.disabled = false;
+  }
+}
+
+function shareLoveResult() {
+  if (!lastResult) return;
+  const t = UI_TEXT[LANG];
+  const blockMap = getBlockMap();
+  const lLabel = blockMap.love[lastResult.love][1];
+  const text = t.loveShareText(lLabel);
+  const url = encodeURIComponent(resultUrl());
+  const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`;
+  window.open(shareUrl, '_blank', 'noopener,noreferrer');
+}
+
 function restartQuiz() {
   startQuiz();
 }
@@ -1529,7 +1687,10 @@ function restartQuiz() {
 // ===== アクセス解析(任意) =====
 // GA4の測定IDが決まったらここに設定してください(空文字の間は何も読み込みません、追加コストなし)
 const GA_MEASUREMENT_ID = 'G-GH850PJWLP';
-if (GA_MEASUREMENT_ID) {
+// ローカル開発サーバー(_devserver.ps1)からのアクセスを除外するガード。
+// これがないと動作確認のたびに本番GA4にダミーのpageview/eventが記録されてしまう(2026-08-28判明)。
+const isLocalDev = ['localhost', '127.0.0.1', ''].includes(location.hostname);
+if (GA_MEASUREMENT_ID && !isLocalDev) {
   const gaScript = document.createElement('script');
   gaScript.async = true;
   gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
@@ -1547,6 +1708,8 @@ document.getElementById('btn-copy-url').addEventListener('click', copyResultUrl)
 document.getElementById('btn-restart').addEventListener('click', restartQuiz);
 document.getElementById('btn-save-card').addEventListener('click', () => downloadResultCard('x'));
 document.getElementById('btn-save-card-story').addEventListener('click', () => downloadResultCard('story'));
+document.getElementById('btn-share-love').addEventListener('click', shareLoveResult);
+document.getElementById('btn-save-love-card').addEventListener('click', downloadLoveCard);
 document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('ja'));
 
 // 結果URL(?r=符号)で直接開かれた場合は、その場で同じ結果を再現して表示する
