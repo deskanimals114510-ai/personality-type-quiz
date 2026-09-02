@@ -520,6 +520,14 @@ const TYPE_ELEMENT = {
   ESTP: '火', ESTJ: '火', ENTJ: '火',
 };
 
+// 2026-09-02追加: MBTI人口分布としてよく引用される一般的な出現率(米国調査ベースの目安値、
+// 診断結果の「レア度」演出用)。この診断独自の集計値ではなく、あくまで参考値として表示する。
+const TYPE_RARITY = {
+  ISFJ: 13.8, ESFJ: 12.3, ISTJ: 11.6, ISFP: 8.8, ESTJ: 8.7, ESFP: 8.5,
+  ENFP: 8.1, ISTP: 5.4, INFP: 4.4, ESTP: 4.3, INTP: 3.3, ENTP: 3.2,
+  ENFJ: 2.5, INTJ: 2.1, ENTJ: 1.8, INFJ: 1.5,
+};
+
 // 性格タイプ(ANIMAL_MAP)の結果文中で言及される「ラッキーカラー」と一致させる
 // (このカラー名は結果文には出るが、これまでAmazon検索キーワードには反映されていなかった)
 const ELEMENT_COLOR = { '木': '若草色', '火': '朱色', '土': '黄土色', '金': '白金色', '水': '藍色' };
@@ -832,13 +840,15 @@ const UI_TEXT = {
     resultTitleHtml: '診断結果 <span class="grad-text">できました</span>',
     shareBtn: '結果をXでシェア 🚀',
     restartBtn: 'もう一度診断する',
+    restartBtnFirstVisit: '自分も診断してみる ✨',
     luckyLabel: '🍀 今日のラッキーアイテム',
-    prTag: 'PR',
+    prTag: '広告',
     luckyPriceHint: '¥1,000〜3,000で買えるプチギフト',
     luckySeeMore: (name) => `${name}を見てみる`,
     mbtiElementLine: (type, element) => `MBTI: ${type} ・ 五行: ${element}`,
     catLine: (catName, mapName) => `${catName}(${mapName}にたとえると)`,
-    shareText: (p, l, w) => `性格・恋愛・仕事タイプ診断やってみた!\n性格: ${p} / 恋愛: ${l} / 仕事: ${w}\nあなたのタイプもチェック→\n#性格診断 #MBTI診断`,
+    rarityLine: (pct) => `✨ 出現率 約${pct}%(参考値)`,
+    shareText: (p, l, w) => `性格・恋愛・仕事タイプ診断やってみた!\n性格: ${p} / 恋愛: ${l} / 仕事: ${w}\nあなたのタイプもチェック→\n※エンタメ目的の診断です\n#性格診断 #MBTI診断`,
     lineBtn: 'LINEでシェア',
     copyUrlBtn: '結果URLをコピー 🔗',
     copiedLabel: 'コピーしました ✓',
@@ -849,13 +859,16 @@ const UI_TEXT = {
     cardCta: 'あなたは何タイプ？ 無料3分診断',
     cardBrand: 'Desk Animals | 性格・恋愛・仕事タイプ診断',
     cardPreviewHint: '画像を長押し(スマホ)または右クリックで保存できます',
-    footerDisclaimer: '本診断はエンタメ目的のコンテンツです。科学的な心理診断や実際の占い・鑑定に代わるものではありません。',
+    footerDisclaimer: '本診断はエンタメ目的のオリジナルコンテンツで、MBTI(Myers-Briggs Type Indicator)の考え方を参考にした独自基準の診断です。The Myers & Briggs Foundation等の公式機関とは提携しておらず、科学的な心理診断や実際の心理検査に代わるものではありません。',
+    footerPrivacy: '本診断は名前・生年月日等の個人情報の入力を求めません。回答内容はすべてお使いの端末内で処理され、サーバーへの送信・保存は一切行いません。なお、アクセス解析(Googleアナリティクス)は行っており、閲覧したページの情報が計測されます。また、Google Fontsの読み込み時にお使いのIPアドレスがGoogleに送信されます。',
     footerAffiliate: '🔖 本ページの「ラッキーアイテム」リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。',
     followLabel: '🐹 Desk Animalsをフォローする',
     followLabel2: '🔮 黒曜診断で、生年月日から占ってもらう',
     linkCompatBtn: '🔮 お相手との相性を見る',
     nanderePromoLabel: '💘 「デレ」軸×動物で診断する新作もチェック',
     nanderePromoLink: '何デレ診断(ツンデレ・クーデレ等)へ',
+    hubCtaNandereTitle: '「デレ」軸×動物で診断する何デレ診断',
+    hubCtaNandereSub: 'ツンデレ・クーデレ等、新作もチェック',
     hubCtaTitle: 'MBTI 16タイプ一覧を見る',
     hubCtaSubStart: '診断前に全タイプの性格・恋愛・仕事をチェック',
     hubCtaSubResult: '気になる他のタイプの性格・恋愛・仕事もチェック',
@@ -864,7 +877,7 @@ const UI_TEXT = {
     loveShareBtn: '💘 恋愛タイプをXでシェア',
     loveSaveCardBtn: '💘 恋愛タイプカードを保存 🖼️',
     loveCardEyebrow: 'わたしの恋愛タイプ',
-    loveShareText: (l) => `恋愛タイプは『${l}』でした💘\nあなたの恋愛タイプは?→\n#恋愛タイプ診断 #ラブタイプ診断 #MBTI診断`,
+    loveShareText: (l) => `恋愛タイプは『${l}』でした💘\nあなたの恋愛タイプは?→\n※エンタメ目的の診断です\n#恋愛タイプ診断 #ラブタイプ診断 #MBTI診断`,
   },
   en: {
     pageTitle: 'MBTI Personality, Love & Career Type Quiz',
@@ -879,13 +892,15 @@ const UI_TEXT = {
     resultTitleHtml: 'Your Results <span class="grad-text">Are In</span>',
     shareBtn: 'Share on X 🚀',
     restartBtn: 'Take the Test Again',
+    restartBtnFirstVisit: 'Take Your Own Test ✨',
     luckyLabel: "🍀 Today's Lucky Item",
     prTag: 'AD',
     luckyPriceHint: 'A cute $10–30 treat',
     luckySeeMore: (name) => `Shop ${name}`,
     mbtiElementLine: (type, element) => `MBTI: ${type} · Element: ${element}`,
     catLine: (catName, mapName) => `${catName} — ${mapName} Edition`,
-    shareText: (p, l, w) => `I just took a Personality / Love / Career type test!\nPersonality: ${p} / Love: ${l} / Career: ${w}\nTry yours →\n#PersonalityTest #MBTI`,
+    rarityLine: (pct) => `✨ Roughly ${pct}% of people (reference stat)`,
+    shareText: (p, l, w) => `I just took a Personality / Love / Career type test!\nPersonality: ${p} / Love: ${l} / Career: ${w}\nTry yours →\n(For entertainment purposes only)\n#PersonalityTest #MBTI`,
     lineBtn: 'Share on LINE',
     copyUrlBtn: 'Copy Result URL 🔗',
     copiedLabel: 'Copied ✓',
@@ -896,13 +911,16 @@ const UI_TEXT = {
     cardCta: "What's your type? Free 3-min quiz",
     cardBrand: 'Desk Animals | Personality / Love / Career Quiz',
     cardPreviewHint: 'Long-press (mobile) or right-click the image to save it',
-    footerDisclaimer: 'This test is for entertainment purposes only and is not a substitute for a scientific psychological assessment or professional reading.',
+    footerDisclaimer: 'This is an original entertainment quiz inspired by MBTI (Myers-Briggs Type Indicator) concepts, using our own independent criteria. It is not affiliated with or endorsed by The Myers & Briggs Foundation or any official body, and is not a substitute for a scientific psychological assessment.',
+    footerPrivacy: "This quiz never asks for your name, birth date, or other personal information. Your answers are processed entirely on your own device and are never sent to or stored on a server. We do use Google Analytics for traffic measurement, which records information about the pages you view. Loading Google Fonts also sends your IP address to Google.",
     footerAffiliate: '🔖 The "Lucky Item" links on this page are affiliate (ad) links. We may earn a commission on purchases made through these links.',
     followLabel: '🐹 Follow Desk Animals',
     followLabel2: '🔮 Try another quiz',
     linkCompatBtn: '🔮 Check Compatibility',
     nanderePromoLabel: '💘 Also try our new "Dere Type" quiz',
     nanderePromoLink: 'Take the Dere Type Quiz',
+    hubCtaNandereTitle: 'Dere Type Quiz (Tsundere, Kuudere & more)',
+    hubCtaNandereSub: 'A new quiz combining "dere" types with animals',
     hubCtaTitle: 'Browse All 16 MBTI Types',
     hubCtaSubStart: 'Preview every type before you start',
     hubCtaSubResult: 'Check out the other types too',
@@ -911,7 +929,7 @@ const UI_TEXT = {
     loveShareBtn: '💘 Share Love Type on X',
     loveSaveCardBtn: '💘 Save Love Type Card 🖼️',
     loveCardEyebrow: 'My Love Type',
-    loveShareText: (l) => `My love type is "${l}" 💘\nWhat's yours? →\n#LoveTypeQuiz #LoveType #MBTI`,
+    loveShareText: (l) => `My love type is "${l}" 💘\nWhat's yours? →\n(For entertainment purposes only)\n#LoveTypeQuiz #LoveType #MBTI`,
   },
 };
 
@@ -931,7 +949,7 @@ function applyLangUI() {
   document.getElementById('btn-share').textContent = t.shareBtn;
   document.getElementById('btn-share-line').textContent = t.lineBtn;
   document.getElementById('btn-copy-url').textContent = t.copyUrlBtn;
-  document.getElementById('btn-restart').textContent = t.restartBtn;
+  document.getElementById('btn-restart').textContent = isSharedView ? t.restartBtnFirstVisit : t.restartBtn;
   document.getElementById('btn-save-card').textContent = t.saveCardBtn;
   document.getElementById('btn-save-card-story').textContent = t.saveCardStoryBtn;
   document.getElementById('love-card-label').textContent = t.loveCardLabel;
@@ -939,6 +957,7 @@ function applyLangUI() {
   document.getElementById('btn-save-love-card').textContent = t.loveSaveCardBtn;
   document.getElementById('result-card-preview-hint').textContent = t.cardPreviewHint;
   document.getElementById('footer-disclaimer').textContent = t.footerDisclaimer;
+  document.getElementById('footer-privacy').textContent = t.footerPrivacy;
   document.getElementById('footer-affiliate').textContent = t.footerAffiliate;
   document.getElementById('follow-label').textContent = t.followLabel;
   document.getElementById('follow-label-2').textContent = t.followLabel2;
@@ -959,6 +978,11 @@ function applyLangUI() {
   const hubCtaStartNoteEl = document.getElementById('hub-cta-start-note');
   hubCtaStartNoteEl.textContent = t.jpOnlyNote;
   hubCtaStartNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
+  document.getElementById('hub-cta-nandere-title').textContent = t.hubCtaNandereTitle;
+  document.getElementById('hub-cta-nandere-sub').textContent = t.hubCtaNandereSub;
+  const hubCtaNandereNoteEl = document.getElementById('hub-cta-nandere-note');
+  hubCtaNandereNoteEl.textContent = t.jpOnlyNote;
+  hubCtaNandereNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
   document.getElementById('hub-cta-result-title').textContent = t.hubCtaTitle;
   document.getElementById('hub-cta-result-sub').textContent = t.hubCtaSubResult;
   const hubCtaResultNoteEl = document.getElementById('hub-cta-result-note');
@@ -973,12 +997,16 @@ function setLang(lang) {
   LANG = lang;
   document.getElementById('btn-lang-ja').classList.toggle('active', lang === 'ja');
   document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-lang-ja').setAttribute('aria-pressed', String(lang === 'ja'));
+  document.getElementById('btn-lang-en').setAttribute('aria-pressed', String(lang === 'en'));
   applyLangUI();
 }
 
 // ===== 状態 =====
 let currentIndex = 0;
 let answers = []; // { block, axis, weight }
+// 結果URL(?r=)経由でこのページを開いた(=誰かの結果を見ている)かどうか。restartボタンの文言分岐に使う。
+let isSharedView = false;
 
 // ===== DOM =====
 const screens = {
@@ -992,9 +1020,20 @@ const blockLabel = document.getElementById('block-label');
 const progressFill = document.getElementById('progress-fill');
 const progressText = document.getElementById('progress-text');
 
+// 画面遷移のたびに新しい画面の見出しへフォーカスを移し、スクリーンリーダー・
+// キーボードユーザーに遷移が起きたことを伝える(tabindex="-1"は一時的なフォーカス対象化のため)
+function focusScreenHeading(name) {
+  const headingIds = { start: 'start-title', chat: 'block-label', result: 'result-title-el' };
+  const el = document.getElementById(headingIds[name]);
+  if (!el) return;
+  if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1');
+  el.focus({ preventScroll: false });
+}
+
 function showScreen(name) {
   Object.values(screens).forEach(s => s.classList.remove('active'));
   screens[name].classList.add('active');
+  focusScreenHeading(name);
 }
 
 function startQuiz() {
@@ -1016,8 +1055,11 @@ function askNext() {
   blockLabel.textContent = meta.label;
   blockLabel.style.background = meta.color + '22';
   blockLabel.style.color = meta.color;
-  progressFill.style.width = `${(currentIndex / questions.length) * 100}%`;
+  progressFill.style.width = `${((currentIndex + 1) / questions.length) * 100}%`;
   progressText.textContent = `${currentIndex + 1} / ${questions.length}`;
+  const progressBarEl = progressFill.parentElement;
+  progressBarEl.setAttribute('aria-valuenow', String(currentIndex + 1));
+  progressBarEl.setAttribute('aria-valuemax', String(questions.length));
 
   addBubble(q.text, 'ai');
   renderOptions(q);
@@ -1045,6 +1087,10 @@ function renderOptions(q) {
     btn.addEventListener('click', () => selectOption(q, opt));
     chatOptions.appendChild(btn);
   });
+  // 前の設問への回答直後は次の選択肢群の先頭にフォーカスを移し、キーボードユーザーが
+  // 毎回Tabで最初からたどり直す必要がないようにする
+  const firstOption = chatOptions.querySelector('.option-btn');
+  if (firstOption) firstOption.focus({ preventScroll: false });
 }
 
 function selectOption(q, opt) {
@@ -1089,6 +1135,7 @@ function showResult() {
   renderResultCards(lastResult);
   renderCardPreview(lastResult);
   updateCompatLink(lastResult);
+  trackEvent('quiz_complete', { personality_type: lastResult.personality });
 }
 
 // 相性診断サイトへ自分の結果コードを引き継ぐ(?me=)。相性診断側はこのコードを
@@ -1105,18 +1152,23 @@ function buildResultCode(types) {
   return `${types.personality}${types.love}${types.work}`;
 }
 
+// 実在する16タイプの組み合わせ(E/I, S/N, T/F, J/Pの4軸)かどうかまで検証する。
+// 単純な[A-Z]{4}の書式チェックだけでは「AAAA」等の不正な組み合わせが通ってしまい、
+// TYPE_ELEMENT等の後続ルックアップがundefinedになってクラッシュする不具合があったため
+// (2026-09-02修正)、各4文字ブロックを軸ごとに検証する。
+const MBTI_TYPE_RE = /^[EI][SN][TF][JP]$/;
 function decodeResultCode(code) {
   if (!/^[A-Z]{12}$/.test(code)) return null;
-  return {
-    personality: code.slice(0, 4),
-    love: code.slice(4, 8),
-    work: code.slice(8, 12),
-  };
+  const personality = code.slice(0, 4);
+  const love = code.slice(4, 8);
+  const work = code.slice(8, 12);
+  if (![personality, love, work].every(t => MBTI_TYPE_RE.test(t))) return null;
+  return { personality, love, work };
 }
 
 function resultUrl() {
   if (!lastResult) return location.href;
-  return location.origin + location.pathname + '?r=' + buildResultCode(lastResult);
+  return location.origin + location.pathname + '?r=' + buildResultCode(lastResult) + '&lang=' + LANG;
 }
 
 function copyResultUrl() {
@@ -1126,6 +1178,7 @@ function copyResultUrl() {
   navigator.clipboard.writeText(resultUrl()).then(() => {
     const original = btn.textContent;
     btn.textContent = t.copiedLabel;
+    trackEvent('copy_url');
     setTimeout(() => { btn.textContent = original; }, 2000);
   });
 }
@@ -1160,6 +1213,7 @@ function renderResultCards(types) {
       <div class="cat-name">${meta.icon} ${t.catLine(meta.catName, blockMapName[block])}</div>
       <div class="type-name">${label}</div>
       <div class="mbti-code">${t.mbtiElementLine(type, getElementName(element))}</div>
+      ${block === 'personality' && TYPE_RARITY[type] ? `<div class="rarity-line">${t.rarityLine(TYPE_RARITY[type])}</div>` : ''}
       <div class="desc">${desc}</div>
       <div class="lucky-bridge">${luckyBridge}</div>
       <a class="lucky-item" href="${affiliateUrl(luckyKeyword)}" target="_blank" rel="noopener sponsored">
@@ -1572,7 +1626,9 @@ async function renderCardPreview(types) {
     const canvas = await buildResultCardCanvas(types, 'x');
     const img = document.createElement('img');
     img.src = canvas.toDataURL('image/png');
-    img.alt = 'result card preview';
+    // プレビュー画像は#result-cardsのテキスト内容と重複するため、装飾画像として扱う
+    // (JA/ENどちらでも読み上げ不要、スクリーンリーダーの二重読み上げを防ぐ)
+    img.alt = '';
     img.width = 1200;
     img.height = 630;
     preview.appendChild(img);
@@ -1605,6 +1661,7 @@ async function downloadResultCard(mode) {
         resolve();
       }, 'image/png');
     });
+    trackEvent('save_card', { mode });
   } catch (e) {
     console.error('結果カード生成に失敗しました', e);
   } finally {
@@ -1613,7 +1670,10 @@ async function downloadResultCard(mode) {
   }
 }
 
-function shareResult() {
+// モバイル(主にWeb Share API + ファイル共有に対応した環境)では結果カード画像を
+// 添付したネイティブ共有シートを優先し、非対応環境(主にデスクトップ)では
+// 従来通りテキスト+リンクのXシェアにフォールバックする(2026-09-02追加)。
+async function shareResult() {
   if (!lastResult) return;
   const t = UI_TEXT[LANG];
   const blockMap = getBlockMap();
@@ -1621,9 +1681,28 @@ function shareResult() {
   const lLabel = blockMap.love[lastResult.love][1];
   const wLabel = blockMap.work[lastResult.work][1];
   const text = t.shareText(pLabel, lLabel, wLabel);
+
+  if (navigator.share && navigator.canShare) {
+    try {
+      const canvas = await buildResultCardCanvas(lastResult, 'x');
+      const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+      const file = new File([blob], `deskanimals-quiz-${lastResult.personality}.png`, { type: 'image/png' });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], text, url: resultUrl() });
+        trackEvent('share', { method: 'native_image' });
+        return;
+      }
+    } catch (e) {
+      // ユーザーによる共有シートのキャンセル、または非対応環境。下のフォールバックへ続ける。
+      if (e && e.name === 'AbortError') { trackEvent('share_cancelled', { method: 'native_image' }); return; }
+      console.error('ネイティブ共有に失敗しました、テキストシェアにフォールバックします', e);
+    }
+  }
+
   const url = encodeURIComponent(resultUrl());
   const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`;
   window.open(shareUrl, '_blank', 'noopener,noreferrer');
+  trackEvent('share', { method: 'x' });
 }
 
 function shareResultLine() {
@@ -1637,6 +1716,7 @@ function shareResultLine() {
   const url = encodeURIComponent(resultUrl());
   const shareUrl = `https://social-plugins.line.me/lineit/share?url=${url}&text=${encodeURIComponent(text)}`;
   window.open(shareUrl, '_blank', 'noopener,noreferrer');
+  trackEvent('share', { method: 'line' });
 }
 
 async function downloadLoveCard() {
@@ -1661,6 +1741,7 @@ async function downloadLoveCard() {
         resolve();
       }, 'image/png');
     });
+    trackEvent('save_card', { mode: 'love' });
   } catch (e) {
     console.error('恋愛タイプカード生成に失敗しました', e);
   } finally {
@@ -1678,9 +1759,12 @@ function shareLoveResult() {
   const url = encodeURIComponent(resultUrl());
   const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`;
   window.open(shareUrl, '_blank', 'noopener,noreferrer');
+  trackEvent('share', { method: 'x_love' });
 }
 
 function restartQuiz() {
+  isSharedView = false;
+  document.getElementById('btn-restart').textContent = UI_TEXT[LANG].restartBtn;
   startQuiz();
 }
 
@@ -1701,7 +1785,22 @@ if (GA_MEASUREMENT_ID && !isLocalDev) {
   gtag('config', GA_MEASUREMENT_ID);
 }
 
+// 行動計測用の共通ヘルパー(gtag未読み込み時は何もしない、計測失敗が機能を止めないよう安全に呼ぶ)
+function trackEvent(name, params) {
+  if (typeof gtag === 'function') gtag('event', name, params || {});
+}
+
+// hub-cta(タイプ一覧・何デレ診断への導線)とラッキーアイテム(アフィリエイト)リンクは
+// 動的生成/複数箇所に存在するため、クリックイベントを委譲で一括計測する
+document.addEventListener('click', (e) => {
+  const hubCta = e.target.closest('.hub-cta');
+  if (hubCta) { trackEvent('hub_cta_click', { hub_cta_id: hubCta.id || 'unknown' }); return; }
+  const luckyItem = e.target.closest('.lucky-item');
+  if (luckyItem) { trackEvent('affiliate_click'); return; }
+});
+
 document.getElementById('btn-start').addEventListener('click', startQuiz);
+document.getElementById('btn-start').addEventListener('click', () => trackEvent('quiz_start'));
 document.getElementById('btn-share').addEventListener('click', shareResult);
 document.getElementById('btn-share-line').addEventListener('click', shareResultLine);
 document.getElementById('btn-copy-url').addEventListener('click', copyResultUrl);
@@ -1713,11 +1812,17 @@ document.getElementById('btn-save-love-card').addEventListener('click', download
 document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('ja'));
 
 // 結果URL(?r=符号)で直接開かれた場合は、その場で同じ結果を再現して表示する
+// (&lang=en/jaが付いていれば表示言語も復元し、共有した本人が見ていた言語で開けるようにする)
 (function loadFromResultCode() {
-  const code = new URLSearchParams(location.search).get('r');
+  const params = new URLSearchParams(location.search);
+  const code = params.get('r');
   if (!code) return;
   const types = decodeResultCode(code);
   if (!types) return;
+  const langParam = params.get('lang');
+  if (langParam === 'en' || langParam === 'ja') setLang(langParam);
+  isSharedView = true;
+  document.getElementById('btn-restart').textContent = UI_TEXT[LANG].restartBtnFirstVisit;
   lastResult = types;
   showScreen('result');
   renderResultCards(types);

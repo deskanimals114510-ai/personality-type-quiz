@@ -3,13 +3,13 @@
   --bg2: #f4e9ff;
   --bg3: #fff6e9;
   --card-bg: #ffffff;
-  --primary: #ff8fb3;
-  --primary-dark: #ef6b96;
-  --accent2: #b892ff;
+  --primary: #c73d70;
+  --primary-dark: #a8305c;
+  --accent2: #7d4fc4;
   --accent3: #ffcf7a;
   --mint: #7ed9c9;
   --text: #55404f;
-  --text-sub: #a3899e;
+  --text-sub: #7d6678;
   --border: #ffe3ee;
   --shadow-soft: 0 10px 30px rgba(220, 130, 170, 0.16);
   --shadow-lift: 0 16px 40px rgba(220, 130, 170, 0.24);
@@ -76,6 +76,11 @@ body {
 @keyframes twinkle {
   0%, 100% { opacity: 0; transform: translateY(6px) scale(0.7) rotate(0deg); }
   50%      { opacity: 0.85; transform: translateY(-6px) scale(1.05) rotate(12deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob, .sparkle { animation: none; }
+  .sparkle { opacity: 0.6; }
 }
 
 #app {
@@ -413,6 +418,16 @@ body {
   color: var(--text-sub);
   margin-bottom: 12px;
   letter-spacing: 0.05em;
+}
+.result-card .rarity-line {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  background: #ffe3ee;
+  border-radius: 999px;
+  padding: 3px 12px;
+  margin-bottom: 12px;
 }
 .result-card .desc {
   font-size: 0.9rem;

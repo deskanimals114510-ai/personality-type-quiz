@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.google-analytics.com; base-uri 'self'; form-action 'self';">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MBTI性格・恋愛・仕事タイプ診断</title>
 <meta name="description" content="AIとチャットするだけの3分診断。性格・恋愛・仕事でタイプが変わるかも?動物・天気・乗り物にたとえてお届けします。">
@@ -57,14 +58,14 @@
   <span class="sparkle">💕</span>
 </div>
 
-<div id="app">
+<main id="app">
 
   <!-- スタート画面 -->
   <section id="screen-start" class="screen active">
     <div class="start-card">
       <div class="lang-toggle">
-        <button id="btn-lang-ja" class="lang-btn active">日本語</button>
-        <button id="btn-lang-en" class="lang-btn">English</button>
+        <button id="btn-lang-ja" class="lang-btn active" aria-pressed="true">日本語</button>
+        <button id="btn-lang-en" class="lang-btn" aria-pressed="false">English</button>
       </div>
       <div class="start-emoji">🔮</div>
       <span id="start-eyebrow" class="eyebrow">FREE PERSONALITY TEST</span>
@@ -87,6 +88,15 @@
         <span class="hub-cta-arrow" aria-hidden="true">›</span>
       </a>
       <p id="hub-cta-start-note" class="lang-note" style="display:none;"></p>
+      <a id="hub-cta-nandere" class="hub-cta" href="nandere.html">
+        <span class="hub-cta-emoji">💘</span>
+        <span class="hub-cta-text">
+          <span id="hub-cta-nandere-title" class="hub-cta-title">「デレ」軸×動物で診断する何デレ診断</span>
+          <span id="hub-cta-nandere-sub" class="hub-cta-sub">ツンデレ・クーデレ等、新作もチェック</span>
+        </span>
+        <span class="hub-cta-arrow" aria-hidden="true">›</span>
+      </a>
+      <p id="hub-cta-nandere-note" class="lang-note" style="display:none;"></p>
     </div>
   </section>
 
@@ -94,10 +104,10 @@
   <section id="screen-chat" class="screen">
     <div class="chat-header">
       <span id="block-label" class="block-label">性格編</span>
-      <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="30" aria-valuenow="1" aria-label="診断の進捗"><div id="progress-fill" class="progress-fill"></div></div>
       <span id="progress-text" class="progress-text">1 / 30</span>
     </div>
-    <div id="chat-log" class="chat-log"></div>
+    <div id="chat-log" class="chat-log" role="log" aria-live="polite"></div>
     <div id="chat-options" class="chat-options"></div>
   </section>
 
@@ -107,22 +117,13 @@
       <span id="result-eyebrow" class="eyebrow">RESULT</span>
       <p id="result-title-el" class="result-title">診断結果 <span class="grad-text">できました</span></p>
     </div>
-    <a id="hub-cta-result" class="hub-cta" href="types/">
-      <span class="hub-cta-emoji">🧭</span>
-      <span class="hub-cta-text">
-        <span id="hub-cta-result-title" class="hub-cta-title">MBTI 16タイプ一覧を見る</span>
-        <span id="hub-cta-result-sub" class="hub-cta-sub">気になる他のタイプの性格・恋愛・仕事もチェック</span>
-      </span>
-      <span class="hub-cta-arrow" aria-hidden="true">›</span>
-    </a>
-    <p id="hub-cta-result-note" class="lang-note" style="display:none;"></p>
     <div id="result-card-preview" class="result-card-preview"></div>
     <p id="result-card-preview-hint" class="result-card-preview-hint">画像を長押し(スマホ)または右クリックで保存できます</p>
     <div id="result-cards" class="result-cards"></div>
     <div class="result-actions">
       <button id="btn-share" class="btn-primary">結果をXでシェア 🚀</button>
       <button id="btn-share-line" class="btn-secondary btn-line">LINEでシェア</button>
-      <button id="btn-copy-url" class="btn-secondary">結果URLをコピー 🔗</button>
+      <button id="btn-copy-url" class="btn-secondary" aria-live="polite">結果URLをコピー 🔗</button>
       <button id="btn-restart" class="btn-secondary">もう一度診断する</button>
     </div>
     <div class="result-actions result-actions-card">
@@ -138,6 +139,15 @@
       <a id="link-compat" class="btn-primary" href="https://deskanimals114510-ai.github.io/aisho-shindan/" target="_blank" rel="noopener" style="display:block;text-decoration:none;text-align:center;box-sizing:border-box;">🔮 お相手との相性を見る</a>
       <p id="link-compat-note" class="lang-note" style="display:none;"></p>
     </div>
+    <a id="hub-cta-result" class="hub-cta" href="types/">
+      <span class="hub-cta-emoji">🧭</span>
+      <span class="hub-cta-text">
+        <span id="hub-cta-result-title" class="hub-cta-title">MBTI 16タイプ一覧を見る</span>
+        <span id="hub-cta-result-sub" class="hub-cta-sub">気になる他のタイプの性格・恋愛・仕事もチェック</span>
+      </span>
+      <span class="hub-cta-arrow" aria-hidden="true">›</span>
+    </a>
+    <p id="hub-cta-result-note" class="lang-note" style="display:none;"></p>
     <div class="follow-links">
       <p id="follow-label" class="follow-label">🐹 Desk Animalsをフォローする</p>
       <div class="follow-btns">
@@ -164,11 +174,12 @@
 
   <footer id="site-footer" class="site-footer">
     <p id="footer-disclaimer">本診断はエンタメ目的のコンテンツです。科学的な心理診断や実際の占い・鑑定に代わるものではありません。</p>
+    <p id="footer-privacy">本診断は名前・生年月日等の個人情報の入力を求めません。回答内容はすべてお使いの端末内で処理され、サーバーへの送信・保存は一切行いません。なお、アクセス解析(Googleアナリティクス)は行っており、閲覧したページの情報が計測されます。また、Google Fontsの読み込み時にお使いのIPアドレスがGoogleに送信されます。</p>
     <p id="footer-affiliate">🔖 本ページの「ラッキーアイテム」リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。</p>
     <p><a id="footer-hub-link" href="types/" style="color:var(--primary-dark);font-weight:700;">MBTI 16タイプ一覧を見る</a></p>
   </footer>
 
-</div>
+</main>
 <script src="script.js"></script>
 </body>
 </html>
