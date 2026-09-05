@@ -524,19 +524,27 @@ const TEMPERAMENT = {
 
 const LOVECHAR_GROUP = {
   ja: {
-    NT: { label: '戦略家', blurb: '好きになった瞬間にも「なぜこの人なのか」を頭の中で分析し始めてしまう人です。感情に流されるのはちょっと苦手ですが、一度「この人だ」と結論を出したら、その関係は人生の長期計画にしっかり組み込まれます。言葉より、一緒に考えてくれる時間で愛を示すタイプです。' },
-    NF: { label: '共感家', blurb: '相手の「大丈夫」の裏にある小さなため息まで拾ってしまう人です。恋愛は表面的なやりとりより心の深いところでつながることを求めていて、相手の幸せを自分の幸せのように感じます。ただ、察しすぎて一人で抱え込むのはちょっとだけ気をつけたいところです。' },
-    SJ: { label: '守り手', blurb: '記念日を忘れないどころか、その日の予約まで1か月前に済ませている人です。恋愛でも大切なのはドキドキより「この人となら明日も安心」という積み重ねで、約束を守り続けることで愛を伝えます。派手さはなくても、その信頼はじわじわ相手の心に積もっていきます。' },
-    SP: { label: '冒険家', blurb: '「来週どこ行く?」より「今から行こう」が口癖の、今この瞬間を全力で楽しむ人です。愛情はじっくり語るより行動で示すタイプで、思いついた瞬間に相手を連れ出します。窮屈なルールは苦手ですが、一緒にいる時間の濃さで応えてくれます。' },
+    NT: { label: '戦略家', blurb: '好きになった瞬間にも「なぜこの人なのか」を頭の中で分析し始めてしまう人です。感情に流されるのはちょっと苦手ですが、一度「この人だ」と結論を出したら、その関係は人生の長期計画にしっかり組み込まれます。言葉より、一緒に考えてくれる時間で愛を示すタイプです。', punchline: 'ケンカの最中に「まず論点を整理しよう」と言って火に油を注いだ経験、たぶん一度はあります。' },
+    NF: { label: '共感家', blurb: '相手の「大丈夫」の裏にある小さなため息まで拾ってしまう人です。恋愛は表面的なやりとりより心の深いところでつながることを求めていて、相手の幸せを自分の幸せのように感じます。ただ、察しすぎて一人で抱え込むのはちょっとだけ気をつけたいところです。', punchline: '既読がつかない2時間で、脳内では出会いから別れまでの映画を一本撮り終えています。' },
+    SJ: { label: '守り手', blurb: '記念日を忘れないどころか、その日の予約まで1か月前に済ませている人です。恋愛でも大切なのはドキドキより「この人となら明日も安心」という積み重ねで、約束を守り続けることで愛を伝えます。派手さはなくても、その信頼はじわじわ相手の心に積もっていきます。', punchline: 'デートプランは分単位で組んであるので、相手の「ここ寄ってみない?」が小さな天変地異になります。' },
+    SP: { label: '冒険家', blurb: '「来週どこ行く?」より「今から行こう」が口癖の、今この瞬間を全力で楽しむ人です。愛情はじっくり語るより行動で示すタイプで、思いついた瞬間に相手を連れ出します。窮屈なルールは苦手ですが、一緒にいる時間の濃さで応えてくれます。', punchline: '「一生忘れない」と言った記念日を、翌年ふつうに忘れているところまでがワンセットです。' },
   },
   en: {
-    NT: { label: 'Strategist', blurb: "The second you catch feelings, your brain starts asking \"okay, but why this person?\" You don't get swept away easily, but once you've decided, they're written into your long-term plan. Love, for you, is figuring life out together." },
-    NF: { label: 'Empath', blurb: 'You catch the tiny sigh hidden behind "I\'m fine." Small talk isn\'t enough for you — you want to connect deep down, and their happiness genuinely feels like your own. Just be careful not to carry everything alone.' },
-    SJ: { label: 'Guardian', blurb: 'You don\'t just remember anniversaries — you booked the restaurant a month ago. For you, love isn\'t butterflies so much as "I know I\'m safe with you tomorrow," built one kept promise at a time. Not flashy, but that trust quietly piles up.' },
-    SP: { label: 'Adventurer', blurb: '"Where should we go next week?" Nope — "let\'s go right now." You live for the moment and show love through action, not long speeches. Rules and clinginess aren\'t your thing, but time spent with you is never boring.' },
+    NT: { label: 'Strategist', blurb: "The second you catch feelings, your brain starts asking \"okay, but why this person?\" You don't get swept away easily, but once you've decided, they're written into your long-term plan. Love, for you, is figuring life out together.", punchline: 'Yes, you\'ve said "let\'s first define the actual issue" mid-fight. Yes, it made things worse.' },
+    NF: { label: 'Empath', blurb: 'You catch the tiny sigh hidden behind "I\'m fine." Small talk isn\'t enough for you — you want to connect deep down, and their happiness genuinely feels like your own. Just be careful not to carry everything alone.', punchline: "Two hours with no reply and you've already mentally filmed the entire breakup movie." },
+    SJ: { label: 'Guardian', blurb: 'You don\'t just remember anniversaries — you booked the restaurant a month ago. For you, love isn\'t butterflies so much as "I know I\'m safe with you tomorrow," built one kept promise at a time. Not flashy, but that trust quietly piles up.', punchline: 'Your date plan is scheduled to the minute, so "wanna stop here?" hits like a natural disaster.' },
+    SP: { label: 'Adventurer', blurb: '"Where should we go next week?" Nope — "let\'s go right now." You live for the moment and show love through action, not long speeches. Rules and clinginess aren\'t your thing, but time spent with you is never boring.', punchline: 'Swearing "I\'ll never forget this day" and then forgetting it next year comes as a set.' },
   },
 };
 function getLoveCharGroup() { return LANG === 'en' ? LOVECHAR_GROUP.en : LOVECHAR_GROUP.ja; }
+
+// 気質グループの出現率(既存のTYPE_RARITY、16タイプ別の参考値をグループ単位で合算しただけ、新規調査なし)。
+// 「そこ!?」の驚き要素として、恋愛キャラカードに一言添える(2026-09-05追加)。
+function getGroupRarity(groupKey) {
+  return Object.keys(TEMPERAMENT)
+    .filter((code) => TEMPERAMENT[code] === groupKey)
+    .reduce((sum, code) => sum + (TYPE_RARITY[code] || 0), 0);
+}
 
 // ===== 五行(占い要素)とラッキーアイテム =====
 // MBTIタイプごとの五行属性(3つのマップ全てで共通の属性を使用)
@@ -911,7 +919,8 @@ const UI_TEXT = {
     loveCharShareBtn: '💞 恋愛キャラをXでシェア',
     loveCharSaveCardBtn: '💞 恋愛キャラカードを保存 🖼️',
     loveCharCardEyebrow: 'わたしの恋愛キャラ',
-    loveCharShareText: (l, g) => `恋愛キャラは『${l}×${g}タイプ』でした💞\nあなたの恋愛キャラは?→\n※エンタメ目的の診断です\n#恋愛キャラ診断 #恋愛タイプ診断 #MBTI診断`,
+    loveCharShareText: (l, g, p) => `恋愛キャラは『${l}×${g}タイプ』でした💞\n${p}\nあなたの恋愛キャラは?→\n※エンタメ目的の診断です\n#恋愛キャラ診断 #恋愛タイプ診断 #MBTI診断`,
+    loveCharRarityLine: (pct) => `✨ この気質グループの人は全体の約${pct}%(参考値)`,
   },
   en: {
     pageTitle: 'MBTI Personality, Love & Career Type Quiz',
@@ -969,7 +978,7 @@ const UI_TEXT = {
     loveCharShareBtn: '💞 Share Love Character on X',
     loveCharSaveCardBtn: '💞 Save Love Character Card 🖼️',
     loveCharCardEyebrow: 'My Love Character',
-    loveCharShareText: (l, g) => `My love character is "${l} × ${g}" 💞\nWhat's yours? →\n(For entertainment purposes only)\n#LoveCharacterQuiz #LoveType #MBTI`,
+    loveCharShareText: (l, g, p) => `My love character is "${l} × ${g}" 💞\n${p}\nWhat's yours? →\n(For entertainment purposes only)\n#LoveCharacterQuiz #LoveType #MBTI`,
   },
 };
 
@@ -1837,11 +1846,16 @@ function shareLoveResult() {
 // 新規の判定ロジック・新規の質問は一切追加せず、既存2ブロックの結果を掛け合わせて表示するだけ
 // (新規コンテンツは気質グループ4件分の短い一言のみ、64件分の個別執筆はしていない)。
 function buildLoveCharCardCat(types) {
+  const t = UI_TEXT[LANG];
   const blockMap = getBlockMap();
   const [emoji, label] = blockMap.love[types.love];
   const groupKey = TEMPERAMENT[types.personality];
   const group = getLoveCharGroup()[groupKey];
-  return { emoji, label, groupKey, groupLabel: group.label, blurb: group.blurb };
+  const rarityPct = Math.round(getGroupRarity(groupKey) * 10) / 10;
+  return {
+    emoji, label, groupKey, groupLabel: group.label, blurb: group.blurb, punchline: group.punchline,
+    rarityText: t.loveCharRarityLine(rarityPct),
+  };
 }
 
 function drawLoveCharCardX(ctx, cat) {
@@ -1852,32 +1866,44 @@ function drawLoveCharCardX(ctx, cat) {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillStyle = CARD_PAL.sub;
-  ctx.font = "700 26px 'Zen Maru Gothic', sans-serif";
-  ctx.fillText(t.loveCharCardEyebrow, W / 2, 66);
+  ctx.font = "700 24px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(t.loveCharCardEyebrow, W / 2, 52);
 
-  ctx.font = "128px 'Segoe UI Emoji', sans-serif";
-  ctx.fillText(cat.emoji, W / 2, 210);
+  ctx.font = "104px 'Segoe UI Emoji', sans-serif";
+  ctx.fillText(cat.emoji, W / 2, 152);
 
-  const labelFit = cardFitTextMultiline(ctx, cat.label, W - 220, '700', "'Zen Maru Gothic', sans-serif", 46, 28, 2);
+  const labelFit = cardFitTextMultiline(ctx, cat.label, W - 220, '700', "'Zen Maru Gothic', sans-serif", 40, 26, 2);
   ctx.fillStyle = CARD_PAL.text;
   ctx.font = `700 ${labelFit.size}px 'Zen Maru Gothic', sans-serif`;
   const labelStep = labelFit.size * 1.14;
-  const labelStartY = 320 - ((labelFit.lines.length - 1) * labelStep) / 2;
+  const labelStartY = 232 - ((labelFit.lines.length - 1) * labelStep) / 2;
   labelFit.lines.forEach((line, li) => {
     ctx.fillText(line, W / 2, labelStartY + li * labelStep);
   });
 
   ctx.fillStyle = CARD_PAL.primaryDark;
-  ctx.font = "700 24px 'Zen Maru Gothic', sans-serif";
-  ctx.fillText(`× ${cat.groupLabel}`, W / 2, 372);
+  ctx.font = "700 22px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(`× ${cat.groupLabel}`, W / 2, 274);
+  ctx.fillStyle = CARD_PAL.sub;
+  ctx.font = "600 15px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(cat.rarityText, W / 2, 300);
 
-  const blurbFit = cardFitTextMultiline(ctx, cat.blurb, W - 220, '500', "'Zen Maru Gothic', sans-serif", 22, 16, 3);
+  const blurbFit = cardFitTextMultiline(ctx, cat.blurb, W - 220, '500', "'Zen Maru Gothic', sans-serif", 19, 14, 3);
   ctx.fillStyle = CARD_PAL.text;
   ctx.font = `500 ${blurbFit.size}px 'Zen Maru Gothic', sans-serif`;
-  const blurbStep = blurbFit.size * 1.5;
-  const blurbStartY = 440;
+  const blurbStep = blurbFit.size * 1.45;
+  let cursorY = 335;
   blurbFit.lines.forEach((line, li) => {
-    ctx.fillText(line, W / 2, blurbStartY + li * blurbStep);
+    ctx.fillText(line, W / 2, cursorY + li * blurbStep);
+  });
+  cursorY += blurbFit.lines.length * blurbStep + 14;
+
+  const punchFit = cardFitTextMultiline(ctx, cat.punchline, W - 220, '700', "'Zen Maru Gothic', sans-serif", 18, 13, 2);
+  ctx.fillStyle = CARD_PAL.primaryDark;
+  ctx.font = `700 ${punchFit.size}px 'Zen Maru Gothic', sans-serif`;
+  const punchStep = punchFit.size * 1.4;
+  punchFit.lines.forEach((line, li) => {
+    ctx.fillText(line, W / 2, cursorY + li * punchStep);
   });
 
   ctx.strokeStyle = 'rgba(160,130,175,0.28)';
@@ -1904,32 +1930,44 @@ function drawLoveCharCardStory(ctx, cat) {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillStyle = CARD_PAL.sub;
-  ctx.font = "700 38px 'Zen Maru Gothic', sans-serif";
-  ctx.fillText(t.loveCharCardEyebrow, W / 2, 260);
+  ctx.font = "700 36px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(t.loveCharCardEyebrow, W / 2, 220);
 
-  ctx.font = "300px 'Segoe UI Emoji', sans-serif";
-  ctx.fillText(cat.emoji, W / 2, 640);
+  ctx.font = "260px 'Segoe UI Emoji', sans-serif";
+  ctx.fillText(cat.emoji, W / 2, 560);
 
-  const labelFit = cardFitTextMultiline(ctx, cat.label, W - 160, '700', "'Zen Maru Gothic', sans-serif", 68, 36, 2);
+  const labelFit = cardFitTextMultiline(ctx, cat.label, W - 160, '700', "'Zen Maru Gothic', sans-serif", 62, 34, 2);
   ctx.fillStyle = CARD_PAL.text;
   ctx.font = `700 ${labelFit.size}px 'Zen Maru Gothic', sans-serif`;
   const labelStep = labelFit.size * 1.16;
-  const labelStartY = 940 - ((labelFit.lines.length - 1) * labelStep) / 2;
+  const labelStartY = 830 - ((labelFit.lines.length - 1) * labelStep) / 2;
   labelFit.lines.forEach((line, li) => {
     ctx.fillText(line, W / 2, labelStartY + li * labelStep);
   });
 
   ctx.fillStyle = CARD_PAL.primaryDark;
-  ctx.font = "700 36px 'Zen Maru Gothic', sans-serif";
-  ctx.fillText(`× ${cat.groupLabel}`, W / 2, 1040);
+  ctx.font = "700 34px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(`× ${cat.groupLabel}`, W / 2, 920);
+  ctx.fillStyle = CARD_PAL.sub;
+  ctx.font = "600 24px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(cat.rarityText, W / 2, 962);
 
-  const blurbFit = cardFitTextMultiline(ctx, cat.blurb, W - 160, '500', "'Zen Maru Gothic', sans-serif", 34, 24, 4);
+  const blurbFit = cardFitTextMultiline(ctx, cat.blurb, W - 160, '500', "'Zen Maru Gothic', sans-serif", 33, 22, 4);
   ctx.fillStyle = CARD_PAL.text;
   ctx.font = `500 ${blurbFit.size}px 'Zen Maru Gothic', sans-serif`;
-  const blurbStep = blurbFit.size * 1.5;
-  const blurbStartY = 1130;
+  const blurbStep = blurbFit.size * 1.45;
+  let cursorY = 1040;
   blurbFit.lines.forEach((line, li) => {
-    ctx.fillText(line, W / 2, blurbStartY + li * blurbStep);
+    ctx.fillText(line, W / 2, cursorY + li * blurbStep);
+  });
+  cursorY += blurbFit.lines.length * blurbStep + 30;
+
+  const punchFit = cardFitTextMultiline(ctx, cat.punchline, W - 160, '700', "'Zen Maru Gothic', sans-serif", 31, 20, 3);
+  ctx.fillStyle = CARD_PAL.primaryDark;
+  ctx.font = `700 ${punchFit.size}px 'Zen Maru Gothic', sans-serif`;
+  const punchStep = punchFit.size * 1.4;
+  punchFit.lines.forEach((line, li) => {
+    ctx.fillText(line, W / 2, cursorY + li * punchStep);
   });
 
   ctx.strokeStyle = 'rgba(160,130,175,0.3)';
@@ -2001,8 +2039,8 @@ function shareLoveCharResult() {
   const blockMap = getBlockMap();
   const lLabel = blockMap.love[lastResult.love][1];
   const groupKey = TEMPERAMENT[lastResult.personality];
-  const gLabel = getLoveCharGroup()[groupKey].label;
-  const text = t.loveCharShareText(lLabel, gLabel);
+  const group = getLoveCharGroup()[groupKey];
+  const text = t.loveCharShareText(lLabel, group.label, group.punchline);
   const url = encodeURIComponent(resultUrl());
   const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`;
   window.open(shareUrl, '_blank', 'noopener,noreferrer');
