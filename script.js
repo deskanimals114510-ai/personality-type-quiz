@@ -512,6 +512,32 @@ const BLOCK_MAP_NAME = { personality: '動物', love: '天気', work: '乗り物
 const BLOCK_MAP_EN = { personality: ANIMAL_MAP_EN, love: WEATHER_MAP_EN, work: VEHICLE_MAP_EN };
 const BLOCK_MAP_NAME_EN = { personality: 'Animal', love: 'Weather', work: 'Vehicle' };
 
+// ===== 気質グループ(16タイプ→4グループ、相性診断で確立済みの分類をそのまま流用) =====
+// 「恋愛キャラ64診断」(2026-09-05、性格ブロックの気質グループ×恋愛ブロックの16タイプ=64通り)用。
+// 新規の判定ロジックは無く、既存2ブロックの結果を組み合わせて表示するだけ。
+const TEMPERAMENT = {
+  INTJ: 'NT', INTP: 'NT', ENTJ: 'NT', ENTP: 'NT',
+  INFJ: 'NF', INFP: 'NF', ENFJ: 'NF', ENFP: 'NF',
+  ISTJ: 'SJ', ISFJ: 'SJ', ESTJ: 'SJ', ESFJ: 'SJ',
+  ISTP: 'SP', ISFP: 'SP', ESTP: 'SP', ESFP: 'SP',
+};
+
+const LOVECHAR_GROUP = {
+  ja: {
+    NT: { label: '戦略家', blurb: '好きになった瞬間にも「なぜこの人なのか」を頭の中で分析し始めてしまう人です。感情に流されるのはちょっと苦手ですが、一度「この人だ」と結論を出したら、その関係は人生の長期計画にしっかり組み込まれます。言葉より、一緒に考えてくれる時間で愛を示すタイプです。' },
+    NF: { label: '共感家', blurb: '相手の「大丈夫」の裏にある小さなため息まで拾ってしまう人です。恋愛は表面的なやりとりより心の深いところでつながることを求めていて、相手の幸せを自分の幸せのように感じます。ただ、察しすぎて一人で抱え込むのはちょっとだけ気をつけたいところです。' },
+    SJ: { label: '守り手', blurb: '記念日を忘れないどころか、その日の予約まで1か月前に済ませている人です。恋愛でも大切なのはドキドキより「この人となら明日も安心」という積み重ねで、約束を守り続けることで愛を伝えます。派手さはなくても、その信頼はじわじわ相手の心に積もっていきます。' },
+    SP: { label: '冒険家', blurb: '「来週どこ行く?」より「今から行こう」が口癖の、今この瞬間を全力で楽しむ人です。愛情はじっくり語るより行動で示すタイプで、思いついた瞬間に相手を連れ出します。窮屈なルールは苦手ですが、一緒にいる時間の濃さで応えてくれます。' },
+  },
+  en: {
+    NT: { label: 'Strategist', blurb: "The second you catch feelings, your brain starts asking \"okay, but why this person?\" You don't get swept away easily, but once you've decided, they're written into your long-term plan. Love, for you, is figuring life out together." },
+    NF: { label: 'Empath', blurb: 'You catch the tiny sigh hidden behind "I\'m fine." Small talk isn\'t enough for you — you want to connect deep down, and their happiness genuinely feels like your own. Just be careful not to carry everything alone.' },
+    SJ: { label: 'Guardian', blurb: 'You don\'t just remember anniversaries — you booked the restaurant a month ago. For you, love isn\'t butterflies so much as "I know I\'m safe with you tomorrow," built one kept promise at a time. Not flashy, but that trust quietly piles up.' },
+    SP: { label: 'Adventurer', blurb: '"Where should we go next week?" Nope — "let\'s go right now." You live for the moment and show love through action, not long speeches. Rules and clinginess aren\'t your thing, but time spent with you is never boring.' },
+  },
+};
+function getLoveCharGroup() { return LANG === 'en' ? LOVECHAR_GROUP.en : LOVECHAR_GROUP.ja; }
+
 // ===== 五行(占い要素)とラッキーアイテム =====
 // MBTIタイプごとの五行属性(3つのマップ全てで共通の属性を使用)
 const TYPE_ELEMENT = {
@@ -881,6 +907,11 @@ const UI_TEXT = {
     loveSaveCardBtn: '💘 恋愛タイプカードを保存 🖼️',
     loveCardEyebrow: 'わたしの恋愛タイプ',
     loveShareText: (l) => `恋愛タイプは『${l}』でした💘\nあなたの恋愛タイプは?→\n※エンタメ目的の診断です\n#恋愛タイプ診断 #ラブタイプ診断 #MBTI診断`,
+    loveCharCardLabel: '💞 恋愛キャラ64診断もチェック',
+    loveCharShareBtn: '💞 恋愛キャラをXでシェア',
+    loveCharSaveCardBtn: '💞 恋愛キャラカードを保存 🖼️',
+    loveCharCardEyebrow: 'わたしの恋愛キャラ',
+    loveCharShareText: (l, g) => `恋愛キャラは『${l}×${g}タイプ』でした💞\nあなたの恋愛キャラは?→\n※エンタメ目的の診断です\n#恋愛キャラ診断 #恋愛タイプ診断 #MBTI診断`,
   },
   en: {
     pageTitle: 'MBTI Personality, Love & Career Type Quiz',
@@ -934,6 +965,11 @@ const UI_TEXT = {
     loveSaveCardBtn: '💘 Save Love Type Card 🖼️',
     loveCardEyebrow: 'My Love Type',
     loveShareText: (l) => `My love type is "${l}" 💘\nWhat's yours? →\n(For entertainment purposes only)\n#LoveTypeQuiz #LoveType #MBTI`,
+    loveCharCardLabel: '💞 Try the 64-Type Love Character Quiz',
+    loveCharShareBtn: '💞 Share Love Character on X',
+    loveCharSaveCardBtn: '💞 Save Love Character Card 🖼️',
+    loveCharCardEyebrow: 'My Love Character',
+    loveCharShareText: (l, g) => `My love character is "${l} × ${g}" 💞\nWhat's yours? →\n(For entertainment purposes only)\n#LoveCharacterQuiz #LoveType #MBTI`,
   },
 };
 
@@ -959,6 +995,9 @@ function applyLangUI() {
   document.getElementById('love-card-label').textContent = t.loveCardLabel;
   document.getElementById('btn-share-love').textContent = t.loveShareBtn;
   document.getElementById('btn-save-love-card').textContent = t.loveSaveCardBtn;
+  document.getElementById('lovechar-card-label').textContent = t.loveCharCardLabel;
+  document.getElementById('btn-share-lovechar').textContent = t.loveCharShareBtn;
+  document.getElementById('btn-save-lovechar-card').textContent = t.loveCharSaveCardBtn;
   document.getElementById('result-card-preview-hint-text').textContent = t.cardPreviewHint;
   document.getElementById('result-card-preview-hint-link').textContent = t.cardPreviewHintLink;
   document.getElementById('footer-disclaimer').textContent = t.footerDisclaimer;
@@ -1792,6 +1831,184 @@ function shareLoveResult() {
   trackEvent('share', { method: 'x_love' });
 }
 
+// ===== 恋愛キャラ64診断(2026-09-05、「ラブキャラ診断64」トレンド対応) =====
+// 既存の恋愛タイプ(16通り、天気メタファー)×性格タイプが属する気質グループ(NT/NF/SJ/SP、
+// 相性診断で確立済みの分類)を組み合わせた16×4=64通りの「恋愛キャラ」。
+// 新規の判定ロジック・新規の質問は一切追加せず、既存2ブロックの結果を掛け合わせて表示するだけ
+// (新規コンテンツは気質グループ4件分の短い一言のみ、64件分の個別執筆はしていない)。
+function buildLoveCharCardCat(types) {
+  const blockMap = getBlockMap();
+  const [emoji, label] = blockMap.love[types.love];
+  const groupKey = TEMPERAMENT[types.personality];
+  const group = getLoveCharGroup()[groupKey];
+  return { emoji, label, groupKey, groupLabel: group.label, blurb: group.blurb };
+}
+
+function drawLoveCharCardX(ctx, cat) {
+  const t = UI_TEXT[LANG];
+  const W = 1200, H = 630;
+  cardDrawBackground(ctx, W, H);
+
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = CARD_PAL.sub;
+  ctx.font = "700 26px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(t.loveCharCardEyebrow, W / 2, 66);
+
+  ctx.font = "128px 'Segoe UI Emoji', sans-serif";
+  ctx.fillText(cat.emoji, W / 2, 210);
+
+  const labelFit = cardFitTextMultiline(ctx, cat.label, W - 220, '700', "'Zen Maru Gothic', sans-serif", 46, 28, 2);
+  ctx.fillStyle = CARD_PAL.text;
+  ctx.font = `700 ${labelFit.size}px 'Zen Maru Gothic', sans-serif`;
+  const labelStep = labelFit.size * 1.14;
+  const labelStartY = 320 - ((labelFit.lines.length - 1) * labelStep) / 2;
+  labelFit.lines.forEach((line, li) => {
+    ctx.fillText(line, W / 2, labelStartY + li * labelStep);
+  });
+
+  ctx.fillStyle = CARD_PAL.primaryDark;
+  ctx.font = "700 24px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(`× ${cat.groupLabel}`, W / 2, 372);
+
+  const blurbFit = cardFitTextMultiline(ctx, cat.blurb, W - 220, '500', "'Zen Maru Gothic', sans-serif", 22, 16, 3);
+  ctx.fillStyle = CARD_PAL.text;
+  ctx.font = `500 ${blurbFit.size}px 'Zen Maru Gothic', sans-serif`;
+  const blurbStep = blurbFit.size * 1.5;
+  const blurbStartY = 440;
+  blurbFit.lines.forEach((line, li) => {
+    ctx.fillText(line, W / 2, blurbStartY + li * blurbStep);
+  });
+
+  ctx.strokeStyle = 'rgba(160,130,175,0.28)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(W / 2 - 260, 548);
+  ctx.lineTo(W / 2 + 260, 548);
+  ctx.stroke();
+
+  ctx.fillStyle = CARD_PAL.primaryDark;
+  ctx.font = "700 25px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(t.cardCta, W / 2, 583);
+  ctx.fillStyle = CARD_PAL.sub;
+  ctx.font = "600 18px Poppins, sans-serif";
+  ctx.fillText(t.cardBrand, W / 2, 612);
+  ctx.textAlign = 'left';
+}
+
+function drawLoveCharCardStory(ctx, cat) {
+  const t = UI_TEXT[LANG];
+  const W = 1080, H = 1920;
+  cardDrawBackground(ctx, W, H);
+
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = CARD_PAL.sub;
+  ctx.font = "700 38px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(t.loveCharCardEyebrow, W / 2, 260);
+
+  ctx.font = "300px 'Segoe UI Emoji', sans-serif";
+  ctx.fillText(cat.emoji, W / 2, 640);
+
+  const labelFit = cardFitTextMultiline(ctx, cat.label, W - 160, '700', "'Zen Maru Gothic', sans-serif", 68, 36, 2);
+  ctx.fillStyle = CARD_PAL.text;
+  ctx.font = `700 ${labelFit.size}px 'Zen Maru Gothic', sans-serif`;
+  const labelStep = labelFit.size * 1.16;
+  const labelStartY = 940 - ((labelFit.lines.length - 1) * labelStep) / 2;
+  labelFit.lines.forEach((line, li) => {
+    ctx.fillText(line, W / 2, labelStartY + li * labelStep);
+  });
+
+  ctx.fillStyle = CARD_PAL.primaryDark;
+  ctx.font = "700 36px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(`× ${cat.groupLabel}`, W / 2, 1040);
+
+  const blurbFit = cardFitTextMultiline(ctx, cat.blurb, W - 160, '500', "'Zen Maru Gothic', sans-serif", 34, 24, 4);
+  ctx.fillStyle = CARD_PAL.text;
+  ctx.font = `500 ${blurbFit.size}px 'Zen Maru Gothic', sans-serif`;
+  const blurbStep = blurbFit.size * 1.5;
+  const blurbStartY = 1130;
+  blurbFit.lines.forEach((line, li) => {
+    ctx.fillText(line, W / 2, blurbStartY + li * blurbStep);
+  });
+
+  ctx.strokeStyle = 'rgba(160,130,175,0.3)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(150, 1490);
+  ctx.lineTo(930, 1490);
+  ctx.stroke();
+
+  ctx.fillStyle = CARD_PAL.primaryDark;
+  ctx.font = "700 38px 'Zen Maru Gothic', sans-serif";
+  ctx.fillText(t.cardCta, W / 2, 1550);
+  ctx.fillStyle = CARD_PAL.sub;
+  ctx.font = "600 26px Poppins, sans-serif";
+  ctx.fillText(t.cardBrand, W / 2, 1600);
+  ctx.textAlign = 'left';
+}
+
+async function buildLoveCharCardCanvas(types, mode) {
+  if (document.fonts && document.fonts.ready) {
+    try { await document.fonts.ready; } catch (e) { /* フォント読み込み待ちに失敗しても既定フォントで続行 */ }
+  }
+  const cat = buildLoveCharCardCat(types);
+  const canvas = document.createElement('canvas');
+  if (mode === 'story') {
+    canvas.width = 1080; canvas.height = 1920;
+    drawLoveCharCardStory(canvas.getContext('2d'), cat);
+  } else {
+    canvas.width = 1200; canvas.height = 630;
+    drawLoveCharCardX(canvas.getContext('2d'), cat);
+  }
+  return canvas;
+}
+
+async function downloadLoveCharCard() {
+  if (!lastResult) return;
+  const t = UI_TEXT[LANG];
+  const btn = document.getElementById('btn-save-lovechar-card');
+  const original = btn.textContent;
+  btn.textContent = t.generatingLabel;
+  btn.disabled = true;
+  try {
+    const canvas = await buildLoveCharCardCanvas(lastResult, 'x');
+    await new Promise((resolve) => {
+      canvas.toBlob((blob) => {
+        const a = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        a.href = url;
+        a.download = `deskanimals-lovechar-${lastResult.love}-${TEMPERAMENT[lastResult.personality]}.png`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 4000);
+        resolve();
+      }, 'image/png');
+    });
+    trackEvent('save_card', { mode: 'lovechar' });
+  } catch (e) {
+    console.error('恋愛キャラカード生成に失敗しました', e);
+  } finally {
+    btn.textContent = original;
+    btn.disabled = false;
+  }
+}
+
+function shareLoveCharResult() {
+  if (!lastResult) return;
+  const t = UI_TEXT[LANG];
+  const blockMap = getBlockMap();
+  const lLabel = blockMap.love[lastResult.love][1];
+  const groupKey = TEMPERAMENT[lastResult.personality];
+  const gLabel = getLoveCharGroup()[groupKey].label;
+  const text = t.loveCharShareText(lLabel, gLabel);
+  const url = encodeURIComponent(resultUrl());
+  const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`;
+  window.open(shareUrl, '_blank', 'noopener,noreferrer');
+  trackEvent('share', { method: 'x_lovechar' });
+}
+
 function restartQuiz() {
   isSharedView = false;
   document.getElementById('btn-restart').textContent = UI_TEXT[LANG].restartBtn;
@@ -1839,6 +2056,8 @@ document.getElementById('btn-save-card').addEventListener('click', () => downloa
 document.getElementById('btn-save-card-story').addEventListener('click', () => downloadResultCard('story'));
 document.getElementById('btn-share-love').addEventListener('click', shareLoveResult);
 document.getElementById('btn-save-love-card').addEventListener('click', downloadLoveCard);
+document.getElementById('btn-share-lovechar').addEventListener('click', shareLoveCharResult);
+document.getElementById('btn-save-lovechar-card').addEventListener('click', downloadLoveCharCard);
 document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('ja'));
 document.getElementById('btn-lang-ja-chat').addEventListener('click', () => { setLang('ja'); refreshBlockLabel(); });
 document.getElementById('btn-lang-en-chat').addEventListener('click', () => { setLang('en'); refreshBlockLabel(); });
