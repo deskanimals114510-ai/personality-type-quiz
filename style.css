@@ -22,6 +22,8 @@ html, body {
   min-height: 100vh;
 }
 
+html { scroll-behavior: smooth; }
+
 body {
   font-family: "Zen Maru Gothic", "Hiragino Sans", "Yu Gothic", sans-serif;
   background:
@@ -81,6 +83,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .blob, .sparkle { animation: none; }
   .sparkle { opacity: 0.6; }
+  html { scroll-behavior: auto; }
 }
 
 #app {
@@ -94,8 +97,21 @@ body {
   flex-direction: column;
 }
 
-.screen { display: none; flex: 1; flex-direction: column; min-height: 0; }
-.screen.active { display: flex; }
+.screen { display: none; flex-direction: column; min-height: 0; }
+.screen.active { display: flex; flex: none; }
+
+/* チャット画面(#screen-chat)だけは内部スクロールコンテナとして#appの固定高さ(100dvh)
+   いっぱいに広がる必要がある(質問を重ねてもページ全体が伸び続けないようにするため)。
+   それ以外の画面(スタート・結果・types/配下の各解説ページ等、汎用の.screen.activeを使う
+   全画面)はflex:noneのまま、コンテンツの実高さで自然に伸びる通常のページスクロールに任せる。
+   以前は全画面に一律flex:1 + min-height:0を適用しており、チャット画面の無限伸長バグは
+   直ったが、その副作用でスタート画面・types配下の解説ページ等、実コンテンツがビューポートより
+   長い画面で#appの固定高さからあふれてフッターと重なる回帰が本番で発生していた
+   (2026-09-05発見・修正)。 */
+#screen-chat.active {
+  flex: 1;
+  min-height: 0;
+}
 
 .grad-text {
   background: linear-gradient(90deg, var(--primary), var(--accent2));
@@ -236,6 +252,13 @@ body {
   z-index: 5;
   border-bottom: 1px solid rgba(255,255,255,0.5);
 }
+.chat-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 9px;
+}
 .block-label {
   display: inline-block;
   font-size: 0.72rem;
@@ -244,8 +267,29 @@ body {
   background: #ffe3ee;
   padding: 4px 12px;
   border-radius: 999px;
-  margin-bottom: 9px;
   transition: background 0.3s ease, color 0.3s ease;
+}
+.chat-lang-toggle {
+  display: flex;
+  gap: 4px;
+  flex: none;
+}
+.lang-btn-mini {
+  font-family: "Poppins", "Zen Maru Gothic", sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: #fff;
+  color: var(--text-sub);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.lang-btn-mini.active {
+  background: linear-gradient(135deg, var(--primary), var(--accent2));
+  color: #fff;
+  border-color: transparent;
 }
 .progress-bar {
   height: 8px;
@@ -535,6 +579,20 @@ body {
   color: var(--text-sub);
   margin: -14px 0 24px;
 }
+.result-card-preview-hint-link {
+  display: inline-block;
+  color: var(--primary-dark);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.result-card-preview-hint-link:hover,
+.result-card-preview-hint-link:focus-visible {
+  color: var(--primary);
+}
+#result-save-actions {
+  scroll-margin-top: 16px;
+}
 .lang-note {
   text-align: center;
   font-size: 0.7rem;
@@ -616,6 +674,11 @@ body {
   position: relative;
   z-index: 1;
 }
+/* 診断(チャット)進行中は免責・アフィリエイト開示・タイプ一覧リンクの離脱導線を隠す。
+   回答直後にこれらが視界に入り続け離脱を誘発していたため(結果画面・スタート画面では従来通り表示)。 */
+#screen-chat.active ~ .site-footer {
+  display: none;
+}
 .site-footer p {
   font-size: 0.68rem;
   line-height: 1.6;
@@ -650,6 +713,9 @@ body {
   border-radius: 20px;
   margin: 0 auto 12px;
   box-shadow: 0 10px 24px rgba(120, 90, 130, 0.22);
+  /* Pinterest配布用に彩度高めで作った動物イラストと、サイト全体のパステルトーンとの
+     視覚差を緩和する軽いフィルタ(絵柄自体は変えない、2026-09-05追加) */
+  filter: saturate(0.88) brightness(1.04);
 }
 .type-page-sub {
   font-size: 0.82rem;

@@ -64,8 +64,8 @@
   <section id="screen-start" class="screen active">
     <div class="start-card">
       <div class="lang-toggle">
-        <button id="btn-lang-ja" class="lang-btn active" aria-pressed="true">日本語</button>
-        <button id="btn-lang-en" class="lang-btn" aria-pressed="false">English</button>
+        <button id="btn-lang-ja" class="lang-btn active" data-lang="ja" aria-pressed="true">日本語</button>
+        <button id="btn-lang-en" class="lang-btn" data-lang="en" aria-pressed="false">English</button>
       </div>
       <div class="start-emoji">🔮</div>
       <span id="start-eyebrow" class="eyebrow">FREE PERSONALITY TEST</span>
@@ -75,7 +75,7 @@
         <span class="badge">🐢 動物</span>
         <span class="badge">☀️ 天気</span>
         <span class="badge">🚃 乗り物</span>
-        <span class="badge">でたとえます</span>
+        <span class="badge">🪄 でたとえます</span>
       </div>
       <button id="btn-start" class="btn-primary">診断をはじめる ✨</button>
       <p id="start-sub" class="sub">全30問・所要時間 約3分</p>
@@ -103,7 +103,13 @@
   <!-- チャット画面 -->
   <section id="screen-chat" class="screen">
     <div class="chat-header">
-      <span id="block-label" class="block-label">性格編</span>
+      <div class="chat-header-top">
+        <span id="block-label" class="block-label">性格編</span>
+        <div class="chat-lang-toggle">
+          <button id="btn-lang-ja-chat" class="lang-btn-mini" data-lang="ja" aria-pressed="true">JA</button>
+          <button id="btn-lang-en-chat" class="lang-btn-mini" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
       <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="30" aria-valuenow="1" aria-label="診断の進捗"><div id="progress-fill" class="progress-fill"></div></div>
       <span id="progress-text" class="progress-text">1 / 30</span>
     </div>
@@ -118,7 +124,7 @@
       <p id="result-title-el" class="result-title">診断結果 <span class="grad-text">できました</span></p>
     </div>
     <div id="result-card-preview" class="result-card-preview"></div>
-    <p id="result-card-preview-hint" class="result-card-preview-hint">画像を長押し(スマホ)または右クリックで保存できます</p>
+    <p id="result-card-preview-hint" class="result-card-preview-hint"><span id="result-card-preview-hint-text">画像を長押し(スマホ)または右クリックで保存できます</span> <a href="#result-save-actions" id="result-card-preview-hint-link" class="result-card-preview-hint-link">保存ボタンはこちら 👇</a></p>
     <div id="result-cards" class="result-cards"></div>
     <div class="result-actions">
       <button id="btn-share" class="btn-primary">結果をXでシェア 🚀</button>
@@ -126,7 +132,7 @@
       <button id="btn-copy-url" class="btn-secondary" aria-live="polite">結果URLをコピー 🔗</button>
       <button id="btn-restart" class="btn-secondary">もう一度診断する</button>
     </div>
-    <div class="result-actions result-actions-card">
+    <div id="result-save-actions" class="result-actions result-actions-card">
       <button id="btn-save-card" class="btn-secondary">結果カードを保存 🖼️</button>
       <button id="btn-save-card-story" class="btn-secondary">ストーリーズ用に保存 📱</button>
     </div>

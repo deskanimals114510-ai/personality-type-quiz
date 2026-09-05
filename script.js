@@ -378,15 +378,17 @@ const QUESTIONS_EN = [
   ]},
 ];
 
+// textColor: block-labelの文字色。背景(colorの13%透過)に対してWCAG AA(4.5:1)を満たす
+// 濃色バリアントを別途用意している(colorそのものを文字色に使うと同系色×薄背景で低コントラストになるため)。
 const BLOCK_META = {
-  personality: { label: '性格編', catName: '性格タイプ', icon: '✨', color: '#b892ff' },
-  love:        { label: '恋愛編', catName: '恋愛タイプ', icon: '💌', color: '#ff8fb3' },
-  work:        { label: '仕事編', catName: '仕事タイプ', icon: '💼', color: '#5bc8b5' },
+  personality: { label: '性格編', catName: '性格タイプ', icon: '✨', color: '#b892ff', textColor: '#6a3fb0' },
+  love:        { label: '恋愛編', catName: '恋愛タイプ', icon: '💌', color: '#ff8fb3', textColor: '#a8305c' },
+  work:        { label: '仕事編', catName: '仕事タイプ', icon: '💼', color: '#5bc8b5', textColor: '#0d6e5e' },
 };
 const BLOCK_META_EN = {
-  personality: { label: 'Personality', catName: 'Personality Type', icon: '✨', color: '#b892ff' },
-  love:        { label: 'Love', catName: 'Love Type', icon: '💌', color: '#ff8fb3' },
-  work:        { label: 'Career', catName: 'Career Type', icon: '💼', color: '#5bc8b5' },
+  personality: { label: 'Personality', catName: 'Personality Type', icon: '✨', color: '#b892ff', textColor: '#6a3fb0' },
+  love:        { label: 'Love', catName: 'Love Type', icon: '💌', color: '#ff8fb3', textColor: '#a8305c' },
+  work:        { label: 'Career', catName: 'Career Type', icon: '💼', color: '#5bc8b5', textColor: '#0d6e5e' },
 };
 
 // ===== 結果マッピング(絵文字 / ひねりを加えたタイプ名 / 詳細説明+占い要素+アドバイス) =====
@@ -833,7 +835,7 @@ const UI_TEXT = {
     eyebrow: 'FREE PERSONALITY TEST',
     titleHtml: 'あなたの<span class="grad-text">3つの顔</span>、診断します',
     lead: 'AIとチャットしながら答えるだけの、MBTIベースの診断。<br>「性格」「恋愛」「仕事」でタイプが変わる、<br>ちょっと不思議な診断です。',
-    badges: ['🐢 動物', '☀️ 天気', '🚃 乗り物', 'でたとえます'],
+    badges: ['🐢 動物', '☀️ 天気', '🚃 乗り物', '🪄 でたとえます'],
     startBtn: '診断をはじめる ✨',
     sub: '全30問・所要時間 約3分',
     resultEyebrow: 'RESULT',
@@ -859,6 +861,7 @@ const UI_TEXT = {
     cardCta: 'あなたは何タイプ？ 無料3分診断',
     cardBrand: 'Desk Animals | 性格・恋愛・仕事タイプ診断',
     cardPreviewHint: '画像を長押し(スマホ)または右クリックで保存できます',
+    cardPreviewHintLink: '保存ボタンはこちら 👇',
     footerDisclaimer: '本診断はエンタメ目的のオリジナルコンテンツで、MBTI(Myers-Briggs Type Indicator)の考え方を参考にした独自基準の診断です。The Myers & Briggs Foundation等の公式機関とは提携しておらず、科学的な心理診断や実際の心理検査に代わるものではありません。',
     footerPrivacy: '本診断は名前・生年月日等の個人情報の入力を求めません。回答内容はすべてお使いの端末内で処理され、サーバーへの送信・保存は一切行いません。なお、アクセス解析(Googleアナリティクス)は行っており、閲覧したページの情報が計測されます。また、Google Fontsの読み込み時にお使いのIPアドレスがGoogleに送信されます。',
     footerAffiliate: '🔖 本ページの「ラッキーアイテム」リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。',
@@ -885,7 +888,7 @@ const UI_TEXT = {
     eyebrow: 'FREE PERSONALITY TEST',
     titleHtml: 'Reveal Your <span class="grad-text">3 Hidden Sides</span>',
     lead: 'Just chat with the AI to find out.<br>Your Personality, Love, and Career types<br>might all be different — a curiously accurate test.',
-    badges: ['🐢 Animal', '☀️ Weather', '🚃 Vehicle', 'as your symbol'],
+    badges: ['🐢 Animal', '☀️ Weather', '🚃 Vehicle', '🪄 as your symbol'],
     startBtn: 'Start the Test ✨',
     sub: '30 questions · about 3 minutes',
     resultEyebrow: 'RESULT',
@@ -911,6 +914,7 @@ const UI_TEXT = {
     cardCta: "What's your type? Free 3-min quiz",
     cardBrand: 'Desk Animals | Personality / Love / Career Quiz',
     cardPreviewHint: 'Long-press (mobile) or right-click the image to save it',
+    cardPreviewHintLink: 'Save it via the button below 👇',
     footerDisclaimer: 'This is an original entertainment quiz inspired by MBTI (Myers-Briggs Type Indicator) concepts, using our own independent criteria. It is not affiliated with or endorsed by The Myers & Briggs Foundation or any official body, and is not a substitute for a scientific psychological assessment.',
     footerPrivacy: "This quiz never asks for your name, birth date, or other personal information. Your answers are processed entirely on your own device and are never sent to or stored on a server. We do use Google Analytics for traffic measurement, which records information about the pages you view. Loading Google Fonts also sends your IP address to Google.",
     footerAffiliate: '🔖 The "Lucky Item" links on this page are affiliate (ad) links. We may earn a commission on purchases made through these links.',
@@ -955,7 +959,8 @@ function applyLangUI() {
   document.getElementById('love-card-label').textContent = t.loveCardLabel;
   document.getElementById('btn-share-love').textContent = t.loveShareBtn;
   document.getElementById('btn-save-love-card').textContent = t.loveSaveCardBtn;
-  document.getElementById('result-card-preview-hint').textContent = t.cardPreviewHint;
+  document.getElementById('result-card-preview-hint-text').textContent = t.cardPreviewHint;
+  document.getElementById('result-card-preview-hint-link').textContent = t.cardPreviewHintLink;
   document.getElementById('footer-disclaimer').textContent = t.footerDisclaimer;
   document.getElementById('footer-privacy').textContent = t.footerPrivacy;
   document.getElementById('footer-affiliate').textContent = t.footerAffiliate;
@@ -995,10 +1000,13 @@ function applyLangUI() {
 
 function setLang(lang) {
   LANG = lang;
-  document.getElementById('btn-lang-ja').classList.toggle('active', lang === 'ja');
-  document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
-  document.getElementById('btn-lang-ja').setAttribute('aria-pressed', String(lang === 'ja'));
-  document.getElementById('btn-lang-en').setAttribute('aria-pressed', String(lang === 'en'));
+  // data-lang属性を持つ言語切替ボタンをすべて同期する(スタート画面・チャット画面ヘッダー等、
+  // 複数箇所に切替UIがあっても1箇所の切替操作で全部の見た目が揃う)
+  document.querySelectorAll('[data-lang]').forEach((btn) => {
+    const isActive = btn.dataset.lang === lang;
+    btn.classList.toggle('active', isActive);
+    btn.setAttribute('aria-pressed', String(isActive));
+  });
   applyLangUI();
 }
 
@@ -1044,6 +1052,17 @@ function startQuiz() {
   askNext();
 }
 
+// 現在の設問のブロックラベル(性格編/恋愛編/仕事編)を表示中の言語で描き直す。
+// askNext()での初回表示と、チャット中に言語を切り替えた際の即時反映(No.89)の両方から呼ぶ。
+function refreshBlockLabel() {
+  const questions = getQuestions();
+  if (currentIndex >= questions.length) return;
+  const meta = getBlockMeta()[questions[currentIndex].block];
+  blockLabel.textContent = meta.label;
+  blockLabel.style.background = meta.color + '22';
+  blockLabel.style.color = meta.textColor;
+}
+
 function askNext() {
   const questions = getQuestions();
   if (currentIndex >= questions.length) {
@@ -1051,10 +1070,7 @@ function askNext() {
     return;
   }
   const q = questions[currentIndex];
-  const meta = getBlockMeta()[q.block];
-  blockLabel.textContent = meta.label;
-  blockLabel.style.background = meta.color + '22';
-  blockLabel.style.color = meta.color;
+  refreshBlockLabel();
   progressFill.style.width = `${((currentIndex + 1) / questions.length) * 100}%`;
   progressText.textContent = `${currentIndex + 1} / ${questions.length}`;
   const progressBarEl = progressFill.parentElement;
@@ -1069,7 +1085,7 @@ function addBubble(text, who) {
   const wrap = document.createElement('div');
   wrap.className = `bubble-row ${who}`;
   if (who === 'ai') {
-    wrap.innerHTML = `<div class="avatar">🤖</div><div class="bubble ai">${text}</div>`;
+    wrap.innerHTML = `<div class="avatar">🔮</div><div class="bubble ai">${text}</div>`;
   } else {
     wrap.innerHTML = `<div class="bubble user">${text}</div>`;
   }
@@ -1274,6 +1290,18 @@ function cardCoverImage(ctx, img, x, y, w, h) {
   ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
 }
 
+// Pinterest配布用に彩度高めで作った動物イラストを、サイト全体のパステルトーンへ寄せるための
+// 薄いパステルベールを画像の上に重ねる(絵柄自体は変えず、視覚差を緩和するだけに留める、2026-09-05追加)
+function cardApplyPastelWash(ctx, x, y, w, h) {
+  ctx.save();
+  const wash = ctx.createLinearGradient(x, y, x, y + h);
+  wash.addColorStop(0, 'rgba(255,233,243,0.16)');
+  wash.addColorStop(1, 'rgba(244,233,255,0.22)');
+  ctx.fillStyle = wash;
+  ctx.fillRect(x, y, w, h);
+  ctx.restore();
+}
+
 // 指定フォントサイズでmaxWidthに収まるよう、単語(英語)または文字(日本語など)単位で行分割する。
 function cardWrapAtSize(ctx, text, maxWidth, weight, family, size) {
   ctx.font = `${weight} ${size}px ${family}`;
@@ -1371,6 +1399,7 @@ function drawResultCardX(ctx, img, cats) {
   cardRoundRect(ctx, ix, iy, iw, ih, 32);
   ctx.clip();
   cardCoverImage(ctx, img, ix, iy, iw, ih);
+  cardApplyPastelWash(ctx, ix, iy, iw, ih);
   ctx.restore();
 
   const cx = 486, rightMax = 1144;
@@ -1435,6 +1464,7 @@ function drawResultCardStory(ctx, img, cats) {
   ctx.rect(0, 0, W, ih);
   ctx.clip();
   cardCoverImage(ctx, img, 0, 0, W, ih);
+  cardApplyPastelWash(ctx, 0, 0, W, ih);
   const fade = ctx.createLinearGradient(0, ih - 320, 0, ih);
   fade.addColorStop(0, 'rgba(250,240,248,0)');
   fade.addColorStop(1, CARD_PAL.bg2);
@@ -1810,17 +1840,26 @@ document.getElementById('btn-save-card-story').addEventListener('click', () => d
 document.getElementById('btn-share-love').addEventListener('click', shareLoveResult);
 document.getElementById('btn-save-love-card').addEventListener('click', downloadLoveCard);
 document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('ja'));
+document.getElementById('btn-lang-ja-chat').addEventListener('click', () => { setLang('ja'); refreshBlockLabel(); });
+document.getElementById('btn-lang-en-chat').addEventListener('click', () => { setLang('en'); refreshBlockLabel(); });
+
+// URLの?lang=en/jaだけを見て表示言語を決める(?r=結果コードの有無に関わらず適用)。
+// 以前は?r=とセットの時しか読んでいなかったため、EN向けSNS投稿等から?lang=en単独で
+// 直接ランディングしても言語が切り替わらない不具合があった(2026-09-05修正)。
+(function initLangFromUrl() {
+  const params = new URLSearchParams(location.search);
+  const langParam = params.get('lang');
+  if (langParam === 'en' || langParam === 'ja') setLang(langParam);
+})();
 
 // 結果URL(?r=符号)で直接開かれた場合は、その場で同じ結果を再現して表示する
-// (&lang=en/jaが付いていれば表示言語も復元し、共有した本人が見ていた言語で開けるようにする)
+// (表示言語は上のinitLangFromUrlで?langから復元済み。共有した本人が見ていた言語で開ける)
 (function loadFromResultCode() {
   const params = new URLSearchParams(location.search);
   const code = params.get('r');
   if (!code) return;
   const types = decodeResultCode(code);
   if (!types) return;
-  const langParam = params.get('lang');
-  if (langParam === 'en' || langParam === 'ja') setLang(langParam);
   isSharedView = true;
   document.getElementById('btn-restart').textContent = UI_TEXT[LANG].restartBtnFirstVisit;
   lastResult = types;
@@ -1829,4 +1868,3 @@ document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('
   renderCardPreview(types);
   updateCompatLink(types);
 })();
-document.getElementById('btn-lang-en').addEventListener('click', () => setLang('en'));
