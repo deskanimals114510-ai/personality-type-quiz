@@ -88,12 +88,13 @@ body {
   z-index: 1;
   max-width: 480px;
   margin: 0 auto;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
 }
 
-.screen { display: none; flex: 1; flex-direction: column; }
+.screen { display: none; flex: 1; flex-direction: column; min-height: 0; }
 .screen.active { display: flex; }
 
 .grad-text {
@@ -272,6 +273,7 @@ body {
 
 .chat-log {
   flex: 1;
+  min-height: 0;
   padding: 18px 16px 8px;
   display: flex;
   flex-direction: column;
