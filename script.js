@@ -1034,11 +1034,15 @@ function applyLangUI() {
   const nanderePromoNoteEl = document.getElementById('nandere-promo-note');
   nanderePromoNoteEl.textContent = t.jpOnlyNote;
   nanderePromoNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
+  // types/en/追加(2026-09-05)によりMBTI 16タイプ一覧は日英とも提供済みのため、
+  // このハブへのリンクだけは「日本語のみ」注記を出さずlang=enなら types/en/ に向ける。
+  const hubUrl = LANG === 'en' ? 'types/en/' : 'types/';
   document.getElementById('hub-cta-start-title').textContent = t.hubCtaTitle;
   document.getElementById('hub-cta-start-sub').textContent = t.hubCtaSubStart;
+  document.getElementById('hub-cta-start').setAttribute('href', hubUrl);
   const hubCtaStartNoteEl = document.getElementById('hub-cta-start-note');
-  hubCtaStartNoteEl.textContent = t.jpOnlyNote;
-  hubCtaStartNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
+  hubCtaStartNoteEl.textContent = '';
+  hubCtaStartNoteEl.style.display = 'none';
   document.getElementById('hub-cta-nandere-title').textContent = t.hubCtaNandereTitle;
   document.getElementById('hub-cta-nandere-sub').textContent = t.hubCtaNandereSub;
   const hubCtaNandereNoteEl = document.getElementById('hub-cta-nandere-note');
@@ -1046,11 +1050,15 @@ function applyLangUI() {
   hubCtaNandereNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
   document.getElementById('hub-cta-result-title').textContent = t.hubCtaTitle;
   document.getElementById('hub-cta-result-sub').textContent = t.hubCtaSubResult;
+  document.getElementById('hub-cta-result').setAttribute('href', hubUrl);
   const hubCtaResultNoteEl = document.getElementById('hub-cta-result-note');
-  hubCtaResultNoteEl.textContent = t.jpOnlyNote;
-  hubCtaResultNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
+  hubCtaResultNoteEl.textContent = '';
+  hubCtaResultNoteEl.style.display = 'none';
   const footerHubLinkEl = document.getElementById('footer-hub-link');
-  if (footerHubLinkEl) footerHubLinkEl.textContent = t.hubCtaTitle;
+  if (footerHubLinkEl) {
+    footerHubLinkEl.textContent = t.hubCtaTitle;
+    footerHubLinkEl.setAttribute('href', hubUrl);
+  }
   document.documentElement.lang = LANG;
 }
 
