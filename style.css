@@ -612,6 +612,26 @@ body {
   opacity: 0.9;
 }
 
+/* トレンド追随機能(恋愛キャラ診断)を、下に並ぶ他のシェア導線に埋もれさせないための
+   軽いアクセント(2026-09-05、5名パネルレビューでの発見性の低さ指摘への対応) */
+.result-actions-card--trend {
+  border: 1.5px dashed var(--primary-dark);
+  border-radius: 16px;
+  padding: 12px 10px 4px;
+}
+.trend-badge {
+  display: inline-block;
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--primary-dark);
+  border-radius: 999px;
+  padding: 2px 9px;
+  margin-right: 6px;
+  vertical-align: middle;
+  letter-spacing: 0.03em;
+}
+
 .btn-line {
   background: rgba(6, 199, 85, 0.08);
   border-color: #06c755;

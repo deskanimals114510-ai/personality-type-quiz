@@ -513,7 +513,7 @@ const BLOCK_MAP_EN = { personality: ANIMAL_MAP_EN, love: WEATHER_MAP_EN, work: V
 const BLOCK_MAP_NAME_EN = { personality: 'Animal', love: 'Weather', work: 'Vehicle' };
 
 // ===== 気質グループ(16タイプ→4グループ、相性診断で確立済みの分類をそのまま流用) =====
-// 「恋愛キャラ64診断」(2026-09-05、性格ブロックの気質グループ×恋愛ブロックの16タイプ=64通り)用。
+// 「恋愛キャラ診断(全64通り)」(2026-09-05、性格ブロックの気質グループ×恋愛ブロックの16タイプ=64通り)用。
 // 新規の判定ロジックは無く、既存2ブロックの結果を組み合わせて表示するだけ。
 const TEMPERAMENT = {
   INTJ: 'NT', INTP: 'NT', ENTJ: 'NT', ENTP: 'NT',
@@ -915,12 +915,15 @@ const UI_TEXT = {
     loveSaveCardBtn: '💘 恋愛タイプカードを保存 🖼️',
     loveCardEyebrow: 'わたしの恋愛タイプ',
     loveShareText: (l) => `恋愛タイプは『${l}』でした💘\nあなたの恋愛タイプは?→\n※エンタメ目的の診断です\n#恋愛タイプ診断 #ラブタイプ診断 #MBTI診断`,
-    loveCharCardLabel: '💞 恋愛キャラ64診断もチェック',
+    loveCharCardLabel: '💞 恋愛キャラ診断(全64通り)もチェック',
     loveCharShareBtn: '💞 恋愛キャラをXでシェア',
     loveCharSaveCardBtn: '💞 恋愛キャラカードを保存 🖼️',
+    loveCharSaveCardStoryBtn: '💞 ストーリーズ用に保存 📱',
     loveCharCardEyebrow: 'わたしの恋愛キャラ',
     loveCharShareText: (l, g, p) => `恋愛キャラは『${l}×${g}タイプ』でした💞\n${p}\nあなたの恋愛キャラは?→\n※エンタメ目的の診断です\n#恋愛キャラ診断 #恋愛タイプ診断 #MBTI診断`,
-    loveCharRarityLine: (pct) => `✨ この気質グループの人は全体の約${pct}%(参考値)`,
+    loveCharRarityLine: (pct) => pct >= 35
+      ? `🤝 この気質グループは全体の約${pct}%——気が合う仲間がきっと近くにいるはず(参考値)`
+      : `✨ この気質グループの人は全体の約${pct}%(参考値)`,
   },
   en: {
     pageTitle: 'MBTI Personality, Love & Career Type Quiz',
@@ -974,11 +977,15 @@ const UI_TEXT = {
     loveSaveCardBtn: '💘 Save Love Type Card 🖼️',
     loveCardEyebrow: 'My Love Type',
     loveShareText: (l) => `My love type is "${l}" 💘\nWhat's yours? →\n(For entertainment purposes only)\n#LoveTypeQuiz #LoveType #MBTI`,
-    loveCharCardLabel: '💞 Try the 64-Type Love Character Quiz',
+    loveCharCardLabel: '💞 Try the Love Character Quiz (64 combos)',
     loveCharShareBtn: '💞 Share Love Character on X',
     loveCharSaveCardBtn: '💞 Save Love Character Card 🖼️',
+    loveCharSaveCardStoryBtn: '💞 Save for Stories 📱',
     loveCharCardEyebrow: 'My Love Character',
     loveCharShareText: (l, g, p) => `My love character is "${l} × ${g}" 💞\n${p}\nWhat's yours? →\n(For entertainment purposes only)\n#LoveCharacterQuiz #LoveType #MBTI`,
+    loveCharRarityLine: (pct) => pct >= 35
+      ? `🤝 About ${pct}% share this group — odds are good you'll find your people (reference stat)`
+      : `✨ About ${pct}% of people share this temperament group (reference stat)`,
   },
 };
 
@@ -1007,6 +1014,7 @@ function applyLangUI() {
   document.getElementById('lovechar-card-label').textContent = t.loveCharCardLabel;
   document.getElementById('btn-share-lovechar').textContent = t.loveCharShareBtn;
   document.getElementById('btn-save-lovechar-card').textContent = t.loveCharSaveCardBtn;
+  document.getElementById('btn-save-lovechar-card-story').textContent = t.loveCharSaveCardStoryBtn;
   document.getElementById('result-card-preview-hint-text').textContent = t.cardPreviewHint;
   document.getElementById('result-card-preview-hint-link').textContent = t.cardPreviewHintLink;
   document.getElementById('footer-disclaimer').textContent = t.footerDisclaimer;
@@ -1840,7 +1848,9 @@ function shareLoveResult() {
   trackEvent('share', { method: 'x_love' });
 }
 
-// ===== 恋愛キャラ64診断(2026-09-05、「ラブキャラ診断64」トレンド対応) =====
+// ===== 恋愛キャラ診断・全64通り(2026-09-05、「ラブキャラ診断64」トレンド対応) =====
+// 命名は先方の商標(ラブキャラ診断64)と紛らわしくならないよう、"64"を名称に融合させず
+// 「(全64通り)」という補足に留めている(5名パネルレビュー2026-09-05で指摘・修正)。
 // 既存の恋愛タイプ(16通り、天気メタファー)×性格タイプが属する気質グループ(NT/NF/SJ/SP、
 // 相性診断で確立済みの分類)を組み合わせた16×4=64通りの「恋愛キャラ」。
 // 新規の判定ロジック・新規の質問は一切追加せず、既存2ブロックの結果を掛け合わせて表示するだけ
@@ -2002,21 +2012,23 @@ async function buildLoveCharCardCanvas(types, mode) {
   return canvas;
 }
 
-async function downloadLoveCharCard() {
+async function downloadLoveCharCard(mode) {
   if (!lastResult) return;
   const t = UI_TEXT[LANG];
-  const btn = document.getElementById('btn-save-lovechar-card');
+  const groupKey = TEMPERAMENT[lastResult.personality];
+  const btnId = mode === 'story' ? 'btn-save-lovechar-card-story' : 'btn-save-lovechar-card';
+  const btn = document.getElementById(btnId);
   const original = btn.textContent;
   btn.textContent = t.generatingLabel;
   btn.disabled = true;
   try {
-    const canvas = await buildLoveCharCardCanvas(lastResult, 'x');
+    const canvas = await buildLoveCharCardCanvas(lastResult, mode);
     await new Promise((resolve) => {
       canvas.toBlob((blob) => {
         const a = document.createElement('a');
         const url = URL.createObjectURL(blob);
         a.href = url;
-        a.download = `deskanimals-lovechar-${lastResult.love}-${TEMPERAMENT[lastResult.personality]}.png`;
+        a.download = `deskanimals-lovechar-${lastResult.love}-${groupKey}-${mode === 'story' ? 'story' : 'x'}.png`;
         document.body.appendChild(a);
         a.click();
         a.remove();
@@ -2024,7 +2036,7 @@ async function downloadLoveCharCard() {
         resolve();
       }, 'image/png');
     });
-    trackEvent('save_card', { mode: 'lovechar' });
+    trackEvent('save_card', { mode: mode === 'story' ? 'lovechar_story' : 'lovechar', group_key: groupKey });
   } catch (e) {
     console.error('恋愛キャラカード生成に失敗しました', e);
   } finally {
@@ -2044,7 +2056,7 @@ function shareLoveCharResult() {
   const url = encodeURIComponent(resultUrl());
   const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`;
   window.open(shareUrl, '_blank', 'noopener,noreferrer');
-  trackEvent('share', { method: 'x_lovechar' });
+  trackEvent('share', { method: 'x_lovechar', group_key: groupKey });
 }
 
 function restartQuiz() {
@@ -2095,7 +2107,8 @@ document.getElementById('btn-save-card-story').addEventListener('click', () => d
 document.getElementById('btn-share-love').addEventListener('click', shareLoveResult);
 document.getElementById('btn-save-love-card').addEventListener('click', downloadLoveCard);
 document.getElementById('btn-share-lovechar').addEventListener('click', shareLoveCharResult);
-document.getElementById('btn-save-lovechar-card').addEventListener('click', downloadLoveCharCard);
+document.getElementById('btn-save-lovechar-card').addEventListener('click', () => downloadLoveCharCard('x'));
+document.getElementById('btn-save-lovechar-card-story').addEventListener('click', () => downloadLoveCharCard('story'));
 document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('ja'));
 document.getElementById('btn-lang-ja-chat').addEventListener('click', () => { setLang('ja'); refreshBlockLabel(); });
 document.getElementById('btn-lang-en-chat').addEventListener('click', () => { setLang('en'); refreshBlockLabel(); });
