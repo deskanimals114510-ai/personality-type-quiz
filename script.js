@@ -979,7 +979,7 @@ const UI_TEXT = {
     loveSaveCardBtn: '💘 恋愛タイプカードを保存 🖼️',
     loveCardEyebrow: 'わたしの恋愛タイプ',
     loveShareText: (l) => `恋愛タイプは『${l}』でした💘\nあなたの恋愛タイプは?→\n※エンタメ目的の診断です\n#恋愛タイプ診断 #ラブタイプ診断 #MBTI診断`,
-    loveCharCardLabel: '💞 恋愛キャラ診断(全64通り)もチェック',
+    loveCharCardLabel: '💞 恋愛キャラ診断(全64通り)',
     loveCharShareBtn: '💞 恋愛キャラをXでシェア',
     loveCharSaveCardBtn: '💞 恋愛キャラカードを保存 🖼️',
     loveCharSaveCardStoryBtn: '💞 ストーリーズ用に保存 📱',
@@ -1041,7 +1041,7 @@ const UI_TEXT = {
     loveSaveCardBtn: '💘 Save Love Type Card 🖼️',
     loveCardEyebrow: 'My Love Type',
     loveShareText: (l) => `My love type is "${l}" 💘\nWhat's yours? →\n(For entertainment purposes only)\n#LoveTypeQuiz #LoveType #MBTI`,
-    loveCharCardLabel: '💞 Try the Love Character Quiz (64 combos)',
+    loveCharCardLabel: '💞 Love Character Quiz (64 combos)',
     loveCharShareBtn: '💞 Share Love Character on X',
     loveCharSaveCardBtn: '💞 Save Love Character Card 🖼️',
     loveCharSaveCardStoryBtn: '💞 Save for Stories 📱',
@@ -1081,6 +1081,8 @@ function applyLangUI() {
   document.getElementById('btn-share-lovechar').textContent = t.loveCharShareBtn;
   document.getElementById('btn-save-lovechar-card').textContent = t.loveCharSaveCardBtn;
   document.getElementById('btn-save-lovechar-card-story').textContent = t.loveCharSaveCardStoryBtn;
+  document.getElementById('lovechar-card-preview-hint-text').textContent = t.cardPreviewHint;
+  document.getElementById('lovechar-card-preview-hint-link').textContent = t.cardPreviewHintLink;
   document.getElementById('result-card-preview-hint-text').textContent = t.cardPreviewHint;
   document.getElementById('result-card-preview-hint-link').textContent = t.cardPreviewHintLink;
   document.getElementById('footer-disclaimer').textContent = t.footerDisclaimer;
@@ -1280,6 +1282,7 @@ function showResult() {
   };
   renderResultCards(lastResult);
   renderCardPreview(lastResult);
+  renderLoveCharCardPreview(lastResult);
   updateCompatLink(lastResult);
   trackEvent('quiz_complete', { personality_type: lastResult.personality });
 }
@@ -1798,6 +1801,29 @@ async function renderCardPreview(types) {
   }
 }
 
+// 恋愛キャラ診断64のカードも、性格診断カードと同じく結果画面に直接プレビュー表示する
+// (2026-09-08追加)。以前は保存・シェアボタンを押すまでカード自体が一切見えず、
+// 「せっかく作ったキャラ・毒舌文が誰の目にも触れていない」状態だった。ENでは
+// lovechar-section自体が非表示のため、無駄なcanvas生成を避けるため呼び出し側で
+// LANGガードする。
+async function renderLoveCharCardPreview(types) {
+  if (LANG === 'en') return;
+  const preview = document.getElementById('lovechar-card-preview');
+  preview.innerHTML = '';
+  try {
+    const canvas = await buildLoveCharCardCanvas(types, 'x');
+    const img = document.createElement('img');
+    img.src = canvas.toDataURL('image/png');
+    img.alt = '';
+    img.width = 1200;
+    img.height = 630;
+    preview.appendChild(img);
+  } catch (e) {
+    console.error('恋愛キャラカードプレビューの生成に失敗しました', e);
+    preview.remove();
+  }
+}
+
 async function downloadResultCard(mode) {
   if (!lastResult) return;
   const t = UI_TEXT[LANG];
@@ -2247,5 +2273,6 @@ document.getElementById('btn-lang-en-chat').addEventListener('click', () => { se
   showScreen('result');
   renderResultCards(types);
   renderCardPreview(types);
+  renderLoveCharCardPreview(types);
   updateCompatLink(types);
 })();
