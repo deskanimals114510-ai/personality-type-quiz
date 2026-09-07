@@ -2220,13 +2220,17 @@ document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('
 document.getElementById('btn-lang-ja-chat').addEventListener('click', () => { setLang('ja'); refreshBlockLabel(); });
 document.getElementById('btn-lang-en-chat').addEventListener('click', () => { setLang('en'); refreshBlockLabel(); });
 
-// URLの?lang=en/jaだけを見て表示言語を決める(?r=結果コードの有無に関わらず適用)。
+// URLの?lang=en/jaを見て表示言語を決める(?r=結果コードの有無に関わらず適用)。
 // 以前は?r=とセットの時しか読んでいなかったため、EN向けSNS投稿等から?lang=en単独で
 // 直接ランディングしても言語が切り替わらない不具合があった(2026-09-05修正)。
+// さらに?langパラメータが無い通常訪問(検索流入・直接アクセス等)ではsetLang()自体が
+// 一度も呼ばれず、setLang内でしか実行されないapplyLangUI()も未実行のままだったため、
+// UI_TEXT.jaの内容(フッター免責文言等)が反映されずindex.html側の静的な初期文言が
+// そのまま表示され続ける不具合があった(2026-09-08発見・修正、常にsetLangを実行させる)。
 (function initLangFromUrl() {
   const params = new URLSearchParams(location.search);
   const langParam = params.get('lang');
-  if (langParam === 'en' || langParam === 'ja') setLang(langParam);
+  setLang(langParam === 'en' ? 'en' : 'ja');
 })();
 
 // 結果URL(?r=符号)で直接開かれた場合は、その場で同じ結果を再現して表示する
