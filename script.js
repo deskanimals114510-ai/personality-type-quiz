@@ -988,6 +988,20 @@ const UI_TEXT = {
     loveCharRarityLine: (pct) => pct >= 35
       ? `🤝 この気質グループは全体の約${pct}%——気が合う仲間がきっと近くにいるはず(海外調査ベースの参考値、恋愛64キャラ独自の統計ではありません)`
       : `✨ この気質グループの人は全体の約${pct}%(海外調査ベースの参考値、恋愛64キャラ独自の統計ではありません)`,
+    guessInviteLabel: '🔮 友達にあなたの性格を予想してもらう',
+    guessInviteBtn: '予想リンクをコピー 🔗',
+    guessInviteCopiedLabel: 'コピーしました ✓',
+    guessBlockLabel: '性格を予想',
+    guessIntroTitle: 'この人の性格、当ててみて!',
+    guessIntroLead: '友達や知り合いを思い浮かべながら、4問だけ答えてね。<br>正解できるか、ドキドキしながらどうぞ。',
+    guessStartBtn: '予想をはじめる ✨',
+    guessRevealTitleCorrect: '大正解! 🎉',
+    guessRevealTitleWrong: '惜しい!',
+    guessRevealBody: (guessed, actual, guessedLabel, actualLabel) => guessed === actual
+      ? `あなたの予想は「${actualLabel}」——ぴったり当たり!よく見てるね。`
+      : `あなたの予想は「${guessedLabel}」だったけど、本当は「${actualLabel}」でした。`,
+    guessTakeQuizBtn: '自分も診断してみる ✨',
+    guessInvalidBody: 'この予想リンクは正しく読み込めませんでした。リンクを送ってくれた人に、もう一度リンクを送ってもらってね。',
   },
   en: {
     pageTitle: 'MBTI Personality, Love & Career Type Quiz',
@@ -1050,8 +1064,40 @@ const UI_TEXT = {
     loveCharRarityLine: (pct) => pct >= 35
       ? `🤝 About ${pct}% share this group — odds are good you'll find your people (a general reference stat from an overseas survey, not specific to this 64-combo quiz)`
       : `✨ About ${pct}% of people share this temperament group (a general reference stat from an overseas survey, not specific to this 64-combo quiz)`,
+    guessInviteLabel: '🔮 See if a friend can guess your type',
+    guessInviteBtn: 'Copy Guess Link 🔗',
+    guessInviteCopiedLabel: 'Copied ✓',
+    guessBlockLabel: 'Guess Their Type',
+    guessIntroTitle: 'Can you guess this person\'s type?',
+    guessIntroLead: 'Think of the friend who sent you this, and answer 4 quick questions about them.',
+    guessStartBtn: 'Start Guessing ✨',
+    guessRevealTitleCorrect: 'Nailed it! 🎉',
+    guessRevealTitleWrong: 'So close!',
+    guessRevealBody: (guessed, actual, guessedLabel, actualLabel) => guessed === actual
+      ? `You guessed "${actualLabel}" — spot on! You really know them.`
+      : `You guessed "${guessedLabel}", but they're actually "${actualLabel}".`,
+    guessTakeQuizBtn: 'Take Your Own Test ✨',
+    guessInvalidBody: 'This guess link didn\'t load correctly. Ask your friend to send it again.',
   },
 };
+
+// ===== 友達の性格を予想する4問(2026-09-12、[[project_diagnostic_web_tool]]流入拡大策より。
+// 相性診断の「お相手のタイプを推測する4問」と同じ設計思想・同水準の観察ベース設問を、
+// 三人称視点(この人は/they are)に書き替えて流用) =====
+const AXIS_ORDER = ['EI', 'SN', 'TF', 'JP'];
+const GUESS_QUESTIONS = [
+  { axis: 'EI', text: '大人数の場で、その人はどちらかというと…', a: { letter: 'E', text: '自分から輪の中心に入っていくタイプ' }, b: { letter: 'I', text: '気づいたら端の方で誰かと話しているタイプ' } },
+  { axis: 'SN', text: '話していて多いのは…', a: { letter: 'S', text: '具体的な事実や経験の話' }, b: { letter: 'N', text: '抽象的な考えやアイデアの話' } },
+  { axis: 'TF', text: '相談すると、その人はまず…', a: { letter: 'T', text: '論理的に整理してくれる' }, b: { letter: 'F', text: '気持ちに寄り添ってくれる' } },
+  { axis: 'JP', text: '約束や予定に対して、その人は…', a: { letter: 'J', text: '早めにきっちり決めたがる' }, b: { letter: 'P', text: '直前まで決めない・柔軟な方' } },
+];
+const GUESS_QUESTIONS_EN = [
+  { axis: 'EI', text: 'In a big group, are they more the type who…', a: { letter: 'E', text: 'Jumps right into the center of things' }, b: { letter: 'I', text: 'Ends up quietly talking with one person off to the side' } },
+  { axis: 'SN', text: 'When you talk, they tend to bring up more…', a: { letter: 'S', text: 'Concrete facts and real experiences' }, b: { letter: 'N', text: 'Abstract ideas and possibilities' } },
+  { axis: 'TF', text: 'When you go to them for advice, they usually…', a: { letter: 'T', text: 'Break it down logically first' }, b: { letter: 'F', text: 'Meet your feelings first' } },
+  { axis: 'JP', text: 'When it comes to plans and commitments, they…', a: { letter: 'J', text: 'Like to lock things in early' }, b: { letter: 'P', text: 'Keep it flexible until the last minute' } },
+];
+function getGuessQuestions() { return LANG === 'en' ? GUESS_QUESTIONS_EN : GUESS_QUESTIONS; }
 
 function applyLangUI() {
   const t = UI_TEXT[LANG];
@@ -1070,6 +1116,13 @@ function applyLangUI() {
   document.getElementById('btn-share-line').textContent = t.lineBtn;
   document.getElementById('btn-copy-url').textContent = t.copyUrlBtn;
   document.getElementById('btn-restart').textContent = isSharedView ? t.restartBtnFirstVisit : t.restartBtn;
+  document.getElementById('guess-invite-label').textContent = t.guessInviteLabel;
+  document.getElementById('btn-invite-guess').textContent = t.guessInviteBtn;
+  document.getElementById('guess-block-label').textContent = t.guessBlockLabel;
+  document.getElementById('guess-intro-title').textContent = t.guessIntroTitle;
+  document.getElementById('guess-intro-lead').innerHTML = t.guessIntroLead;
+  document.getElementById('btn-guess-start').textContent = t.guessStartBtn;
+  document.getElementById('btn-guess-take-quiz').textContent = t.guessTakeQuizBtn;
   document.getElementById('btn-save-card').textContent = t.saveCardBtn;
   document.getElementById('btn-save-card-story').textContent = t.saveCardStoryBtn;
   document.getElementById('love-card-label').textContent = t.loveCardLabel;
@@ -1153,6 +1206,8 @@ const screens = {
   start: document.getElementById('screen-start'),
   chat: document.getElementById('screen-chat'),
   result: document.getElementById('screen-result'),
+  guess: document.getElementById('screen-guess'),
+  guessReveal: document.getElementById('screen-guess-reveal'),
 };
 const chatLog = document.getElementById('chat-log');
 const chatOptions = document.getElementById('chat-options');
@@ -1163,7 +1218,7 @@ const progressText = document.getElementById('progress-text');
 // 画面遷移のたびに新しい画面の見出しへフォーカスを移し、スクリーンリーダー・
 // キーボードユーザーに遷移が起きたことを伝える(tabindex="-1"は一時的なフォーカス対象化のため)
 function focusScreenHeading(name) {
-  const headingIds = { start: 'start-title', chat: 'block-label', result: 'result-title-el' };
+  const headingIds = { start: 'start-title', chat: 'block-label', result: 'result-title-el', guess: 'guess-intro-title', guessReveal: 'guess-reveal-title' };
   const el = document.getElementById(headingIds[name]);
   if (!el) return;
   if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1');
@@ -1331,6 +1386,88 @@ function shareOgUrl() {
   const dir = path.endsWith('/') ? path : path.slice(0, path.lastIndexOf('/') + 1);
   const typesDir = LANG === 'en' ? 'types/en/' : 'types/';
   return location.origin + dir + typesDir + lastResult.personality.toLowerCase() + '.html';
+}
+
+// ===== 友達に性格タイプを予想してもらう招待リンク(2026-09-12) =====
+function inviteGuessUrl() {
+  if (!lastResult) return location.href;
+  return location.origin + location.pathname + '?guess=' + lastResult.personality + '&lang=' + LANG;
+}
+function copyInviteGuessUrl() {
+  if (!lastResult) return;
+  const t = UI_TEXT[LANG];
+  const btn = document.getElementById('btn-invite-guess');
+  navigator.clipboard.writeText(inviteGuessUrl()).then(() => {
+    const original = btn.textContent;
+    btn.textContent = t.guessInviteCopiedLabel;
+    trackEvent('guess_invite_copy');
+    setTimeout(() => { btn.textContent = original; }, 2000);
+  }).catch(() => { /* クリップボード権限が無い環境でも診断導線自体は続行する */ });
+}
+
+// ===== 予想クイズ本体 =====
+let guessQuizIndex = 0;
+let guessAnswers = {};
+let guessTargetCode = null;
+function startGuessQuiz() {
+  trackEvent('guess_quiz_start');
+  document.getElementById('guess-intro').style.display = 'none';
+  document.getElementById('guess-log').style.display = '';
+  guessQuizIndex = 0;
+  guessAnswers = {};
+  renderGuessQuestion();
+}
+function updateGuessProgress() {
+  const questions = getGuessQuestions();
+  document.getElementById('guess-progress-fill').style.width = `${Math.round((guessQuizIndex / questions.length) * 100)}%`;
+  document.getElementById('guess-progress-text').textContent = `${guessQuizIndex + 1} / ${questions.length}`;
+}
+function renderGuessQuestion() {
+  const questions = getGuessQuestions();
+  const q = questions[guessQuizIndex];
+  const wrap = document.getElementById('guess-options');
+  wrap.innerHTML = `
+    <div class="q-text" style="margin-bottom:12px;">${q.text}</div>
+    <button type="button" class="option-btn" data-letter="${q.a.letter}"><span class="option-text">${q.a.text}</span></button>
+    <button type="button" class="option-btn" data-letter="${q.b.letter}"><span class="option-text">${q.b.text}</span></button>
+  `;
+  updateGuessProgress();
+  wrap.querySelectorAll('.option-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      wrap.querySelectorAll('.option-btn').forEach((b) => { b.disabled = true; });
+      btn.classList.add('selected');
+      guessAnswers[q.axis] = btn.dataset.letter;
+      setTimeout(() => {
+        if (guessQuizIndex < questions.length - 1) {
+          guessQuizIndex++;
+          renderGuessQuestion();
+        } else {
+          finishGuessQuiz();
+        }
+      }, 350);
+    });
+  });
+}
+function finishGuessQuiz() {
+  const guessedCode = AXIS_ORDER.map((a) => guessAnswers[a]).join('');
+  trackEvent('guess_quiz_complete', { guessed: guessedCode, target: guessTargetCode, correct: guessedCode === guessTargetCode });
+  renderGuessReveal(guessedCode, guessTargetCode);
+  showScreen('guessReveal');
+}
+function renderGuessReveal(guessedCode, actualCode) {
+  const t = UI_TEXT[LANG];
+  const blockMap = getBlockMap();
+  const body = document.getElementById('guess-reveal-body');
+  if (!actualCode || !blockMap.personality[actualCode]) {
+    body.innerHTML = `<p class="lead">${t.guessInvalidBody}</p>`;
+    document.getElementById('guess-reveal-title').textContent = '';
+    return;
+  }
+  const isCorrect = guessedCode === actualCode;
+  const guessedLabel = blockMap.personality[guessedCode] ? blockMap.personality[guessedCode][1] : guessedCode;
+  const actualLabel = blockMap.personality[actualCode][1];
+  document.getElementById('guess-reveal-title').textContent = isCorrect ? t.guessRevealTitleCorrect : t.guessRevealTitleWrong;
+  body.innerHTML = `<p class="lead">${t.guessRevealBody(guessedCode, actualCode, guessedLabel, actualLabel)}</p>`;
 }
 
 function copyResultUrl() {
@@ -2255,6 +2392,9 @@ document.getElementById('btn-save-love-card').addEventListener('click', download
 document.getElementById('btn-share-lovechar').addEventListener('click', shareLoveCharResult);
 document.getElementById('btn-save-lovechar-card').addEventListener('click', () => downloadLoveCharCard('x'));
 document.getElementById('btn-save-lovechar-card-story').addEventListener('click', () => downloadLoveCharCard('story'));
+document.getElementById('btn-invite-guess').addEventListener('click', copyInviteGuessUrl);
+document.getElementById('btn-guess-start').addEventListener('click', startGuessQuiz);
+document.getElementById('btn-guess-take-quiz').addEventListener('click', () => { trackEvent('guess_reveal_take_quiz'); startQuiz(); });
 document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('ja'));
 document.getElementById('btn-lang-ja-chat').addEventListener('click', () => { setLang('ja'); refreshBlockLabel(); });
 document.getElementById('btn-lang-en-chat').addEventListener('click', () => { setLang('en'); refreshBlockLabel(); });
@@ -2288,4 +2428,15 @@ document.getElementById('btn-lang-en-chat').addEventListener('click', () => { se
   renderCardPreview(types);
   renderLoveCharCardPreview(types);
   updateCompatLink(types);
+})();
+
+// 予想リンク(?guess=性格タイプ4文字)で開かれた場合は、友達の性格を予想する画面を出す
+// (表示言語は上のinitLangFromUrlで?langから復元済み)。?r=と同時に来ることは無い想定だが、
+// 念のため?rの結果表示より後に評価し、?guessがあればそちらを優先する。
+(function loadFromGuessLink() {
+  const params = new URLSearchParams(location.search);
+  const target = params.get('guess');
+  if (!target || !MBTI_TYPE_RE.test(target)) return;
+  guessTargetCode = target;
+  showScreen('guess');
 })();

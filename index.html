@@ -141,6 +141,10 @@
       <button id="btn-copy-url" class="btn-secondary" aria-live="polite">結果URLをコピー 🔗</button>
       <button id="btn-restart" class="btn-secondary">もう一度診断する</button>
     </div>
+    <div class="result-actions result-actions-card">
+      <p id="guess-invite-label" class="type-page-sub" style="margin:0 0 8px;">🔮 友達にあなたの性格を予想してもらう</p>
+      <button id="btn-invite-guess" class="btn-secondary" aria-live="polite">予想リンクをコピー 🔗</button>
+    </div>
     <div id="result-save-actions" class="result-actions result-actions-card">
       <button id="btn-save-card" class="btn-secondary">結果カードを保存 🖼️</button>
       <button id="btn-save-card-story" class="btn-secondary">ストーリーズ用に保存 📱</button>
@@ -199,6 +203,37 @@
       <div class="follow-btns">
         <a class="follow-link" href="https://deskanimals114510-ai.github.io/tiny-wonders/?utm_source=personality-type-quiz&utm_medium=referral&utm_campaign=cross_site" target="_blank" rel="noopener">Tiny Wonders</a>
       </div>
+    </div>
+  </section>
+
+  <!-- 友達の性格を予想する画面(2026-09-12、招待リンク?guess=から着地。16Personalities「Type Guesser」型のバイラル機能) -->
+  <section id="screen-guess" class="screen">
+    <div class="chat-header">
+      <div class="chat-header-top">
+        <span id="guess-block-label" class="block-label">性格を予想</span>
+      </div>
+      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="4" aria-valuenow="1" aria-label="予想クイズの進捗"><div id="guess-progress-fill" class="progress-fill"></div></div>
+      <span id="guess-progress-text" class="progress-text">1 / 4</span>
+    </div>
+    <div id="guess-intro" class="start-card">
+      <div class="start-emoji">🔮</div>
+      <h1 id="guess-intro-title">この人の性格、当ててみて!</h1>
+      <p id="guess-intro-lead" class="lead">友達や知り合いを思い浮かべながら、4問だけ答えてね。<br>正解できるか、ドキドキしながらどうぞ。</p>
+      <button id="btn-guess-start" class="btn-primary">予想をはじめる ✨</button>
+    </div>
+    <div id="guess-log" class="chat-log" role="log" aria-live="polite" style="display:none;"></div>
+    <div id="guess-options" class="chat-options"></div>
+  </section>
+
+  <!-- 予想結果の答え合わせ画面 -->
+  <section id="screen-guess-reveal" class="screen">
+    <div class="result-header">
+      <span class="eyebrow">RESULT</span>
+      <p id="guess-reveal-title" class="result-title">予想の答え合わせ</p>
+    </div>
+    <div id="guess-reveal-body" class="start-card"></div>
+    <div class="result-actions">
+      <button id="btn-guess-take-quiz" class="btn-primary">自分も診断してみる ✨</button>
     </div>
   </section>
 

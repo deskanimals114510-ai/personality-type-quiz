@@ -392,6 +392,13 @@ body {
 }
 .option-btn:hover { border-color: var(--primary); box-shadow: 0 6px 16px rgba(255,143,179,0.2); }
 .option-btn:active { transform: scale(0.98); }
+/* 2026-09-12: 友達の性格を予想するクイズ(#screen-guess)用。回答後も選択肢を残して
+   進捗を示すため、選択済み/未選択の見た目を明示する。 */
+.option-btn.selected { border-color: var(--primary); background: rgba(255,143,179,0.12); box-shadow: 0 6px 16px rgba(255,143,179,0.2); }
+.option-btn:disabled { cursor: default; opacity: 0.55; }
+.option-btn:disabled:hover { box-shadow: 0 2px 8px rgba(90,70,160,0.05); }
+.option-btn.selected:disabled { opacity: 1; }
+#guess-options .q-text { font-size: 1.05rem; font-weight: 700; line-height: 1.5; }
 .option-num {
   flex: none;
   width: 24px;
