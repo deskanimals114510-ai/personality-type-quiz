@@ -1320,6 +1320,19 @@ function resultUrl() {
   return location.origin + location.pathname + '?r=' + buildResultCode(lastResult) + '&lang=' + LANG;
 }
 
+// 2026-09-11: X/LINEシェア時のリンクプレビュー(OGP)対策。`?r=`の動的URLはクローラーが
+// JSを実行しないため常に汎用OGP(サイト共通のog-image.jpg)のままで、結果を反映しない。
+// 性格タイプ別の静的ページ(types/{code}.html)は個別canonical/OGPを既に持つため、
+// SNS共有リンクにはこちらを使う。コピーURL・ネイティブ共有(画像添付)は従来通り
+// resultUrl()の完全な結果コードURLを維持する(友達に自分の3ブロック結果をそのまま見せる用途のため)。
+function shareOgUrl() {
+  if (!lastResult) return resultUrl();
+  const path = location.pathname;
+  const dir = path.endsWith('/') ? path : path.slice(0, path.lastIndexOf('/') + 1);
+  const typesDir = LANG === 'en' ? 'types/en/' : 'types/';
+  return location.origin + dir + typesDir + lastResult.personality.toLowerCase() + '.html';
+}
+
 function copyResultUrl() {
   if (!lastResult) return;
   const t = UI_TEXT[LANG];
@@ -1885,7 +1898,7 @@ async function shareResult() {
     }
   }
 
-  const url = encodeURIComponent(resultUrl());
+  const url = encodeURIComponent(shareOgUrl());
   const shareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`;
   window.open(shareUrl, '_blank', 'noopener,noreferrer');
   trackEvent('share', { method: 'x' });
@@ -1899,7 +1912,7 @@ function shareResultLine() {
   const lLabel = blockMap.love[lastResult.love][1];
   const wLabel = blockMap.work[lastResult.work][1];
   const text = t.shareText(pLabel, lLabel, wLabel);
-  const url = encodeURIComponent(resultUrl());
+  const url = encodeURIComponent(shareOgUrl());
   const shareUrl = `https://social-plugins.line.me/lineit/share?url=${url}&text=${encodeURIComponent(text)}`;
   window.open(shareUrl, '_blank', 'noopener,noreferrer');
   trackEvent('share', { method: 'line' });
