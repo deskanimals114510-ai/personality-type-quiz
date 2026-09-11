@@ -2396,6 +2396,7 @@ document.getElementById('btn-invite-guess').addEventListener('click', copyInvite
 document.getElementById('btn-guess-start').addEventListener('click', startGuessQuiz);
 document.getElementById('btn-guess-take-quiz').addEventListener('click', () => { trackEvent('guess_reveal_take_quiz'); startQuiz(); });
 document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('ja'));
+document.getElementById('btn-lang-en').addEventListener('click', () => setLang('en'));
 document.getElementById('btn-lang-ja-chat').addEventListener('click', () => { setLang('ja'); refreshBlockLabel(); });
 document.getElementById('btn-lang-en-chat').addEventListener('click', () => { setLang('en'); refreshBlockLabel(); });
 
