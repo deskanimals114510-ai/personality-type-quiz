@@ -100,6 +100,28 @@ body {
   .sparkle:nth-child(6) { left: 90%; }
 }
 
+/* 左右の余白に既存イラストを配置(2026-09-12、新規生成なし・既存アセット再利用)。
+   スタート画面のみ表示、診断中・結果画面では邪魔にならないよう非表示。 */
+.bg-illustrations { display: none; }
+@media (min-width: 1400px) {
+  body:has(#screen-start.active) .bg-illustrations {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .bg-illust {
+    position: absolute;
+    width: 190px;
+    border-radius: 28px;
+    opacity: 0.6;
+    box-shadow: 0 20px 45px rgba(120,60,100,0.22);
+  }
+  .bg-illust-left { top: 14%; left: 4%; transform: rotate(-7deg); }
+  .bg-illust-right { bottom: 12%; right: 4%; transform: rotate(6deg); }
+}
+
 #app {
   position: relative;
   z-index: 1;
