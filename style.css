@@ -206,6 +206,22 @@ body {
   border-color: transparent;
 }
 
+.hero-banner {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto 20px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+.hero-banner-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2.6 / 1;
+  object-fit: cover;
+  object-position: center;
+}
+.hero-banner-crop-top .hero-banner-img { object-position: top; }
 .start-emoji {
   font-size: 2.6rem;
   margin-bottom: 6px;
