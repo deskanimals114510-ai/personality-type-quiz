@@ -963,6 +963,9 @@ const UI_TEXT = {
     footerDisclaimer: '本診断はエンタメ目的のオリジナルコンテンツで、MBTI(Myers-Briggs Type Indicator)の考え方を参考にした独自基準の診断です。The Myers & Briggs Foundation等の公式機関とは提携しておらず、挿絵はAI画像生成です。科学的な心理診断や実際の心理検査に代わるものではありません。',
     footerPrivacy: '本診断は名前・生年月日等の個人情報の入力を求めません。回答内容はすべてお使いの端末内で処理され、サーバーへの送信・保存は一切行いません。なお、アクセス解析(Googleアナリティクス)は行っており、閲覧したページの情報が計測されます。また、Google Fontsの読み込み時にお使いのIPアドレスがGoogleに送信されます。',
     footerAffiliate: '🔖 本ページの「ラッキーアイテム」リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。',
+    transparencyTitle: '🔍 この診断が、他のMBTI診断と違うところ',
+    transparencyBody: '多くの性格診断は「1つのタイプ」を性格・恋愛・仕事すべてに当てはめます。この診断は30問を性格10問・恋愛10問・仕事10問に分け、3つのブロックをそれぞれ独立して判定します。だから性格はINFPでも恋愛はESFJ、仕事はENTJ——ということが普通に起こります。「本当の自分」は一つじゃない、という前提で作りました。',
+    transparencyNote: '判定ロジックにタイプの偏りが出ないよう、4000回のシミュレーションで検証済みです。MBTIは心理測定として意見が分かれる指標で、当サイトは「当てる」ためでなく、場面によって見え方が変わる面白さを届けるために使っています。',
     followLabel: '🐹 Desk Animalsをフォローする',
     followLabel2: '🔮 黒曜診断で、生年月日から占ってもらう',
     linkCompatBtn: '🔮 お相手との相性を見る',
@@ -1039,6 +1042,9 @@ const UI_TEXT = {
     footerDisclaimer: 'This is an original entertainment quiz inspired by MBTI (Myers-Briggs Type Indicator) concepts, using our own independent criteria. It is not affiliated with or endorsed by The Myers & Briggs Foundation or any official body. Illustrations are AI-generated, and this is not a substitute for a scientific psychological assessment.',
     footerPrivacy: "This quiz never asks for your name, birth date, or other personal information. Your answers are processed entirely on your own device and are never sent to or stored on a server. We do use Google Analytics for traffic measurement, which records information about the pages you view. Loading Google Fonts also sends your IP address to Google.",
     footerAffiliate: '🔖 The "Lucky Item" links on this page are affiliate (ad) links. We may earn a commission on purchases made through these links.',
+    transparencyTitle: "🔍 What makes this different from other MBTI quizzes",
+    transparencyBody: "Most personality quizzes give you one type and apply it to everything. This quiz splits its 30 questions into 3 independent blocks — personality, love, and career (10 questions each) — and judges each one on its own. So you might get INFP for personality, ESFJ for love, and ENTJ for career. We built it this way because we don't think \"the real you\" is just one thing.",
+    transparencyNote: "The scoring logic was tested across 4,000 simulated runs to avoid type bias. MBTI is a contested tool as a psychological measure — we use it not to \"diagnose\" you, but to show how differently you can look depending on the context.",
     followLabel: '🐹 Follow Desk Animals',
     followLabel2: '🔮 Try another quiz',
     linkCompatBtn: '🔮 Check Compatibility',
@@ -1141,6 +1147,9 @@ function applyLangUI() {
   document.getElementById('footer-disclaimer').textContent = t.footerDisclaimer;
   document.getElementById('footer-privacy').textContent = t.footerPrivacy;
   document.getElementById('footer-affiliate').textContent = t.footerAffiliate;
+  document.getElementById('transparency-title').textContent = t.transparencyTitle;
+  document.getElementById('transparency-body').textContent = t.transparencyBody;
+  document.getElementById('transparency-note').textContent = t.transparencyNote;
   document.getElementById('follow-label').textContent = t.followLabel;
   document.getElementById('follow-label-2').textContent = t.followLabel2;
   document.getElementById('link-compat').textContent = t.linkCompatBtn;
