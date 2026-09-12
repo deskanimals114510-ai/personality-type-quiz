@@ -759,6 +759,24 @@ body {
   .start-card { padding: 48px 40px 40px; }
 }
 
+/* PC幅でのスタート画面2カラム化(2026-09-12)。診断中(チャット)・結果画面は
+   意図的に幅を変えない——検索上位サイトの実地調査で、設問回答画面自体は
+   PC幅でも狭いカードのままにし、周囲の装飾だけ広げるのが定石と判明したため。
+   スタート画面のみ情報量が多く、2カラム化の効果が見込める。 */
+.start-sidebar { display: flex; flex-direction: column; gap: 18px; }
+.start-sidebar .start-more-links,
+.start-sidebar .transparency-box { margin-top: 0; }
+@media (min-width: 900px) {
+  #app:has(#screen-start.active) { max-width: 980px; }
+  .start-layout {
+    display: grid;
+    grid-template-columns: 480px 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+  .start-sidebar { padding-top: 6px; }
+}
+
 /* ---- タイプ別解説ページ(/types/) ---- */
 .type-page { padding: 26px 18px 36px; }
 .type-page-hero-img {
