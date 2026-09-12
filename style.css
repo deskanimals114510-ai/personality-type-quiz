@@ -86,6 +86,20 @@ body {
   html { scroll-behavior: auto; }
 }
 
+/* 超ワイド画面(2026-09-12)。機能コンテンツ(#app)の幅は広げず、左右の
+   余白を装飾ブロブで埋める——検索上位サイトの実地調査で確認した「設問画面は
+   狭いまま、周囲の装飾だけ広げる」方針をここでも踏襲。新規画像なしCSSのみ。 */
+@media (min-width: 1400px) {
+  .blob-1 { width: 480px; height: 480px; }
+  .blob-2 { width: 420px; height: 420px; }
+  .blob-3 { width: 380px; height: 380px; left: 74%; }
+  .blob-4 { width: 320px; height: 320px; left: -4%; }
+  .sparkle:nth-child(2) { left: 92%; }
+  .sparkle:nth-child(4) { left: 96%; }
+  .sparkle:nth-child(3) { left: 3%; }
+  .sparkle:nth-child(6) { left: 90%; }
+}
+
 #app {
   position: relative;
   z-index: 1;
