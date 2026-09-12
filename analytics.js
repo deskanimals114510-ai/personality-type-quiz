@@ -1,3 +1,10 @@
+// preload+media="print"で読み込んだGoogle Fontsを実際に適用する(初期描画をブロックしないための構成)。
+// インラインonload属性はCSP(script-src 'self')でブロックされるため、外部JS側で切り替える。
+(function applyPreloadedFont() {
+  const fontLink = document.getElementById('font-link');
+  if (fontLink) fontLink.media = 'all';
+})();
+
 // GA4計測(script.jsを読み込まない静的ページ用の共有スニペット)。
 // ローカル開発サーバーからのアクセスは除外し、本番GA4へのダミーpageview記録を防ぐ。
 (function () {

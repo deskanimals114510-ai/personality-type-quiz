@@ -1,3 +1,10 @@
+// preload+media="print"で読み込んだGoogle Fontsを実際に適用する(初期描画をブロックしないための構成)。
+// インラインonload属性はCSP(script-src 'self')でブロックされるため、外部JS側で切り替える。
+(function applyPreloadedFont() {
+  const fontLink = document.getElementById('font-link');
+  if (fontLink) fontLink.media = 'all';
+})();
+
 // ===== 設問データ(2026-08-09 改訂: 丁寧な文体+4択すべて異なる内容) =====
 // opts: 4つの選択肢。各軸2つずつ(strong=weight2, weak=weight1)を含むが、
 // 見た目上は全て独立した文章として提示する(強弱ラベルは表示しない)
