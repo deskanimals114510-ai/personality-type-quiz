@@ -599,6 +599,25 @@ body {
   color: var(--text);
 }
 
+.result-details { display: none; }
+.result-details.expanded { display: block; }
+.result-expand-btn {
+  display: block;
+  margin: 4px auto 4px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  background: #ffe3ee;
+  border: 1.5px solid var(--primary);
+  border-radius: 999px;
+  padding: 8px 20px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.result-expand-btn:hover { background: var(--primary); color: #fff; transform: translateY(-1px); }
+.result-expand-btn.expanded { display: none; }
+
 .lucky-item {
   margin-top: 18px;
   display: flex;

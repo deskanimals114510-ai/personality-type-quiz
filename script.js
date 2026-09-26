@@ -949,6 +949,7 @@ const UI_TEXT = {
     restartBtn: 'もう一度診断する',
     restartBtnFirstVisit: '自分も診断してみる ✨',
     luckyLabel: '🍀 今日のラッキーアイテム',
+    resultExpandText: '続きを見る(詳細・ラッキーアイテム) ▼',
     prTag: '広告',
     luckyPriceHint: '¥1,000〜3,000で買えるプチギフト',
     luckySeeMore: (name) => `${name}を見てみる`,
@@ -1028,6 +1029,7 @@ const UI_TEXT = {
     restartBtn: 'Take the Test Again',
     restartBtnFirstVisit: 'Take Your Own Test ✨',
     luckyLabel: "🍀 Today's Lucky Item",
+    resultExpandText: 'See more (details, lucky item) ▼',
     prTag: 'AD',
     luckyPriceHint: 'A cute $10–30 treat',
     luckySeeMore: (name) => `Shop ${name}`,
@@ -1529,6 +1531,8 @@ function renderResultCards(types) {
       <div class="type-name">${label}</div>
       <div class="mbti-code">${t.mbtiElementLine(type, getElementName(element))}</div>
       ${block === 'personality' && TYPE_RARITY[type] ? `<div class="rarity-line">${t.rarityLine(TYPE_RARITY[type])}</div>` : ''}
+      <button class="result-expand-btn" type="button">${t.resultExpandText}</button>
+      <div class="result-details">
       <div class="desc">${desc}</div>
       <div class="lucky-bridge">${luckyBridge}</div>
       <a class="lucky-item" href="${affiliateUrl(luckyKeyword)}" target="_blank" rel="noopener sponsored">
@@ -1536,6 +1540,7 @@ function renderResultCards(types) {
         <span class="lucky-text"><span class="lucky-label">${t.luckyLabel}<span class="lucky-pr-tag">${t.prTag}</span></span><span class="lucky-name">${t.luckySeeMore(lucky.name)}</span><span class="lucky-price">${t.luckyPriceHint}</span></span>
         <span class="lucky-arrow">›</span>
       </a>
+      </div>
     `;
     resultCards.appendChild(card);
   });
@@ -2393,6 +2398,18 @@ document.addEventListener('click', (e) => {
   if (hubCta) { trackEvent('hub_cta_click', { hub_cta_id: hubCta.id || 'unknown' }); return; }
   const luckyItem = e.target.closest('.lucky-item');
   if (luckyItem) { trackEvent('affiliate_click'); return; }
+  // 結果カードのプログレッシブディスクロージャー(「ちょい見せ」設計、2026-09-26追加)。
+  // 各カード(性格/恋愛/仕事)は最初はタイプ名までしか見せず、詳細・ラッキーアイテムは
+  // 「続きを見る」クリックで開示する(黒曜診断の同種実装と揃える)。
+  const expandBtn = e.target.closest('.result-expand-btn');
+  if (expandBtn) {
+    const card = expandBtn.closest('.result-card');
+    const details = card && card.querySelector('.result-details');
+    if (details) details.classList.add('expanded');
+    expandBtn.classList.add('expanded');
+    trackEvent('result_expand_click');
+    return;
+  }
 });
 
 document.getElementById('btn-start').addEventListener('click', startQuiz);
