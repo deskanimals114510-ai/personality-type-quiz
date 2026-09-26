@@ -976,6 +976,9 @@ const UI_TEXT = {
     transparencyNote: '判定ロジックにタイプの偏りが出ないよう、4000回のシミュレーションで検証済みです。MBTIは心理測定として意見が分かれる指標で、当サイトは「当てる」ためでなく、場面によって見え方が変わる面白さを届けるために使っています。',
     followLabel: '🐹 Desk Animalsをフォローする',
     followLabel2: '🔮 黒曜診断で、生年月日から占ってもらう',
+    followLinkKokuyo: '黒曜診断',
+    followLabel3: '🐾 動物の雑学・診断もチェック',
+    followLinkTwMatome: '動物雑学まとめ',
     linkCompatBtn: '🔮 お相手との相性を見る',
     nanderePromoLabel: '💘 「デレ」軸×動物で診断する新作もチェック',
     nanderePromoLink: '何デレ診断(ツンデレ・クーデレ等)へ',
@@ -1056,6 +1059,9 @@ const UI_TEXT = {
     transparencyNote: "The scoring logic was tested across 4,000 simulated runs to avoid type bias. MBTI is a contested tool as a psychological measure — we use it not to \"diagnose\" you, but to show how differently you can look depending on the context.",
     followLabel: '🐹 Follow Desk Animals',
     followLabel2: '🔮 Try another quiz',
+    followLinkKokuyo: 'Kokuyo Fortune Reading',
+    followLabel3: '🐾 Check out more animal trivia & quizzes',
+    followLinkTwMatome: 'Animal Trivia Roundup',
     linkCompatBtn: '🔮 Check Compatibility',
     nanderePromoLabel: '💘 Also try our new "Dere Type" quiz',
     nanderePromoLink: 'Take the Dere Type Quiz',
@@ -1161,6 +1167,9 @@ function applyLangUI() {
   document.getElementById('transparency-note').textContent = t.transparencyNote;
   document.getElementById('follow-label').textContent = t.followLabel;
   document.getElementById('follow-label-2').textContent = t.followLabel2;
+  document.getElementById('follow-link-kokuyo').textContent = t.followLinkKokuyo;
+  document.getElementById('follow-label-3').textContent = t.followLabel3;
+  document.getElementById('follow-link-tw-matome').textContent = t.followLinkTwMatome;
   document.getElementById('link-compat').textContent = t.linkCompatBtn;
   const linkCompatNoteEl = document.getElementById('link-compat-note');
   linkCompatNoteEl.textContent = t.jpOnlyNote;
