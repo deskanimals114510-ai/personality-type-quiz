@@ -907,6 +907,26 @@ body {
   .start-sidebar { padding-top: 6px; }
 }
 
+/* PC幅での結果画面グリッド化(2026-09-30)。結果カード(性格/恋愛/仕事の3枚)は
+   横に並べると一覧性が上がるが、シェア/保存ボタンやフォローリンクは幅を
+   広げても縦長ボタンが間延びするだけなので、結果画面の子要素は既定で
+   480px幅に留め、カード列(#result-cards)だけ幅いっぱいに広げてグリッド化する。 */
+@media (min-width: 900px) {
+  #app:has(#screen-result.active) { max-width: 960px; }
+  #screen-result { align-items: center; }
+  #screen-result > * {
+    width: 100%;
+    max-width: 480px;
+  }
+  #result-cards {
+    max-width: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+}
+
 /* ---- タイプ別解説ページ(/types/) ---- */
 .type-page { padding: 26px 18px 36px; }
 .type-page-hero-img {
