@@ -583,12 +583,13 @@ if (typeof document !== 'undefined') {
       } else {
         canvas.width = 1200; canvas.height = 630;
         drawNandereCard(canvas.getContext('2d'), 1200, 630, result, {
-          circleY: 175, circleR: 110, gapAfterCircle: 55, eyebrowGap: 42,
-          nameSize: 52, nameMinSize: 32, nameGap: 62,
-          nicknameSize: 26, nicknameGap: 56,
-          badgeFont: 22, badgeGap: 58,
-          compatFont: 21, compatGap: 40,
-          lineHalf: 300, ctaGap: 44, ctaSize: 26, brandSize: 18, brandOffset: 30,
+          // 下端のCTA・ブランド行が630px内に収まるよう詰めた値(2026-10-10、旧値ではy=642/672で見切れていた)
+          circleY: 140, circleR: 90, gapAfterCircle: 48, eyebrowGap: 40,
+          nameSize: 52, nameMinSize: 32, nameGap: 58,
+          nicknameSize: 26, nicknameGap: 50,
+          badgeFont: 22, badgeGap: 52,
+          compatFont: 21, compatGap: 34,
+          lineHalf: 300, ctaGap: 40, ctaSize: 26, brandSize: 18, brandOffset: 28,
         });
       }
       return canvas;

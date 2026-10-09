@@ -970,7 +970,7 @@ const UI_TEXT = {
     cardPreviewHintLink: '保存ボタンはこちら 👇',
     footerDisclaimer: '本診断はエンタメ目的のオリジナルコンテンツで、MBTI(Myers-Briggs Type Indicator)の考え方を参考にした独自基準の診断です。The Myers & Briggs Foundation等の公式機関とは提携しておらず、挿絵はAI画像生成です。科学的な心理診断や実際の心理検査に代わるものではありません。',
     footerPrivacy: '本診断は名前・生年月日等の個人情報の入力を求めません。回答内容はすべてお使いの端末内で処理され、サーバーへの送信・保存は一切行いません。なお、アクセス解析(Googleアナリティクス)は行っており、閲覧したページの情報が計測されます。また、Google Fontsの読み込み時にお使いのIPアドレスがGoogleに送信されます。',
-    footerAffiliate: '🔖 本ページの「ラッキーアイテム」リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。',
+    footerAffiliate: '🔖 本ページの「ラッキーアイテム」リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。Amazonのアソシエイトとして、Desk Animals Labは適格販売により収入を得ています。',
     transparencyTitle: '🔍 この診断が、他のMBTI診断と違うところ',
     transparencyBody: '多くの性格診断は「1つのタイプ」を性格・恋愛・仕事すべてに当てはめます。この診断は30問を性格10問・恋愛10問・仕事10問に分け、3つのブロックをそれぞれ独立して判定します。だから性格はINFPでも恋愛はESFJ、仕事はENTJ——ということが普通に起こります。「本当の自分」は一つじゃない、という前提で作りました。',
     transparencyNote: '判定ロジックにタイプの偏りが出ないよう、4000回のシミュレーションで検証済みです。MBTIは心理測定として意見が分かれる指標で、当サイトは「当てる」ためでなく、場面によって見え方が変わる面白さを届けるために使っています。',
@@ -986,6 +986,8 @@ const UI_TEXT = {
     hubCtaNandereSub: '何デレ診断(動物×デレ軸)',
     hubCtaTsumiTitle: '恋のダメなクセを悪魔キャラで診断',
     hubCtaTsumiSub: '恋の罪診断(嫉妬・強欲・怠惰・傲慢)',
+    hubCtaMeroiTitle: 'あなたのメロさは何系?結果は全員「褒め」',
+    hubCtaMeroiSub: 'メロい度診断(わんこ系・ツンねこ系など)',
     hubCtaTitle: 'MBTI 16タイプ一覧を見る',
     hubCtaSubStart: '診断前に全タイプの性格・恋愛・仕事をチェック',
     hubCtaSubResult: '気になる他のタイプの性格・恋愛・仕事もチェック',
@@ -1055,7 +1057,7 @@ const UI_TEXT = {
     cardPreviewHintLink: 'Save it via the button below 👇',
     footerDisclaimer: 'This is an original entertainment quiz inspired by MBTI (Myers-Briggs Type Indicator) concepts, using our own independent criteria. It is not affiliated with or endorsed by The Myers & Briggs Foundation or any official body. Illustrations are AI-generated, and this is not a substitute for a scientific psychological assessment.',
     footerPrivacy: "This quiz never asks for your name, birth date, or other personal information. Your answers are processed entirely on your own device and are never sent to or stored on a server. We do use Google Analytics for traffic measurement, which records information about the pages you view. Loading Google Fonts also sends your IP address to Google.",
-    footerAffiliate: '🔖 The "Lucky Item" links on this page are affiliate (ad) links. We may earn a commission on purchases made through these links.',
+    footerAffiliate: '🔖 The "Lucky Item" links on this page are affiliate (ad) links. We may earn a commission on purchases made through these links. As an Amazon Associate, Desk Animals Lab earns from qualifying purchases.',
     transparencyTitle: "🔍 What makes this different from other MBTI quizzes",
     transparencyBody: "Most personality quizzes give you one type and apply it to everything. This quiz splits its 30 questions into 3 independent blocks — personality, love, and career (10 questions each) — and judges each one on its own. So you might get INFP for personality, ESFJ for love, and ENTJ for career. We built it this way because we don't think \"the real you\" is just one thing.",
     transparencyNote: "The scoring logic was tested across 4,000 simulated runs to avoid type bias. MBTI is a contested tool as a psychological measure — we use it not to \"diagnose\" you, but to show how differently you can look depending on the context.",
@@ -1071,6 +1073,8 @@ const UI_TEXT = {
     hubCtaNandereSub: 'Dere Type Quiz (animal × affection style)',
     hubCtaTsumiTitle: 'Your bad love habits, as a little devil',
     hubCtaTsumiSub: 'Love Sins Quiz (jealousy, greed, sloth, pride)',
+    hubCtaMeroiTitle: 'What kind of charm makes people melt for you?',
+    hubCtaMeroiSub: 'Charm Type Quiz (puppy, cool-cat, and more)',
     hubCtaTitle: 'Browse All 16 MBTI Types',
     hubCtaSubStart: 'Preview every type before you start',
     hubCtaSubResult: 'Check out the other types too',
@@ -1205,6 +1209,11 @@ function applyLangUI() {
   const hubCtaTsumiNoteEl = document.getElementById('hub-cta-tsumi-note');
   hubCtaTsumiNoteEl.textContent = t.jpOnlyNote;
   hubCtaTsumiNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
+  document.getElementById('hub-cta-meroi-title').textContent = t.hubCtaMeroiTitle;
+  document.getElementById('hub-cta-meroi-sub').textContent = t.hubCtaMeroiSub;
+  const hubCtaMeroiNoteEl = document.getElementById('hub-cta-meroi-note');
+  hubCtaMeroiNoteEl.textContent = t.jpOnlyNote;
+  hubCtaMeroiNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
   document.getElementById('hub-cta-result-title').textContent = t.hubCtaTitle;
   document.getElementById('hub-cta-result-sub').textContent = t.hubCtaSubResult;
   document.getElementById('hub-cta-result').setAttribute('href', hubUrl);
