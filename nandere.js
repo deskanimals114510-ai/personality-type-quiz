@@ -1,4 +1,9 @@
 'use strict';
+// preload+media="print"で読み込んだGoogle Fontsを適用する(CSPでインラインonloadが使えないためJS側で切り替え、script.jsと同じ)
+if (typeof document !== 'undefined') {
+  const fontLink = document.getElementById('font-link');
+  if (fontLink) fontLink.media = 'all';
+}
 // ===== 何デレ診断(スピンオフ、全10問) =====
 // メインのMBTI診断(script.js)とは完全に独立したファイル。DOM構造もscript.jsとは別物のため、
 // index.htmlとscript.jsには一切触れず、このファイル単体で完結させている。

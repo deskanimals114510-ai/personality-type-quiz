@@ -984,6 +984,8 @@ const UI_TEXT = {
     nanderePromoLink: '何デレ診断(ツンデレ・クーデレ等)へ',
     hubCtaNandereTitle: '愛され方にもクセがある。あなたは押す派? 引く派?',
     hubCtaNandereSub: '何デレ診断(動物×デレ軸)',
+    hubCtaTsumiTitle: '恋のダメなクセを悪魔キャラで診断',
+    hubCtaTsumiSub: '恋の罪診断(嫉妬・強欲・怠惰・傲慢)',
     hubCtaTitle: 'MBTI 16タイプ一覧を見る',
     hubCtaSubStart: '診断前に全タイプの性格・恋愛・仕事をチェック',
     hubCtaSubResult: '気になる他のタイプの性格・恋愛・仕事もチェック',
@@ -1067,6 +1069,8 @@ const UI_TEXT = {
     nanderePromoLink: 'Take the Dere Type Quiz',
     hubCtaNandereTitle: 'Everyone shows affection differently. Are you the pushy type, or the shy one?',
     hubCtaNandereSub: 'Dere Type Quiz (animal × affection style)',
+    hubCtaTsumiTitle: 'Your bad love habits, as a little devil',
+    hubCtaTsumiSub: 'Love Sins Quiz (jealousy, greed, sloth, pride)',
     hubCtaTitle: 'Browse All 16 MBTI Types',
     hubCtaSubStart: 'Preview every type before you start',
     hubCtaSubResult: 'Check out the other types too',
@@ -1196,6 +1200,11 @@ function applyLangUI() {
   const hubCtaNandereNoteEl = document.getElementById('hub-cta-nandere-note');
   hubCtaNandereNoteEl.textContent = t.jpOnlyNote;
   hubCtaNandereNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
+  document.getElementById('hub-cta-tsumi-title').textContent = t.hubCtaTsumiTitle;
+  document.getElementById('hub-cta-tsumi-sub').textContent = t.hubCtaTsumiSub;
+  const hubCtaTsumiNoteEl = document.getElementById('hub-cta-tsumi-note');
+  hubCtaTsumiNoteEl.textContent = t.jpOnlyNote;
+  hubCtaTsumiNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
   document.getElementById('hub-cta-result-title').textContent = t.hubCtaTitle;
   document.getElementById('hub-cta-result-sub').textContent = t.hubCtaSubResult;
   document.getElementById('hub-cta-result').setAttribute('href', hubUrl);
