@@ -950,6 +950,7 @@ const UI_TEXT = {
     restartBtnFirstVisit: '自分も診断してみる ✨',
     luckyLabel: '🍀 今日のラッキーアイテム',
     resultExpandText: '続きを見る(詳細・ラッキーアイテム) ▼',
+    resultExpandTextDetail: '続きを見る(詳細) ▼',
     prTag: '広告',
     luckyPriceHint: '¥1,000〜3,000で買えるプチギフト',
     luckySeeMore: (name) => `${name}を見てみる`,
@@ -969,7 +970,7 @@ const UI_TEXT = {
     cardPreviewHint: '画像を長押し(スマホ)または右クリックで保存できます',
     cardPreviewHintLink: '保存ボタンはこちら 👇',
     footerDisclaimer: '本診断はエンタメ目的のオリジナルコンテンツで、MBTI(Myers-Briggs Type Indicator)の考え方を参考にした独自基準の診断です。The Myers & Briggs Foundation等の公式機関とは提携しておらず、挿絵はAI画像生成です。科学的な心理診断や実際の心理検査に代わるものではありません。',
-    footerPrivacy: '本診断は名前・生年月日等の個人情報の入力を求めません。回答内容はすべてお使いの端末内で処理され、サーバーへの送信・保存は一切行いません。なお、アクセス解析(Googleアナリティクス)は行っており、閲覧したページの情報が計測されます。また、Google Fontsの読み込み時にお使いのIPアドレスがGoogleに送信されます。',
+    footerPrivacy: '本診断は名前・生年月日等の個人情報の入力を求めません。回答内容はすべてお使いの端末内で処理され、サーバーへの送信・保存は一切行いません。なお、アクセス解析(Googleアナリティクス)は行っており、閲覧したページの情報が計測されます。計測にはCookieを使用します。ラッキーアイテムのリンク先(Amazon)などの第三者がCookieを設定・取得する場合があります。また、Google Fontsの読み込み時にお使いのIPアドレスがGoogleに送信されます。',
     footerAffiliate: '🔖 本ページの「ラッキーアイテム」リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。Amazonのアソシエイトとして、Desk Animals Labは適格販売により収入を得ています。',
     transparencyTitle: '🔍 この診断が、他のMBTI診断と違うところ',
     transparencyBody: '多くの性格診断は「1つのタイプ」を性格・恋愛・仕事すべてに当てはめます。この診断は30問を性格10問・恋愛10問・仕事10問に分け、3つのブロックをそれぞれ独立して判定します。だから性格はINFPでも恋愛はESFJ、仕事はENTJ——ということが普通に起こります。「本当の自分」は一つじゃない、という前提で作りました。',
@@ -1043,6 +1044,7 @@ const UI_TEXT = {
     restartBtnFirstVisit: 'Take Your Own Test ✨',
     luckyLabel: "🍀 Today's Lucky Item",
     resultExpandText: 'See more (details, lucky item) ▼',
+    resultExpandTextDetail: 'See more (details) ▼',
     prTag: 'AD',
     luckyPriceHint: 'A cute $10–30 treat',
     luckySeeMore: (name) => `Shop ${name}`,
@@ -1062,8 +1064,9 @@ const UI_TEXT = {
     cardPreviewHint: 'Long-press (mobile) or right-click the image to save it',
     cardPreviewHintLink: 'Save it via the button below 👇',
     footerDisclaimer: 'This is an original entertainment quiz inspired by MBTI (Myers-Briggs Type Indicator) concepts, using our own independent criteria. It is not affiliated with or endorsed by The Myers & Briggs Foundation or any official body. Illustrations are AI-generated, and this is not a substitute for a scientific psychological assessment.',
-    footerPrivacy: "This quiz never asks for your name, birth date, or other personal information. Your answers are processed entirely on your own device and are never sent to or stored on a server. We do use Google Analytics for traffic measurement, which records information about the pages you view. Loading Google Fonts also sends your IP address to Google.",
-    footerAffiliate: '🔖 The "Lucky Item" links on this page are affiliate (ad) links. We may earn a commission on purchases made through these links. As an Amazon Associate, Desk Animals Lab earns from qualifying purchases.',
+    footerPrivacy: "This quiz never asks for your name, birth date, or other personal information. Your answers are processed entirely on your own device and are never sent to or stored on a server. We do use Google Analytics for traffic measurement, which records information about the pages you view. It uses cookies for this measurement. Loading Google Fonts also sends your IP address to Google.",
+    // 英語版は米国アソシエイトのタグ(AFFILIATE_TAG_EN)を取得するまでAmazonリンク自体を出さないので、開示文も出さない
+    footerAffiliate: AFFILIATE_TAG_EN ? '🔖 The "Lucky Item" links on this page are affiliate (ad) links. We may earn a commission on purchases made through these links. As an Amazon Associate, Desk Animals Lab earns from qualifying purchases.' : '',
     transparencyTitle: "🔍 What makes this different from other MBTI quizzes",
     transparencyBody: "Most personality quizzes give you one type and apply it to everything. This quiz splits its 30 questions into 3 independent blocks — personality, love, and career (10 questions each) — and judges each one on its own. So you might get INFP for personality, ESFJ for love, and ENTJ for career. We built it this way because we don't think \"the real you\" is just one thing.",
     transparencyNote: "The scoring logic was tested across 4,000 simulated runs to avoid type bias. MBTI is a contested tool as a psychological measure — we use it not to \"diagnose\" you, but to show how differently you can look depending on the context.",
@@ -1416,10 +1419,18 @@ function showResult() {
 
 // 相性診断サイトへ自分の結果コードを引き継ぐ(?me=)。相性診断側はこのコードを
 // 「あなたの結果コード」欄に自動入力し、お相手のコード入力または推測クイズへ進む。
+// 相性診断の招待リンク(?invite=招待者のコード)経由で来た人は、診断後に招待者のコードも一緒に
+// 相性診断へ戻す(戻った先で招待者との相性がそのまま表示される。2026-10-11、招待ループの途切れを修正)
+const AISHO_INVITE = (() => {
+  const v = new URLSearchParams(location.search).get('invite') || '';
+  return /^[A-Za-z]{12}$/.test(v) ? v.toUpperCase() : '';
+})();
+
 function updateCompatLink(types) {
   const link = document.getElementById('link-compat');
   if (!link) return;
-  link.href = `https://deskanimals114510-ai.github.io/aisho-shindan/?me=${buildResultCode(types)}`;
+  const invite = AISHO_INVITE ? `&invite=${AISHO_INVITE}` : '';
+  link.href = `https://deskanimals114510-ai.github.io/aisho-shindan/?me=${buildResultCode(types)}${invite}`;
 }
 
 // 生年月日等の入力を持たないため、確定した3タイプ(各4文字)をそのままURLに載せる
@@ -1575,6 +1586,18 @@ function renderResultCards(types) {
     const luckyKeyword = colorWord ? `${lucky.keyword} ${colorWord}` : lucky.keyword;
     const luckyBridge = getLuckyBridge()[block][element];
 
+    // 米国アソシエイト未取得の英語版はAmazonリンクを出さない(タグ無しリンクで「アソシエイト」を名乗らないため)
+    const luckyHtml = (LANG === 'en' && !AFFILIATE_TAG_EN) ? '' : `
+      <div class="lucky-bridge">${luckyBridge}</div>
+      <a class="lucky-item" href="${affiliateUrl(luckyKeyword)}" target="_blank" rel="noopener sponsored">
+        <span class="lucky-emoji">${LUCKY_ICON_MAP[lucky.emoji] ? `<img src="img/lucky-icons/${LUCKY_ICON_MAP[lucky.emoji]}.jpg" alt="" width="42" height="42" loading="lazy">` : lucky.emoji}</span>
+        <span class="lucky-text"><span class="lucky-label">${t.luckyLabel}<span class="lucky-pr-tag">${t.prTag}</span></span><span class="lucky-name">${t.luckySeeMore(lucky.name)}</span><span class="lucky-price">${t.luckyPriceHint}</span></span>
+        <span class="lucky-arrow">›</span>
+      </a>`;
+    // 「続きを見る」を押す人がほぼいないため(result_expand_click 90日0件、2026-10-11監査)、
+    // 性格ブロックのラッキーアイテムだけは最初から見せる。恋愛・仕事は従来どおり開示後に表示
+    const luckyUpfront = block === 'personality';
+
     const card = document.createElement('div');
     card.className = 'result-card';
     card.style.setProperty('--accent', meta.color);
@@ -1585,16 +1608,12 @@ function renderResultCards(types) {
       <div class="type-name">${label}</div>
       <div class="mbti-code">${t.mbtiElementLine(type, getElementName(element))}</div>
       ${block === 'personality' && TYPE_RARITY[type] ? `<div class="rarity-line">${t.rarityLine(TYPE_RARITY[type])}</div>` : ''}
-      <button class="result-expand-btn" type="button">${t.resultExpandText}</button>
+      <button class="result-expand-btn" type="button">${luckyUpfront || !luckyHtml ? t.resultExpandTextDetail : t.resultExpandText}</button>
       <div class="result-details">
       <div class="desc">${desc}</div>
-      <div class="lucky-bridge">${luckyBridge}</div>
-      <a class="lucky-item" href="${affiliateUrl(luckyKeyword)}" target="_blank" rel="noopener sponsored">
-        <span class="lucky-emoji">${LUCKY_ICON_MAP[lucky.emoji] ? `<img src="img/lucky-icons/${LUCKY_ICON_MAP[lucky.emoji]}.jpg" alt="" width="42" height="42" loading="lazy">` : lucky.emoji}</span>
-        <span class="lucky-text"><span class="lucky-label">${t.luckyLabel}<span class="lucky-pr-tag">${t.prTag}</span></span><span class="lucky-name">${t.luckySeeMore(lucky.name)}</span><span class="lucky-price">${t.luckyPriceHint}</span></span>
-        <span class="lucky-arrow">›</span>
-      </a>
+      ${luckyUpfront ? '' : luckyHtml}
       </div>
+      ${luckyUpfront ? luckyHtml : ''}
     `;
     resultCards.appendChild(card);
   });

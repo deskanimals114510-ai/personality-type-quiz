@@ -246,12 +246,18 @@ if (typeof document !== 'undefined') {
     let answers = [];
     let lastResult = null; // { id, sunao, netsu, purity }
 
+    // GA4イベント送信(ローカル開発時・GA未読込時は何もしない)
+    function track(name, params) {
+      if (typeof window.gtag === 'function') window.gtag('event', name, params);
+    }
+
     function showScreen(name) {
       Object.values(screens).forEach((s) => s.classList.remove('active'));
       screens[name].classList.add('active');
     }
 
     function startQuiz() {
+      track('quiz_start', { quiz_name: 'nandere' });
       currentIndex = 0;
       answers = [];
       chatLog.innerHTML = '';
@@ -307,6 +313,7 @@ if (typeof document !== 'undefined') {
       const id = computeNandereType(sunao, netsu);
       const purity = computeNanderePurity(sunao, netsu);
       lastResult = { id, sunao, netsu, purity };
+      track('quiz_complete', { quiz_name: 'nandere', result_type: id });
       showScreen('result');
       renderResult(lastResult);
       renderCardPreview(lastResult);
@@ -355,6 +362,9 @@ if (typeof document !== 'undefined') {
           <span class="lucky-arrow">›</span>
         </a>
       `;
+      document.querySelector('#nandere-lucky .lucky-item').addEventListener('click', () => {
+        track('affiliate_click', { quiz_name: 'nandere', result_type: result.id, item_name: lucky.name });
+      });
     }
 
     function resultUrl(result) {
@@ -364,6 +374,7 @@ if (typeof document !== 'undefined') {
     function copyResultUrl() {
       if (!lastResult) return;
       const btn = document.getElementById('btn-copy-url');
+      track('copy_url', { quiz_name: 'nandere', result_type: lastResult.id });
       navigator.clipboard.writeText(resultUrl(lastResult)).then(() => {
         const original = btn.textContent;
         btn.textContent = 'コピーしました!';
@@ -373,7 +384,8 @@ if (typeof document !== 'undefined') {
 
     function shareText(result) {
       const t = NANDERE_TYPES[result.id];
-      return `【恋愛タイプ診断】私は「${t.emoji}${t.name}」でした!(${t.nickname})\n#何デレ診断 #恋愛タイプ診断 #ラブタイプ診断`;
+      const score = t.rare ? '(出現率約5%の激レア)' : `(${t.name}純度${result.purity}%)`;
+      return `私は「${t.emoji}${t.name}」でした!${score}\n${t.nickname}\nあなたは何デレ?\n#何デレ診断 #恋愛タイプ診断`;
     }
 
     function shareResultX() {
@@ -381,6 +393,7 @@ if (typeof document !== 'undefined') {
       const text = shareText(lastResult);
       const url = encodeURIComponent(resultUrl(lastResult));
       const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`;
+      track('share', { method: 'x', quiz_name: 'nandere', content_type: 'nandere', item_id: lastResult.id });
       window.open(shareUrl, '_blank', 'noopener,noreferrer');
     }
 
@@ -389,11 +402,21 @@ if (typeof document !== 'undefined') {
       const text = shareText(lastResult);
       const url = encodeURIComponent(resultUrl(lastResult));
       const shareUrl = `https://social-plugins.line.me/lineit/share?url=${url}&text=${encodeURIComponent(text)}`;
+      track('share', { method: 'line', quiz_name: 'nandere', content_type: 'nandere', item_id: lastResult.id });
       window.open(shareUrl, '_blank', 'noopener,noreferrer');
     }
 
     function restartQuiz() {
       lastResult = null;
+      // シェアURL経由で入れ替えた見出し・ボタンの並び・役割を元に戻す
+      document.querySelector('#screen-result .result-title').innerHTML = 'あなたの「デレ」タイプは<span class="grad-text">コレ!</span>';
+      const restartBtn = document.getElementById('btn-restart');
+      const shareBtn = document.getElementById('btn-share');
+      shareBtn.className = 'btn-primary';
+      restartBtn.className = 'btn-secondary';
+      shareBtn.parentNode.prepend(shareBtn);
+      restartBtn.parentNode.appendChild(restartBtn);
+      restartBtn.textContent = 'もう一度診断する';
       history.replaceState(null, '', location.pathname);
       startQuiz();
     }
@@ -675,6 +698,7 @@ if (typeof document !== 'undefined') {
       const original = btn.textContent;
       btn.textContent = '生成中…';
       btn.disabled = true;
+      track('save_card', { quiz_name: 'nandere', mode });
       try {
         const canvas = buildNandereCardCanvas(lastResult, mode, await loadTypeImage(lastResult.id));
         await new Promise((resolve) => {
@@ -723,6 +747,15 @@ if (typeof document !== 'undefined') {
       showScreen('result');
       renderResult(lastResult);
       renderCardPreview(lastResult);
+      // シェアされたURLから来た人向けに、見出しとボタンを「自分も診断する」導線にする
+      document.querySelector('#screen-result .result-title').innerHTML = `シェアされたのは<wbr><span class="grad-text" style="white-space:nowrap">「${NANDERE_TYPES[id].name}」</span>`;
+      // 他人の結果を「私は〜」とシェアしないよう、自分で診断するボタンを先頭・主ボタンにする
+      const restartBtn = document.getElementById('btn-restart');
+      const shareBtn = document.getElementById('btn-share');
+      restartBtn.textContent = '自分は何デレか診断する 💘';
+      restartBtn.className = 'btn-primary';
+      shareBtn.className = 'btn-secondary';
+      restartBtn.parentNode.prepend(restartBtn);
     })();
 
     // ===== アクセス解析(メインサイトと同一GA4プロパティ) =====
