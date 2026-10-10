@@ -990,6 +990,8 @@ const UI_TEXT = {
     hubCtaMeroiSub: 'メロい度診断(わんこ系・ツンねこ系など)',
     hubCtaMetsuTitle: '好きな人・推しの「何」にやられるタイプ?',
     hubCtaMetsuSub: '何すぎて滅?診断(ギャップ・尊いなど)',
+    hubCtaFrenemyTitle: '友達へのちょっとした毒、何%?',
+    hubCtaFrenemySub: 'フレネミー度診断(張り合い・辛口など)',
     hubCtaTitle: 'MBTI 16タイプ一覧を見る',
     hubCtaSubStart: '診断前に全タイプの性格・恋愛・仕事をチェック',
     hubCtaSubResult: '気になる他のタイプの性格・恋愛・仕事もチェック',
@@ -1079,6 +1081,8 @@ const UI_TEXT = {
     hubCtaMeroiSub: 'Charm Type Quiz (puppy, cool-cat, and more)',
     hubCtaMetsuTitle: 'What about your crush or fave knocks you out?',
     hubCtaMetsuSub: '"Too Much" Type Quiz (gap, cuteness, and more)',
+    hubCtaFrenemyTitle: 'How much "frenemy" is in you?',
+    hubCtaFrenemySub: 'Frenemy Quiz (rival, blunt, and more)',
     hubCtaTitle: 'Browse All 16 MBTI Types',
     hubCtaSubStart: 'Preview every type before you start',
     hubCtaSubResult: 'Check out the other types too',
@@ -1223,6 +1227,11 @@ function applyLangUI() {
   const hubCtaMetsuNoteEl = document.getElementById('hub-cta-metsu-note');
   hubCtaMetsuNoteEl.textContent = t.jpOnlyNote;
   hubCtaMetsuNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
+  document.getElementById('hub-cta-frenemy-title').textContent = t.hubCtaFrenemyTitle;
+  document.getElementById('hub-cta-frenemy-sub').textContent = t.hubCtaFrenemySub;
+  const hubCtaFrenemyNoteEl = document.getElementById('hub-cta-frenemy-note');
+  hubCtaFrenemyNoteEl.textContent = t.jpOnlyNote;
+  hubCtaFrenemyNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
   document.getElementById('hub-cta-result-title').textContent = t.hubCtaTitle;
   document.getElementById('hub-cta-result-sub').textContent = t.hubCtaSubResult;
   document.getElementById('hub-cta-result').setAttribute('href', hubUrl);
