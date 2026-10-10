@@ -400,6 +400,13 @@ if (typeof document !== 'undefined') {
 
     function restartQuiz() {
       lastResult = null;
+      // シェアURL経由で入れ替えたボタンの並び・役割を元に戻す
+      const restartBtn = document.getElementById('btn-restart');
+      const shareBtn = document.getElementById('btn-share');
+      shareBtn.className = 'btn-primary';
+      restartBtn.className = 'btn-secondary';
+      shareBtn.parentNode.prepend(shareBtn);
+      restartBtn.parentNode.appendChild(restartBtn);
       document.getElementById('btn-restart').textContent = 'もう一度診断する';
       history.replaceState(null, '', location.pathname);
       startQuiz();
@@ -682,6 +689,12 @@ if (typeof document !== 'undefined') {
       // シェアされたURLから来た人向けに、見出しとボタンを「自分も診断する」導線にする
       document.querySelector('#screen-result .result-title').innerHTML = `シェアされたメロさは<wbr><span class="grad-text" style="white-space:nowrap">「${MELO_TYPES[id].kei}」</span>`;
       document.getElementById('btn-restart').textContent = '自分のメロい度も診断する 💗';
+      // 他人の結果を「私は〜」とシェアしないよう、自分で診断するボタンを先頭・主ボタンにする
+      const restartBtn = document.getElementById('btn-restart');
+      const shareBtn = document.getElementById('btn-share');
+      restartBtn.className = 'btn-primary';
+      shareBtn.className = 'btn-secondary';
+      restartBtn.parentNode.prepend(restartBtn);
     })();
 
     // ===== アクセス解析(メインサイトと同一GA4プロパティ) =====

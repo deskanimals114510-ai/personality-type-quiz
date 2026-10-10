@@ -988,6 +988,8 @@ const UI_TEXT = {
     hubCtaTsumiSub: '恋の罪診断(嫉妬・強欲・怠惰・傲慢)',
     hubCtaMeroiTitle: 'あなたのメロさは何系?結果は全員「褒め」',
     hubCtaMeroiSub: 'メロい度診断(わんこ系・ツンねこ系など)',
+    hubCtaMetsuTitle: '好きな人・推しの「何」にやられるタイプ?',
+    hubCtaMetsuSub: '何すぎて滅?診断(ギャップ・尊いなど)',
     hubCtaTitle: 'MBTI 16タイプ一覧を見る',
     hubCtaSubStart: '診断前に全タイプの性格・恋愛・仕事をチェック',
     hubCtaSubResult: '気になる他のタイプの性格・恋愛・仕事もチェック',
@@ -1075,6 +1077,8 @@ const UI_TEXT = {
     hubCtaTsumiSub: 'Love Sins Quiz (jealousy, greed, sloth, pride)',
     hubCtaMeroiTitle: 'What kind of charm makes people melt for you?',
     hubCtaMeroiSub: 'Charm Type Quiz (puppy, cool-cat, and more)',
+    hubCtaMetsuTitle: 'What about your crush or fave knocks you out?',
+    hubCtaMetsuSub: '"Too Much" Type Quiz (gap, cuteness, and more)',
     hubCtaTitle: 'Browse All 16 MBTI Types',
     hubCtaSubStart: 'Preview every type before you start',
     hubCtaSubResult: 'Check out the other types too',
@@ -1214,6 +1218,11 @@ function applyLangUI() {
   const hubCtaMeroiNoteEl = document.getElementById('hub-cta-meroi-note');
   hubCtaMeroiNoteEl.textContent = t.jpOnlyNote;
   hubCtaMeroiNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
+  document.getElementById('hub-cta-metsu-title').textContent = t.hubCtaMetsuTitle;
+  document.getElementById('hub-cta-metsu-sub').textContent = t.hubCtaMetsuSub;
+  const hubCtaMetsuNoteEl = document.getElementById('hub-cta-metsu-note');
+  hubCtaMetsuNoteEl.textContent = t.jpOnlyNote;
+  hubCtaMetsuNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
   document.getElementById('hub-cta-result-title').textContent = t.hubCtaTitle;
   document.getElementById('hub-cta-result-sub').textContent = t.hubCtaSubResult;
   document.getElementById('hub-cta-result').setAttribute('href', hubUrl);
