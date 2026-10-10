@@ -262,6 +262,19 @@ body {
   object-position: center;
 }
 .hero-banner-crop-top .hero-banner-img { object-position: top; }
+/* 単発診断のスタート画面バナー(Midjourney生成、img/banner-*.jpg) */
+.start-banner {
+  margin: -14px -6px 18px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(120, 90, 130, 0.16);
+}
+.start-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 960 / 400;
+}
 .start-emoji {
   font-size: 2.6rem;
   margin-bottom: 6px;
