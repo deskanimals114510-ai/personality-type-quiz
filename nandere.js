@@ -317,7 +317,7 @@ if (typeof document !== 'undefined') {
       const compat = NANDERE_COMPAT[result.id];
       const partner = NANDERE_TYPES[compat.partner];
 
-      document.getElementById('nandere-emoji').textContent = t.emoji;
+      setTypeIllust(document.getElementById('nandere-emoji'), result.id, t, 'type-illust');
       document.getElementById('nandere-name').textContent = t.name;
       document.getElementById('nandere-nickname').textContent = t.nickname;
       document.getElementById('nandere-tagline').textContent = t.tagline;
@@ -338,7 +338,7 @@ if (typeof document !== 'undefined') {
         document.getElementById('nandere-purity-label').textContent = `${t.name}純度 ${result.purity}%`;
       }
 
-      document.getElementById('compat-emoji').textContent = partner.emoji;
+      setTypeIllust(document.getElementById('compat-emoji'), compat.partner, partner, 'compat-illust');
       document.getElementById('compat-name').textContent = partner.name;
       document.getElementById('compat-percent').textContent = `相性 ${compat.percent}%`;
       document.getElementById('compat-note').textContent = compat.note;
@@ -491,6 +491,46 @@ if (typeof document !== 'undefined') {
       return pw;
     }
 
+    // タイプ別イラスト(Midjourney生成、img/types/)。読み込めない時は絵文字のまま
+    function typeImgSrc(id) {
+      return `img/types/nandere-${id}.jpg`;
+    }
+
+    const typeImgCache = {};
+    function loadTypeImage(id) {
+      // file://で開くとcanvasが汚染されて書き出せないので、その時は絵文字で描く
+      if (location.protocol === 'file:') return Promise.resolve(null);
+      if (!typeImgCache[id]) {
+        typeImgCache[id] = new Promise((resolve) => {
+          const img = new Image();
+          const timer = setTimeout(() => resolve(null), 3000);
+          img.onload = () => { clearTimeout(timer); resolve(img); };
+          img.onerror = () => {
+            clearTimeout(timer);
+            delete typeImgCache[id];
+            resolve(null);
+          };
+          img.src = typeImgSrc(id);
+        });
+      }
+      return typeImgCache[id];
+    }
+
+    function setTypeIllust(el, id, t, cls) {
+      // 読み込み中は空の丸のまま待ち、読めなかった時だけ絵文字を出す
+      el.textContent = '';
+      el.dataset.illust = id;
+      loadTypeImage(id).then((img) => {
+        // 読み込み中に別の結果へ切り替わっていたら差し替えない
+        if (el.dataset.illust !== id) return;
+        if (!img) { el.textContent = t.emoji; return; }
+        const c = img.cloneNode();
+        c.className = cls;
+        c.alt = '';
+        el.replaceChildren(c);
+      });
+    }
+
     function drawNandereCard(ctx, W, H, result, opts) {
       const t = NANDERE_TYPES[result.id];
       const compat = NANDERE_COMPAT[result.id];
@@ -509,9 +549,19 @@ if (typeof document !== 'undefined') {
       ctx.arc(W / 2, circleY, circleR, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
-      ctx.font = `${circleR * 1.15}px 'Segoe UI Emoji', sans-serif`;
       ctx.textAlign = 'center';
-      ctx.fillText(t.emoji, W / 2, circleY + circleR * 0.06);
+      if (opts.illust) {
+        const r = circleR - 6;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(W / 2, circleY, r, 0, Math.PI * 2);
+        ctx.clip();
+        ctx.drawImage(opts.illust, W / 2 - r, circleY - r, r * 2, r * 2);
+        ctx.restore();
+      } else {
+        ctx.font = `${circleR * 1.15}px 'Segoe UI Emoji', sans-serif`;
+        ctx.fillText(t.emoji, W / 2, circleY + circleR * 0.06);
+      }
 
       let y = circleY + circleR + opts.gapAfterCircle;
 
@@ -568,11 +618,12 @@ if (typeof document !== 'undefined') {
       ctx.textAlign = 'left';
     }
 
-    function buildNandereCardCanvas(result, mode) {
+    function buildNandereCardCanvas(result, mode, illust) {
       const canvas = document.createElement('canvas');
       if (mode === 'story') {
         canvas.width = 1080; canvas.height = 1920;
         drawNandereCard(canvas.getContext('2d'), 1080, 1920, result, {
+          illust,
           circleY: 480, circleR: 230, gapAfterCircle: 110, eyebrowGap: 60,
           nameSize: 84, nameMinSize: 50, nameGap: 100,
           nicknameSize: 40, nicknameGap: 90,
@@ -583,6 +634,7 @@ if (typeof document !== 'undefined') {
       } else {
         canvas.width = 1200; canvas.height = 630;
         drawNandereCard(canvas.getContext('2d'), 1200, 630, result, {
+          illust,
           // 下端のCTA・ブランド行が630px内に収まるよう詰めた値(2026-10-10、旧値ではy=642/672で見切れていた)
           circleY: 140, circleR: 90, gapAfterCircle: 48, eyebrowGap: 40,
           nameSize: 52, nameMinSize: 32, nameGap: 58,
@@ -599,10 +651,11 @@ if (typeof document !== 'undefined') {
       const preview = document.getElementById('result-card-preview');
       preview.innerHTML = '';
       try {
+        const illust = loadTypeImage(result.id);
         if (document.fonts && document.fonts.ready) {
           try { await document.fonts.ready; } catch (e) { /* フォント待ち失敗時は既定フォントで続行 */ }
         }
-        const canvas = buildNandereCardCanvas(result, 'x');
+        const canvas = buildNandereCardCanvas(result, 'x', await illust);
         const img = document.createElement('img');
         img.src = canvas.toDataURL('image/png');
         img.alt = 'nandere result card preview';
@@ -623,7 +676,7 @@ if (typeof document !== 'undefined') {
       btn.textContent = '生成中…';
       btn.disabled = true;
       try {
-        const canvas = buildNandereCardCanvas(lastResult, mode);
+        const canvas = buildNandereCardCanvas(lastResult, mode, await loadTypeImage(lastResult.id));
         await new Promise((resolve) => {
           canvas.toBlob((blob) => {
             const a = document.createElement('a');
