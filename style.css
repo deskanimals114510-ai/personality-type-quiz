@@ -705,6 +705,10 @@ body {
   justify-content: center;
   background: rgba(255, 255, 255, 0.4);
 }
+.result-card-preview.card-preview-x {
+  /* 単発診断のXカード(1200x630)。生成前から高さを確保して下の要素が押し下がらないようにする */
+  aspect-ratio: 1200 / 630;
+}
 .result-card-preview img {
   display: block;
   width: 100%;
@@ -1135,6 +1139,31 @@ body {
   box-shadow: 0 3px 8px rgba(0,0,0,0.08);
 }
 .compat-text { display: flex; flex-direction: column; gap: 2px; }
+/* 単発診断のタイプ別イラスト(絵文字の丸と差し替え) */
+.nandere-emoji-circle.has-illust {
+  /* 画像の読み込み前後で高さが変わらないよう、先に178pxの枠を確保する */
+  width: 178px;
+  height: 178px;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nandere-emoji-circle .type-illust {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  object-fit: cover;
+}
+.compat-emoji .compat-illust {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
 .compat-name {
   font-size: 1.05rem;
   font-weight: 800;

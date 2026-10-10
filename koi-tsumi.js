@@ -310,7 +310,7 @@ if (typeof document !== 'undefined') {
       const compat = AKUMA_COMPAT[result.id];
       const partner = AKUMA_TYPES[compat.partner];
 
-      document.getElementById('nandere-emoji').textContent = t.emoji;
+      setTypeIllust(document.getElementById('nandere-emoji'), result.id, t, 'type-illust');
       document.getElementById('nandere-name').textContent = t.name;
       document.querySelector('#screen-result .result-title').innerHTML = `あなたの恋の罪は<span class="grad-text">「${t.sin}」</span>`;
       document.getElementById('nandere-nickname').textContent = t.nickname;
@@ -332,7 +332,7 @@ if (typeof document !== 'undefined') {
         document.getElementById('nandere-purity-label').textContent = `${t.sin}の罪 濃度 ${result.purity}%`;
       }
 
-      document.getElementById('compat-emoji').textContent = partner.emoji;
+      setTypeIllust(document.getElementById('compat-emoji'), compat.partner, partner, 'compat-illust');
       document.getElementById('compat-name').textContent = partner.name;
       document.getElementById('compat-percent').textContent = `相性 ${compat.percent}%`;
       document.getElementById('compat-note').textContent = compat.note;
@@ -504,6 +504,46 @@ if (typeof document !== 'undefined') {
       return pw;
     }
 
+    // タイプ別イラスト(Midjourney生成、img/types/)。読み込めない時は絵文字のまま
+    function typeImgSrc(id) {
+      return `img/types/koi-tsumi-${id}.jpg`;
+    }
+
+    const typeImgCache = {};
+    function loadTypeImage(id) {
+      // file://で開くとcanvasが汚染されて書き出せないので、その時は絵文字で描く
+      if (location.protocol === 'file:') return Promise.resolve(null);
+      if (!typeImgCache[id]) {
+        typeImgCache[id] = new Promise((resolve) => {
+          const img = new Image();
+          const timer = setTimeout(() => resolve(null), 3000);
+          img.onload = () => { clearTimeout(timer); resolve(img); };
+          img.onerror = () => {
+            clearTimeout(timer);
+            delete typeImgCache[id];
+            resolve(null);
+          };
+          img.src = typeImgSrc(id);
+        });
+      }
+      return typeImgCache[id];
+    }
+
+    function setTypeIllust(el, id, t, cls) {
+      // 読み込み中は空の丸のまま待ち、読めなかった時だけ絵文字を出す
+      el.textContent = '';
+      el.dataset.illust = id;
+      loadTypeImage(id).then((img) => {
+        // 読み込み中に別の結果へ切り替わっていたら差し替えない
+        if (el.dataset.illust !== id) return;
+        if (!img) { el.textContent = t.emoji; return; }
+        const c = img.cloneNode();
+        c.className = cls;
+        c.alt = '';
+        el.replaceChildren(c);
+      });
+    }
+
     function drawAkumaCard(ctx, W, H, result, opts) {
       const t = AKUMA_TYPES[result.id];
       const compat = AKUMA_COMPAT[result.id];
@@ -522,9 +562,19 @@ if (typeof document !== 'undefined') {
       ctx.arc(W / 2, circleY, circleR, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
-      ctx.font = `${circleR * 1.15}px 'Segoe UI Emoji', sans-serif`;
       ctx.textAlign = 'center';
-      ctx.fillText(t.emoji, W / 2, circleY + circleR * 0.06);
+      if (opts.illust) {
+        const r = circleR - 6;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(W / 2, circleY, r, 0, Math.PI * 2);
+        ctx.clip();
+        ctx.drawImage(opts.illust, W / 2 - r, circleY - r, r * 2, r * 2);
+        ctx.restore();
+      } else {
+        ctx.font = `${circleR * 1.15}px 'Segoe UI Emoji', sans-serif`;
+        ctx.fillText(t.emoji, W / 2, circleY + circleR * 0.06);
+      }
 
       let y = circleY + circleR + opts.gapAfterCircle;
 
@@ -581,11 +631,12 @@ if (typeof document !== 'undefined') {
       ctx.textAlign = 'left';
     }
 
-    function buildAkumaCardCanvas(result, mode) {
+    function buildAkumaCardCanvas(result, mode, illust) {
       const canvas = document.createElement('canvas');
       if (mode === 'story') {
         canvas.width = 1080; canvas.height = 1920;
         drawAkumaCard(canvas.getContext('2d'), 1080, 1920, result, {
+          illust,
           circleY: 480, circleR: 230, gapAfterCircle: 110, eyebrowGap: 60,
           nameSize: 84, nameMinSize: 50, nameGap: 100,
           nicknameSize: 40, nicknameGap: 90,
@@ -596,6 +647,7 @@ if (typeof document !== 'undefined') {
       } else {
         canvas.width = 1200; canvas.height = 630;
         drawAkumaCard(canvas.getContext('2d'), 1200, 630, result, {
+          illust,
           // 下端のCTA・ブランド行が630px内に収まるよう詰めた値(2026-10-10、旧値ではy=642/672で見切れていた)
           circleY: 140, circleR: 90, gapAfterCircle: 48, eyebrowGap: 40,
           nameSize: 52, nameMinSize: 32, nameGap: 58,
@@ -612,10 +664,11 @@ if (typeof document !== 'undefined') {
       const preview = document.getElementById('result-card-preview');
       preview.innerHTML = '';
       try {
+        const illust = loadTypeImage(result.id);
         if (document.fonts && document.fonts.ready) {
           try { await document.fonts.ready; } catch (e) { /* フォント待ち失敗時は既定フォントで続行 */ }
         }
-        const canvas = buildAkumaCardCanvas(result, 'x');
+        const canvas = buildAkumaCardCanvas(result, 'x', await illust);
         const img = document.createElement('img');
         img.src = canvas.toDataURL('image/png');
         img.alt = '恋の罪診断の結果カード';
@@ -637,7 +690,7 @@ if (typeof document !== 'undefined') {
       btn.disabled = true;
       track('save_card', { quiz_name: 'koi_tsumi', mode });
       try {
-        const canvas = buildAkumaCardCanvas(lastResult, mode);
+        const canvas = buildAkumaCardCanvas(lastResult, mode, await loadTypeImage(lastResult.id));
         await new Promise((resolve) => {
           canvas.toBlob((blob) => {
             if (!blob) { resolve(); return; }
