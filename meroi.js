@@ -193,8 +193,9 @@ function computeMeloScores(answers) {
 function computeMeloType(kyori, hyogen) {
   if (Math.abs(kyori) + Math.abs(hyogen) <= 1) return 'rare';
   if (kyori >= 0 && hyogen > 0) return 'wanko';
-  if (kyori >= 0) return 'anshin';
+  if (kyori > 0) return 'anshin';
   if (hyogen > 0) return 'gap';
+  // 距離感がちょうど0でさりげない人は、自分から寄っていく「安心系」ではなく「きつね系」側に入れる
   return 'mystery';
 }
 

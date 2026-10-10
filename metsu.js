@@ -193,8 +193,9 @@ function computeMetsuScores(answers) {
 function computeMetsuType(toki, hannou) {
   if (Math.abs(toki) + Math.abs(hannou) <= 1) return 'rare';
   if (toki >= 0 && hannou > 0) return 'gap';
-  if (toki >= 0) return 'yasashi';
+  if (toki > 0) return 'yasashi';
   if (hannou > 0) return 'kawaii';
+  // 滅ぶ瞬間の軸がちょうど0で静かな人は、不意打ち型の「優しすぎて滅」ではなく「尊すぎて滅」側に入れる
   return 'toutoi';
 }
 

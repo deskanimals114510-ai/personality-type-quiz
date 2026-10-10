@@ -192,8 +192,9 @@ function computeAkumaScores(answers) {
 function computeAkumaType(oshi, kanjo) {
   if (Math.abs(oshi) + Math.abs(kanjo) <= 1) return 'rare';
   if (oshi >= 0 && kanjo > 0) return 'shitto';
-  if (oshi >= 0) return 'gouyoku';
+  if (oshi > 0) return 'gouyoku';
   if (kanjo > 0) return 'taida';
+  // 押しの強さがちょうど0で感情も出さない人は、押しの強い「強欲」ではなく「傲慢(待ち)」側に入れる
   return 'gouman';
 }
 
