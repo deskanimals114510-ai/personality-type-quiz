@@ -230,6 +230,8 @@ if (typeof document !== 'undefined') {
     let currentIndex = 0;
     let answers = [];
     let lastResult = null; // { id, toki, hannou, purity }
+    // シェアされた結果URLから開いた時はtrue(おすすめ欄を「友達に贈るなら」に切り替える)
+    let sharedView = false;
 
     // GA4イベント送信(ローカル開発時・GA未読込時は何もしない)
     function track(name, params) {
@@ -339,19 +341,10 @@ if (typeof document !== 'undefined') {
       document.getElementById('compat-note').textContent = compat.note;
 
       const lucky = pickMetsuLuckyItem(result.id);
-      const luckyIcon = METSU_LUCKY_ICON_MAP[lucky.emoji]
-        ? `<img src="img/lucky-icons/${METSU_LUCKY_ICON_MAP[lucky.emoji]}.jpg" alt="" width="42" height="42" loading="lazy">`
-        : lucky.emoji;
-      document.getElementById('nandere-lucky').innerHTML = `
-        <div class="lucky-bridge">${METSU_LUCKY_BRIDGE[result.id]}</div>
-        <a class="lucky-item" href="${affiliateUrl(lucky.keyword)}" target="_blank" rel="noopener sponsored">
-          <span class="lucky-emoji">${luckyIcon}</span>
-          <span class="lucky-text"><span class="lucky-label">🍀 今日のラッキーアイテム<span class="lucky-pr-tag">PR</span></span><span class="lucky-name">${lucky.name}を見てみる</span><span class="lucky-price">¥1,000〜3,000で買えるプチギフト</span></span>
-          <span class="lucky-arrow">›</span>
-        </a>
-      `;
-      document.querySelector('#nandere-lucky .lucky-item').addEventListener('click', () => {
-        track('affiliate_click', { quiz_name: 'metsu', result_type: result.id, item_name: lucky.name });
+      renderGiftBox(document.getElementById('nandere-lucky'), {
+        mode: sharedView ? 'gift' : 'self', typeName: t.name, item: lucky,
+        iconMap: METSU_LUCKY_ICON_MAP, bridge: METSU_LUCKY_BRIDGE[result.id], href: affiliateUrl(lucky.keyword),
+        onClick: (p) => track('affiliate_click', { quiz_name: 'metsu', result_type: result.id, ...p }),
       });
     }
 
@@ -401,6 +394,7 @@ if (typeof document !== 'undefined') {
 
     function restartQuiz() {
       lastResult = null;
+      sharedView = false;
       // シェアURL経由で入れ替えたボタンの並び・役割を元に戻す
       const restartBtn = document.getElementById('btn-restart');
       const shareBtn = document.getElementById('btn-share');
@@ -737,6 +731,7 @@ if (typeof document !== 'undefined') {
       const id = computeMetsuType(toki, hannou);
       const purity = computeMetsuPurity(toki, hannou);
       lastResult = { id, toki, hannou, purity };
+      sharedView = true;
       showScreen('result');
       renderResult(lastResult);
       renderCardPreview(lastResult);

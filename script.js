@@ -617,6 +617,75 @@ function getGroupRarity(groupKey) {
     .reduce((sum, code) => sum + (TYPE_RARITY[code] || 0), 0);
 }
 
+// 性格タイプ別のおすすめ2点(2026-10-13、Fable執筆。gift.jsで描画)。[0]=性格カード内、[1]=カード保存の下。
+// 理由文は主語を「あなた」にせず、本人にも友達に贈る人にも通じる形。JAのみ(EN版は米国タグ取得まで商品リンク非表示)
+const MBTI_GIFTS = {
+  ISTJ: [
+    { name: '卓上カレンダー', keyword: '卓上カレンダー 月曜始まり シンプル', reason: '締め切りは守るもの、と言い切る机の相棒に。' },
+    { name: '本革ブックカバー', keyword: 'ブックカバー 本革 文庫', reason: '流行より、使い込んで育てる定番を選ぶ手に。' },
+  ],
+  ISFJ: [
+    { name: 'ガラスのティーポット', keyword: 'ティーポット 耐熱ガラス 茶こし付き', reason: '「大丈夫?」より先にお茶を差し出す、その手に。' },
+    { name: '卓上ウィークリーメモ', keyword: 'ウィークリー 卓上 メモパッド', reason: '他人の用事で埋まる前に、自分の予定を一行だけ。' },
+  ],
+  INFJ: [
+    { name: '入門用の万年筆', keyword: '万年筆 初心者 細字', reason: '頭の中で完結しがちな考えを、紙に降ろす一本。' },
+    { name: '藍染めのコースター', keyword: '藍染 コースター 布', reason: '雑談10回より本音1回。その長い夜のカップの下に。' },
+  ],
+  INTJ: [
+    { name: '卓上ホワイトボード', keyword: 'ホワイトボード 卓上 小型', reason: '3手先のシミュレーション、頭の外にも置き場を。' },
+    { name: '折りたたみチェス盤', keyword: 'チェスセット 折りたたみ 木製', reason: '相手の手も読む遊びなら、たぶん本気になる。' },
+  ],
+  ISTP: [
+    { name: '精密ドライバーセット', keyword: 'ドライバーセット 精密 小型', reason: '説明書は読まない、まず開けてみる派の必需品。' },
+    { name: 'LEDミニランタン', keyword: 'ランタン LED 小型 充電式', reason: '束縛の気配を感じたら、ふらっと夜の外へ。' },
+  ],
+  ISFP: [
+    { name: '水彩色鉛筆セット', keyword: '水彩色鉛筆 セット 24色', reason: '夕焼けの色に心が動いた日、その色を残せる。' },
+    { name: '小型ワイヤレススピーカー', keyword: 'Bluetoothスピーカー 小型 木目', reason: '音楽の一節で立ち止まる人の部屋に、小さな音源を。' },
+  ],
+  INFP: [
+    { name: '3年日記', keyword: '3年日記 日記帳 シンプル', reason: '進んだ距離の方を数えたい夜に、ページをめくる。' },
+    { name: '布のティッシュケース', keyword: 'ティッシュケース 布 おしゃれ', reason: '物語で本気で泣ける人の、枕元の定位置へ。' },
+  ],
+  INTP: [
+    { name: 'クリップ式ブックライト', keyword: 'ブックライト 充電式 クリップ', reason: '気づけば深夜2時の調べもの、手元だけ照らす。' },
+    { name: '木製の知恵の輪', keyword: '知恵の輪 木製 パズル', reason: '「なぜそうなるのか」が止まらない指先に、解く相手を。' },
+  ],
+  ESTP: [
+    { name: 'スマホショルダー', keyword: 'スマホ ショルダーストラップ', reason: '考える前に飛び出す足に、両手は空けておく。' },
+    { name: 'マグネットダーツ', keyword: 'ダーツボード 家庭用 マグネット', reason: '会議の10分で3ゲーム。待つのが苦手な人の壁に。' },
+  ],
+  ESFP: [
+    { name: '大人向けカードゲーム', keyword: 'パーティーゲーム カード 盛り上がる', reason: '部屋に入るだけで温度が上がる人が、卓を囲むなら。' },
+    { name: 'ストリングライト', keyword: 'ストリングライト LED 室内', reason: '今夜を全力で味わう派の部屋は、照明も祭りでいい。' },
+  ],
+  ENFP: [
+    { name: 'カラフル付箋セット', keyword: '付箋 大容量 カラフル', reason: '渋滞中のやりたいことリスト、色で仕分けてみる?' },
+    { name: 'パッキングキューブ', keyword: 'パッキングキューブ 旅行 圧縮', reason: '思い立った瞬間に動く人なら、荷造りも秒で終わる。' },
+  ],
+  ENTP: [
+    { name: '2人用対戦ボードゲーム', keyword: 'ボードゲーム 2人 対戦 戦略', reason: '議論はスポーツ。なら、休日にも対戦相手を。' },
+    { name: 'タイムマーカー付ボトル', keyword: 'ウォーターボトル 1L タイムマーカー', reason: '「本当にそうかな?」を3時間続けた喉に、水を。' },
+  ],
+  ESTJ: [
+    { name: '大画面デジタルタイマー', keyword: 'タイマー 大画面 デジタル 卓上', reason: '締め切りが決まって初めて安心する、その机の中央に。' },
+    { name: '陶器のコーヒードリッパー', keyword: 'コーヒードリッパー 陶器 1杯用', reason: '仕切り役の朝だけは、手順も時間も自分の好きに。' },
+  ],
+  ESFJ: [
+    { name: '木製のトレー', keyword: 'トレー 木製 カフェ', reason: '飲み会の席順を気にする人は、家でも配り役になる。' },
+    { name: '卓上の温湿度計', keyword: '温湿度計 卓上 デジタル', reason: '場の空気の変化を見逃さない目が、部屋の空気も。' },
+  ],
+  ENFJ: [
+    { name: 'ハーブ栽培キット', keyword: 'ハーブ 栽培キット 室内', reason: '人を育てる名人へ、今度は自分の窓辺で育てる番。' },
+    { name: '15分の砂時計', keyword: '砂時計 15分 おしゃれ', reason: '応援団長の休憩も、砂が落ちるまでは誰にも渡さない。' },
+  ],
+  ENTJ: [
+    { name: 'レザー調デスクマット', keyword: 'デスクマット 大型 レザー調', reason: '5合目から手を振る人の机は、やっぱり広い方がいい。' },
+    { name: '1000ピースのパズル', keyword: 'ジグソーパズル 1000ピース 風景', reason: '結論を急がなくていい時間を、たまには。' },
+  ],
+};
+
 // ===== 五行(占い要素)とラッキーアイテム =====
 // MBTIタイプごとの五行属性(3つのマップ全てで共通の属性を使用)
 const TYPE_ELEMENT = {
@@ -970,8 +1039,8 @@ const UI_TEXT = {
     cardPreviewHint: '画像を長押し(スマホ)または右クリックで保存できます',
     cardPreviewHintLink: '保存ボタンはこちら 👇',
     footerDisclaimer: '本診断はエンタメ目的のオリジナルコンテンツで、MBTI(Myers-Briggs Type Indicator)の考え方を参考にした独自基準の診断です。The Myers & Briggs Foundation等の公式機関とは提携しておらず、挿絵はAI画像生成です。科学的な心理診断や実際の心理検査に代わるものではありません。',
-    footerPrivacy: '本診断は名前・生年月日等の個人情報の入力を求めません。回答内容はすべてお使いの端末内で処理され、サーバーへの送信・保存は一切行いません。なお、アクセス解析(Googleアナリティクス)は行っており、閲覧したページの情報が計測されます。計測にはCookieを使用します。ラッキーアイテムのリンク先(Amazon)などの第三者がCookieを設定・取得する場合があります。また、Google Fontsの読み込み時にお使いのIPアドレスがGoogleに送信されます。',
-    footerAffiliate: '🔖 本ページの「ラッキーアイテム」リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。Amazonのアソシエイトとして、Desk Animals Labは適格販売により収入を得ています。',
+    footerPrivacy: '本診断は名前・生年月日等の個人情報の入力を求めません。回答内容はすべてお使いの端末内で処理され、サーバーへの送信・保存は一切行いません。なお、アクセス解析(Googleアナリティクス)は行っており、閲覧したページの情報が計測されます。計測にはCookieを使用します。商品リンクのリンク先(Amazon)などの第三者がCookieを設定・取得する場合があります。また、Google Fontsの読み込み時にお使いのIPアドレスがGoogleに送信されます。',
+    footerAffiliate: '🔖 本ページの「PR」表示のある商品リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。Amazonのアソシエイトとして、Desk Animals Labは適格販売により収入を得ています。',
     transparencyTitle: '🔍 この診断が、他のMBTI診断と違うところ',
     transparencyBody: '多くの性格診断は「1つのタイプ」を性格・恋愛・仕事すべてに当てはめます。この診断は30問を性格10問・恋愛10問・仕事10問に分け、3つのブロックをそれぞれ独立して判定します。だから性格はINFPでも恋愛はESFJ、仕事はENTJ——ということが普通に起こります。「本当の自分」は一つじゃない、という前提で作りました。',
     transparencyNote: '判定ロジックにタイプの偏りが出ないよう、4000回のシミュレーションで検証済みです。MBTIは心理測定として意見が分かれる指標で、当サイトは「当てる」ためでなく、場面によって見え方が変わる面白さを届けるために使っています。',
@@ -1307,6 +1376,8 @@ function showScreen(name) {
 }
 
 function startQuiz() {
+  // シェア結果(?r=)や予想画面から診断を始めた場合も、自分の結果として表示・計測する
+  isSharedView = false;
   currentIndex = 0;
   answers = [];
   chatLog.innerHTML = '';
@@ -1414,7 +1485,7 @@ function showResult() {
   renderCardPreview(lastResult);
   renderLoveCharCardPreview(lastResult);
   updateCompatLink(lastResult);
-  trackEvent('quiz_complete', { personality_type: lastResult.personality });
+  trackEvent('quiz_complete', { quiz_name: 'mbti', result_type: lastResult.personality, personality_type: lastResult.personality });
 }
 
 // 相性診断サイトへ自分の結果コードを引き継ぐ(?me=)。相性診断側はこのコードを
@@ -1586,17 +1657,24 @@ function renderResultCards(types) {
     const luckyKeyword = colorWord ? `${lucky.keyword} ${colorWord}` : lucky.keyword;
     const luckyBridge = getLuckyBridge()[block][element];
 
-    // 米国アソシエイト未取得の英語版はAmazonリンクを出さない(タグ無しリンクで「アソシエイト」を名乗らないため)
-    const luckyHtml = (LANG === 'en' && !AFFILIATE_TAG_EN) ? '' : `
+    // 商品リンクは性格カードの1点だけ(2026-10-13)。恋愛・仕事カード内の枠は「続きを見る」を押す人が
+    // ほぼいないため廃止。JAはタイプ別おすすめ(MBTI_GIFTS)、ENは米国タグ取得時のみ従来のラッキーアイテム
+    let luckyHtml = '';
+    if (block === 'personality' && LANG === 'ja') {
+      const g = MBTI_GIFTS[type][0];
+      luckyHtml = giftLinkHtml({
+        href: affiliateUrl(g.keyword), icon: emoji, name: g.name, reason: g.reason,
+        placement: 'result_card', mode: isSharedView ? 'gift' : 'self',
+      });
+    } else if (block === 'personality' && AFFILIATE_TAG_EN) {
+      luckyHtml = `
       <div class="lucky-bridge">${luckyBridge}</div>
       <a class="lucky-item" href="${affiliateUrl(luckyKeyword)}" target="_blank" rel="noopener sponsored">
         <span class="lucky-emoji">${LUCKY_ICON_MAP[lucky.emoji] ? `<img src="img/lucky-icons/${LUCKY_ICON_MAP[lucky.emoji]}.jpg" alt="" width="42" height="42" loading="lazy">` : lucky.emoji}</span>
         <span class="lucky-text"><span class="lucky-label">${t.luckyLabel}<span class="lucky-pr-tag">${t.prTag}</span></span><span class="lucky-name">${t.luckySeeMore(lucky.name)}</span><span class="lucky-price">${t.luckyPriceHint}</span></span>
         <span class="lucky-arrow">›</span>
       </a>`;
-    // 「続きを見る」を押す人がほぼいないため(result_expand_click 90日0件、2026-10-11監査)、
-    // 性格ブロックのラッキーアイテムだけは最初から見せる。恋愛・仕事は従来どおり開示後に表示
-    const luckyUpfront = block === 'personality';
+    }
 
     const card = document.createElement('div');
     card.className = 'result-card';
@@ -1608,15 +1686,31 @@ function renderResultCards(types) {
       <div class="type-name">${label}</div>
       <div class="mbti-code">${t.mbtiElementLine(type, getElementName(element))}</div>
       ${block === 'personality' && TYPE_RARITY[type] ? `<div class="rarity-line">${t.rarityLine(TYPE_RARITY[type])}</div>` : ''}
-      <button class="result-expand-btn" type="button">${luckyUpfront || !luckyHtml ? t.resultExpandTextDetail : t.resultExpandText}</button>
+      <button class="result-expand-btn" type="button">${t.resultExpandTextDetail}</button>
       <div class="result-details">
       <div class="desc">${desc}</div>
-      ${luckyUpfront ? '' : luckyHtml}
       </div>
-      ${luckyUpfront ? luckyHtml : ''}
+      ${luckyHtml}
     `;
     resultCards.appendChild(card);
   });
+  renderGiftSection(types);
+}
+
+// カード保存の下の「おすすめ」欄(JAのみ)。シェアされた結果を見ている人には「友達に贈るなら」で出す
+function renderGiftSection(types) {
+  const el = document.getElementById('gift-section');
+  if (LANG !== 'ja') { el.hidden = true; el.innerHTML = ''; return; }
+  const type = types.personality;
+  const [emoji, label] = ANIMAL_MAP[type];
+  const g = MBTI_GIFTS[type][1];
+  const mode = isSharedView ? 'gift' : 'self';
+  const heading = isSharedView ? `「${label}」の友達に贈るなら` : `「${label}」のあなたに、もうひとつ`;
+  el.innerHTML = `
+    <p class="gift-heading">${heading}</p>
+    <p class="gift-season">${giftSeasonLine(mode)}</p>
+    ${giftLinkHtml({ href: affiliateUrl(g.keyword), icon: emoji, name: g.name, reason: g.reason, placement: 'gift_section', mode })}`;
+  el.hidden = false;
 }
 
 // ===== 結果カード画像生成(Canvas、サーバー不要) =====
@@ -2470,7 +2564,14 @@ document.addEventListener('click', (e) => {
   const hubCta = e.target.closest('.hub-cta');
   if (hubCta) { trackEvent('hub_cta_click', { hub_cta_id: hubCta.id || 'unknown' }); return; }
   const luckyItem = e.target.closest('.lucky-item');
-  if (luckyItem) { trackEvent('affiliate_click'); return; }
+  if (luckyItem) {
+    const d = luckyItem.dataset;
+    trackEvent('affiliate_click', {
+      quiz_name: 'mbti', result_type: lastResult ? lastResult.personality : '',
+      placement: d.affPlacement || 'result_card', mode: d.affMode || 'self', item_name: d.affItem || '',
+    });
+    return;
+  }
   // 結果カードのプログレッシブディスクロージャー(「ちょい見せ」設計、2026-09-26追加)。
   // 各カード(性格/恋愛/仕事)は最初はタイプ名までしか見せず、詳細・ラッキーアイテムは
   // 「続きを見る」クリックで開示する(黒曜診断の同種実装と揃える)。
@@ -2486,7 +2587,7 @@ document.addEventListener('click', (e) => {
 });
 
 document.getElementById('btn-start').addEventListener('click', startQuiz);
-document.getElementById('btn-start').addEventListener('click', () => trackEvent('quiz_start'));
+document.getElementById('btn-start').addEventListener('click', () => trackEvent('quiz_start', { quiz_name: 'mbti' }));
 document.getElementById('btn-share').addEventListener('click', shareResult);
 document.getElementById('btn-share-line').addEventListener('click', shareResultLine);
 document.getElementById('btn-copy-url').addEventListener('click', copyResultUrl);
