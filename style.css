@@ -1241,3 +1241,18 @@ body {
   color: var(--text-sub);
   margin: 0 0 8px;
 }
+
+/* 単発診断の結果画面「次はこれ」(2026-10-13、meroi.htmlから。診断メーカー経由の流入を他の診断へ回す) */
+.next-quiz { margin-top: 22px; }
+.next-quiz-heading { margin: 0 0 4px; font-size: 0.95rem; font-weight: 700; color: var(--text); text-align: center; }
+.next-quiz .hub-cta { margin-top: 10px; }
+.next-quiz-thumb { width: 56px; height: 56px; flex: none; border-radius: 50%; object-fit: cover; background: #fff; }
+.next-quiz .hub-cta:focus-visible { outline: 3px solid var(--primary-dark); outline-offset: 3px; }
+.next-quiz .hub-cta-sub { color: var(--text-sub); opacity: 1; }
+/* 単発診断の結果カード内の商品欄: カード全体の中央寄せを商品の文字には効かせない/2点目以降の間隔/スマホでは詰める */
+.nandere-main-card .lucky-text { text-align: left; }
+#nandere-lucky .lucky-item + .lucky-item { margin-top: 10px; }
+@media (max-width: 480px) {
+  #nandere-lucky .lucky-item { gap: 10px; padding: 12px; }
+  #nandere-lucky .lucky-arrow { display: none; }
+}

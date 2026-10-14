@@ -59,3 +59,23 @@ function renderGiftBox(el, o) {
     o.onClick({ placement: 'result_card', mode: o.mode, item_name: o.item.name });
   });
 }
+
+// 2点+理由つきの結果欄(2026-10-14、メロい度から)。理由文は主語なしなので本人にもシェア閲覧者にも同じ文を出す
+function renderGiftList(el, o) {
+  if (!o.items || !o.items.length) { el.innerHTML = ''; return; }
+  const heading = o.mode === 'gift'
+    ? `「${o.typeName}」の友達に贈るなら`
+    : `「${o.typeName}」のあなたに`;
+  el.innerHTML = `
+    <p class="gift-heading">${heading}</p>
+    <p class="gift-season">${giftSeasonLine(o.mode)}</p>
+    ${o.items.map((it) => giftLinkHtml({
+      href: o.href(it.keyword), icon: it.emoji, name: it.name, reason: it.reason,
+      placement: 'result_card', mode: o.mode,
+    })).join('')}`;
+  el.querySelectorAll('.lucky-item').forEach((a, i) => {
+    a.addEventListener('click', () => {
+      o.onClick({ placement: 'result_card', mode: o.mode, item_name: o.items[i].name });
+    });
+  });
+}

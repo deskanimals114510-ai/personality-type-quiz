@@ -124,43 +124,7 @@ const MELO_COMPAT = {
   rare:    { partner: 'mystery', percent: 96, note: '無自覚に全方位にメロいあなたが、唯一ドキッとするのが余韻を残すきつね系。向こうもあなたを読み切れないので、お互い「なんなんこの人」と言い合いながら離れられない、珍しい組み合わせです。' },
 };
 
-const MELO_LUCKY_BRIDGE = {
-  wanko:   '全力で動き回るぶん、充電も大事。あなたの元気を支えてくれる小物を置いておきましょう。',
-  anshin:  '安心感は、あなた自身がちゃんとくつろげてこそ。自分を甘やかす小物をそばに。',
-  gap:     'スイッチのオンとオフ、両方を気持ちよく切り替えられる相棒があると強いです。',
-  mystery: '余韻は、持ち物にも出ます。語らないのに雰囲気がある小物が似合う人です。',
-  rare:    '全方位にメロいあなたには、ひとつに絞らない「気分で選べる」アイテムが向いてます。',
-};
-
-const MELO_LUCKY_ITEMS = {
-  wanko: [
-    { emoji: '🔋', name: '軽量モバイルバッテリー', keyword: 'モバイルバッテリー 軽量' },
-    { emoji: '🧦', name: 'もこもこルームソックス', keyword: 'ルームソックス もこもこ' },
-    { emoji: '📸', name: 'チェキ用ミニアルバム', keyword: 'チェキ アルバム' },
-  ],
-  anshin: [
-    { emoji: '🍵', name: 'ふた付きマグカップ', keyword: 'マグカップ 蓋付き' },
-    { emoji: '🕯️', name: 'LEDキャンドルライト', keyword: 'LEDキャンドル インテリア' },
-    { emoji: '🛋️', name: 'ひざ掛けブランケット', keyword: 'ブランケット ひざ掛け' },
-  ],
-  gap: [
-    { emoji: '🎧', name: 'イヤホンケース', keyword: 'イヤホンケース' },
-    { emoji: '🪞', name: '折りたたみ卓上ミラー', keyword: '卓上ミラー 折りたたみ' },
-    { emoji: '☕', name: 'ふた付きタンブラー', keyword: 'タンブラー 蓋付き' },
-  ],
-  mystery: [
-    { emoji: '🌙', name: 'アロマストーン', keyword: 'アロマストーン' },
-    { emoji: '🔖', name: 'メタルしおり', keyword: 'しおり 金属' },
-    { emoji: '🗝️', name: '真鍮キーホルダー', keyword: 'キーホルダー 真鍮' },
-  ],
-  rare: [
-    { emoji: '🎨', name: 'カラーペンセット', keyword: 'カラーペン セット' },
-    { emoji: '🧴', name: 'ハンドクリームセット', keyword: 'ハンドクリーム セット' },
-    { emoji: '🧩', name: 'ジグソーパズル300ピース', keyword: 'ジグソーパズル 300ピース' },
-  ],
-};
-
-// ---- ラッキーアイテム(Amazonアソシエイト。script.jsの仕組みを踏襲した独立実装) ----
+// ---- おすすめ欄(Amazonアソシエイト。script.jsの仕組みを踏襲した独立実装) ----
 // JA単独ページ(LANG切り替えなし)なのでUS向けタグ分岐は持たない。
 const AFFILIATE_TAG = 'tinywonders-22';
 
@@ -172,13 +136,30 @@ function affiliateUrl(keyword) {
   return AFFILIATE_TAG ? `${base}&tag=${encodeURIComponent(AFFILIATE_TAG)}` : base;
 }
 
-const MELO_LUCKY_ICON_MAP = {};
-
-// 診断結果とラッキーアイテムをつなぐ一言(script.jsのLUCKY_BRIDGE相当)。タイプの気質ごとに固定。
-function pickMeloLuckyItem(id) {
-  const candidates = MELO_LUCKY_ITEMS[id];
-  return candidates[Math.floor(Math.random() * candidates.length)];
-}
+// タイプ別おすすめ2点+理由1行(2026-10-14、Fable執筆。正本は診断ツール群/MBTI診断/meroi_gift_copy.json)。
+// 理由文は主語を「あなた」にしない形なので、シェア閲覧者(友達に贈る人)にもそのまま出す
+const MELO_GIFTS = {
+  wanko: [
+    { emoji: '🎤', name: 'アクスタ収納ケース', keyword: 'アクリルスタンド 収納ケース 推し活', reason: 'ライブ後に「やばい」しか残らない夜も、推しだけは無事に持ち帰る。' },
+    { emoji: '📱', name: '折りたたみスマホスタンド', keyword: 'スマホスタンド 卓上 折りたたみ', reason: '既読と同時に返信が飛んでいく人の、机の上の定位置に。' },
+  ],
+  anshin: [
+    { emoji: '🥃', name: 'ダブルウォールグラス', keyword: 'ダブルウォールグラス 耐熱 おしゃれ', reason: '何も聞かずに「おつかれ」と差し出す、その一杯の置き場に。' },
+    { emoji: '🧦', name: 'もこもこルームソックス', keyword: 'ルームソックス もこもこ ユニセックス', reason: '沈黙が気まずくならない隣。足元までゆるむと、長居が始まる。' },
+  ],
+  gap: [
+    { emoji: '🃏', name: 'トレカ用ケース', keyword: 'トレカケース 推し活 硬質', reason: 'スタンプ1個で終わる人も、推しの話では早口。その推しを守る一枚。' },
+    { emoji: '👜', name: 'リバーシブルトート', keyword: 'トートバッグ リバーシブル キャンバス', reason: '表はクール、裏返すと別の顔。週1で誰かを驚かせる落差を持ち歩く。' },
+  ],
+  mystery: [
+    { emoji: '✉️', name: '一筆箋', keyword: '一筆箋 おしゃれ シンプル', reason: 'グループLINEに置いていく一言と同じ、短くて残る紙を一枚。' },
+    { emoji: '✨', name: '揺れるイヤーカフ', keyword: 'イヤーカフ 揺れる シルバー', reason: '「じゃあね」で振り返った横顔に、ひとつだけ揺れるものを。' },
+  ],
+  rare: [
+    { emoji: '🎞️', name: 'マスキングテープセット', keyword: 'マスキングテープ セット 和紙 おしゃれ', reason: 'どの系統にも寄らない人の手帳は、その日の気分で柄を変えればいい。' },
+    { emoji: '🔤', name: '卓上レターボード', keyword: 'レターボード 卓上 インテリア', reason: '褒められても信じない人の机に、言われた言葉を一週間貼っておく板。' },
+  ],
+};
 
 // ---- スコア計算(純粋関数。Node側でも brute-force 検証できるよう副作用なしにしている) ----
 function computeMeloScores(answers) {
@@ -340,10 +321,8 @@ if (typeof document !== 'undefined') {
       document.getElementById('compat-percent').textContent = `相性 ${compat.percent}%`;
       document.getElementById('compat-note').textContent = compat.note;
 
-      const lucky = pickMeloLuckyItem(result.id);
-      renderGiftBox(document.getElementById('nandere-lucky'), {
-        mode: sharedView ? 'gift' : 'self', typeName: t.name, item: lucky,
-        iconMap: MELO_LUCKY_ICON_MAP, bridge: MELO_LUCKY_BRIDGE[result.id], href: affiliateUrl(lucky.keyword),
+      renderGiftList(document.getElementById('nandere-lucky'), {
+        mode: sharedView ? 'gift' : 'self', typeName: t.name, items: MELO_GIFTS[result.id], href: affiliateUrl,
         onClick: (p) => track('affiliate_click', { quiz_name: 'meroi', result_type: result.id, ...p }),
       });
     }
@@ -391,6 +370,18 @@ if (typeof document !== 'undefined') {
       track('share', { method: 'line', quiz_name: 'meroi', content_type: 'meroi', item_id: lastResult.id });
       window.open(shareUrl, '_blank', 'noopener,noreferrer');
     }
+
+    // 「次はこれ」カードのクリック計測(どの診断へ回せているか)
+    // カード(next_card)と下の文字リンク(follow_links)を同じイベントで数え、placementで区別する。
+    // 同じタブで遷移するので beacon で送り、遷移で送信が消えないようにする
+    document.querySelectorAll('.next-quiz-card, .follow-links a[data-next]').forEach((el) => {
+      el.addEventListener('click', () => {
+        track('next_quiz_click', {
+          quiz_name: 'meroi', target: el.dataset.next, mode: sharedView ? 'gift' : 'self',
+          placement: el.classList.contains('next-quiz-card') ? 'next_card' : 'follow_links', transport_type: 'beacon',
+        });
+      });
+    });
 
     function restartQuiz() {
       lastResult = null;
