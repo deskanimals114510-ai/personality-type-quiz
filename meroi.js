@@ -119,9 +119,9 @@ const MELO_TYPES = {
 const MELO_COMPAT = {
   wanko:   { partner: 'anshin',  percent: 97, note: '全力で尻尾を振るあなたを、ゆるくま系は「はいはい」と受け止めつつ、実は一番照れてます。あなたの勢いが相手の落ち着きを引き出し、相手の安心があなたを守る、最強の凸凹コンビ。' },
   anshin:  { partner: 'gap',     percent: 93, note: '普段クールなツンねこ系は、安心できる場所でしか全開になりません。あなたの隣でだけ緩む顔を、周りは見たことがない。「この人の前だけ」を独占できるのは、ゆるくま系の特権です。' },
-  gap:     { partner: 'wanko',   percent: 95, note: 'わんこ系の全力に、クールな仮面はもちません。「なんでそんなに喜ぶの」と言いながら口元が緩んでる。相手の素直さがあなたのスイッチを押し続けるので、落差が毎日発生します。' },
+  gap:     { partner: 'wanko',   percent: 95, note: 'あなたがたまに見せる全開モードに、わんこ系はまっすぐ反応します。クールな顔の裏を知った瞬間、尻尾の振り方が変わる。相手の素直さに、落差がいちばん効く組み合わせです。' },
   mystery: { partner: 'rare',    percent: 96, note: 'どの系統も出せるカワウソ系は、読めない人に出会うと本気で興味を持ちます。全方位にメロい相手が、唯一「わからない」と感じるのがあなた。謎が謎を呼ぶ、見応えのある組み合わせ。' },
-  rare:    { partner: 'mystery', percent: 96, note: '無自覚に全方位にメロいあなたが、唯一ドキッとするのが余韻を残すきつね系。向こうもあなたを読み切れないので、お互い「なんなんこの人」と言い合いながら離れられない、珍しい組み合わせです。' },
+  rare:    { partner: 'mystery', percent: 96, note: 'どの系統も出せるあなたは、余韻を残すきつね系を唯一読み切れる相手になれます。全部を見せない人が、あなたの前だけ言葉を足してしまう。謎を解く側に立てる、珍しい組み合わせです。' },
 };
 
 // ---- おすすめ欄(Amazonアソシエイト。script.jsの仕組みを踏襲した独立実装) ----
@@ -649,6 +649,7 @@ if (typeof document !== 'undefined') {
 
     async function renderCardPreview(result) {
       const preview = document.getElementById('result-card-preview');
+      if (!preview) return; // 前回の生成失敗で要素ごと外した後は描かない
       preview.innerHTML = '';
       try {
         const illust = loadTypeImage(result.id);

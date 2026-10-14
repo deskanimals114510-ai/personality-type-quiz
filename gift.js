@@ -63,7 +63,7 @@ function renderGiftBox(el, o) {
 // 2点+理由つきの結果欄(2026-10-14、メロい度から)。理由文は主語なしなので本人にもシェア閲覧者にも同じ文を出す
 function renderGiftList(el, o) {
   if (!o.items || !o.items.length) { el.innerHTML = ''; return; }
-  const heading = o.mode === 'gift'
+  const heading = o.heading ? o.heading : o.mode === 'gift'
     ? `「${o.typeName}」の友達に贈るなら`
     : `「${o.typeName}」のあなたに`;
   el.innerHTML = `

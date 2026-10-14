@@ -1058,6 +1058,8 @@ const UI_TEXT = {
     hubCtaTsumiSub: '恋の罪診断(嫉妬・強欲・怠惰・傲慢)',
     hubCtaMeroiTitle: 'あなたのメロさは何系?結果は全員「褒め」',
     hubCtaMeroiSub: 'メロい度診断(わんこ系・ツンねこ系など)',
+    hubCtaMeroruTitle: 'あなたが好きになるのは何系?',
+    hubCtaMeroruSub: '何系にメロる?診断(メロい度診断の姉妹診断)',
     hubCtaMetsuTitle: '好きな人・推しの「何」にやられるタイプ?',
     hubCtaMetsuSub: '何すぎて滅?診断(ギャップ・尊いなど)',
     hubCtaFrenemyTitle: '友達へのちょっとした毒、何%?',
@@ -1153,6 +1155,8 @@ const UI_TEXT = {
     hubCtaTsumiSub: 'Love Sins Quiz (jealousy, greed, sloth, pride)',
     hubCtaMeroiTitle: 'What kind of charm makes people melt for you?',
     hubCtaMeroiSub: 'Charm Type Quiz (puppy, cool-cat, and more)',
+    hubCtaMeroruTitle: 'Which type do you fall for?',
+    hubCtaMeroruSub: 'Who-You-Melt-For Quiz (sister quiz of the Charm Type Quiz)',
     hubCtaMetsuTitle: 'What about your crush or fave knocks you out?',
     hubCtaMetsuSub: '"Too Much" Type Quiz (gap, cuteness, and more)',
     hubCtaFrenemyTitle: 'How much "frenemy" is in you?',
@@ -1298,6 +1302,11 @@ function applyLangUI() {
   const hubCtaMeroiNoteEl = document.getElementById('hub-cta-meroi-note');
   hubCtaMeroiNoteEl.textContent = t.jpOnlyNote;
   hubCtaMeroiNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
+  document.getElementById('hub-cta-meroru-title').textContent = t.hubCtaMeroruTitle;
+  document.getElementById('hub-cta-meroru-sub').textContent = t.hubCtaMeroruSub;
+  const hubCtaMeroruNoteEl = document.getElementById('hub-cta-meroru-note');
+  hubCtaMeroruNoteEl.textContent = t.jpOnlyNote;
+  hubCtaMeroruNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
   document.getElementById('hub-cta-metsu-title').textContent = t.hubCtaMetsuTitle;
   document.getElementById('hub-cta-metsu-sub').textContent = t.hubCtaMetsuSub;
   const hubCtaMetsuNoteEl = document.getElementById('hub-cta-metsu-note');

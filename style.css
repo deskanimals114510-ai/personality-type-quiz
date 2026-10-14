@@ -1256,3 +1256,10 @@ body {
   #nandere-lucky .lucky-item { gap: 10px; padding: 12px; }
   #nandere-lucky .lucky-arrow { display: none; }
 }
+/* 何系にメロる?診断(2026-10-14): 仲良くなるコツの一行と、相性欄からメロい度診断へのボタン */
+.meroru-howto-wrap { margin: 14px 0 0; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.7); font-size: 0.84rem; line-height: 1.6; color: var(--text); text-align: left; }
+.meroru-howto-wrap span { font-weight: 700; }
+.compat-cta { margin-top: 12px; }
+.compat-cta .hub-cta-sub { color: var(--text-sub); opacity: 1; }
+.compat-cta:focus-visible { outline: 3px solid var(--primary-dark); outline-offset: 3px; }
+.result-title:focus { outline: none; }
