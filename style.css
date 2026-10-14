@@ -1150,7 +1150,8 @@ body {
   font-size: 0.86rem;
   font-weight: 700;
   color: #fff;
-  background: linear-gradient(135deg, #ff8fb3, #b892ff, #7ed9c9, #ffcf7a);
+  /* 2026-10-14: 白文字が明るいグラデ上でWCAG AA未満だったため、各色を濃くして白文字4.5:1以上に */
+  background: linear-gradient(135deg, #c2185b, #7b4fcf, #18776a, #9a6212);
 }
 .nandere-main-card .desc {
   text-align: left;
