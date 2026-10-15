@@ -78,12 +78,14 @@ const NANDERE_QUESTIONS = [
 // 動物・絵文字はscript.jsのANIMAL_MAP(🐢🐕🦉🐺🐱🐰🦌🦝🐆🐬🐶🦊🦁🐕‍🦺🦢🦅)、
 // WEATHER_MAP(☀️🌤️🌫️🌀🍃🌦️🌇❄️⛈️🏖️🌬️🌳🌈⛅)、
 // VEHICLE_MAP(🚃🚌⛵🛥️🏍️🛶🎈🧪🏎️🚗🪂🏁🚄🚙🚍🚢)といずれも重複しない5種を新規選定(2026-08-26)。
+// 2026-10-16: colorは枠線・純度バー・シェア画像用に元の色のまま。型名・純度ラベルの文字はtextColor(白背景で4.5:1以上の濃い同系色)
 const NANDERE_TYPES = {
   tsun: {
     emoji: '🦔', name: 'ツンデレ',
     nickname: 'トゲの下は溶岩なハリネズミ',
     tagline: '「別に」は好きの暗号。',
     color: '#ff8a65',
+    textColor: '#b83a0e',
     description: '好きな人ほど塩対応。LINEの返信は「ふーん」「別に」の二文字なのに、既読だけは光速。相手の投稿は全部チェック済みで、頭の中はその人のことで満員御礼です。素直になれないのは、気持ちが大きすぎて出口で渋滞しているから。周りからはクールに見られがちだけど、本当はかまってほしいし、褒められたら3日は思い出してニヤけるタイプ。そのトゲ、鎧じゃなくて照れ隠しだって、実はみんな薄々気づいてます。たまには「ありがとう」の一言だけでも素直に出してみて。それだけで、あなたの魅力は倍増します。',
   },
   cool: {
@@ -91,6 +93,7 @@ const NANDERE_TYPES = {
     nickname: '氷の下に温泉を隠すペンギン',
     tagline: '静かに、深く、好き。',
     color: '#4fb3d9',
+    textColor: '#0a6a8e',
     description: '感情の起伏? 何それおいしいの、という顔で日々を過ごすあなた。デートの誘いには「行けたら行く」、告白されても「そう」。でも実は、心の中の温度計はちゃんと動いています。好きな人の隣では歩くスピードが少しだけ落ちるし、二人の予定は誰よりも正確に覚えている。騒がないだけで、愛はしっかり深いタイプです。ただしそのポーカーフェイス、精度が高すぎて相手には全然伝わっていません。100ある気持ちのうち、せめて10だけでも言葉にしてみて。普段静かなあなたの一言は、そのぶん重みが違います。',
   },
   yan: {
@@ -98,6 +101,7 @@ const NANDERE_TYPES = {
     nickname: '愛が渋滞中の全力ハグ製造機',
     tagline: '好きの供給量、規定オーバー',
     color: '#c45bff',
+    textColor: '#8a2bc2',
     description: '好きになったら一直線どころか八方向から全力。連絡はまめ、記念日は完璧、相手の好物は全部暗記済み。愛情の供給量が常に規定値を超えていて、周りが「ちょっと落ち着け」とツッコむレベルです。でも隠す気ゼロの全力好き好きオーラは、実はいちばん裏表がなくて信頼できる証拠。愛が重い? いいえ、愛が豊作なだけです。あなたのそばにいる人は、愛されているか不安になる暇が1秒もありません。その情熱は間違いなく最強の武器。あとは相手のペースに合わせる余白をちょっとだけ作れば、無敵の愛されキャラの完成です。',
   },
   kenage: {
@@ -105,6 +109,7 @@ const NANDERE_TYPES = {
     nickname: '愛を毎日積み立てるどんぐり係',
     tagline: '小さな好きを、コツコツ積立。',
     color: '#e0a253',
+    textColor: '#8a5a12',
     description: 'ドカンと燃え上がるタイプじゃないけれど、好きな気持ちは毎日ちゃんと言葉にする。おはようのLINE、さりげない差し入れ、疲れてそうな日の気遣い。あなたの愛は一発逆転じゃなくて、コツコツ積み立てる堅実運用型です。派手さはないのに、気づけば相手の生活に欠かせない存在になっているのが最大の強み。ただし、尽くしすぎて自分を後回しにしがちなのが玉にキズ。あなたが積み上げてきた優しさは、ちゃんと受け取ってもらっていいものです。たまには「私も甘えたい」って言っちゃいましょう。それも立派な素直です。',
   },
   nanairo: {
@@ -112,6 +117,7 @@ const NANDERE_TYPES = {
     nickname: '出現率5%の七変化ユニコーン',
     tagline: '今日のデレは、何色?',
     color: '#b892ff',
+    textColor: '#6a3fb0',
     rare: true,
     description: 'おめでとうございます、あなたは出現率わずか5%程度の激レアタイプ。ツンな日もあれば、全力デレの日もあり、クールに澄ます日もある。デレ方が七色に変わるので、相手は毎日新しいあなたに出会っている状態です。「つかみどころがない」と言われがちだけど、それは相手や状況に合わせて愛し方を選べる、恋愛の万能選手だという証拠。飽きられる心配とは無縁の、伝説級の魅力の持ち主です。唯一の注意点は、変幻自在すぎて本心が伝わりにくいこと。ここぞという場面では、色を一つに絞って伝えてみて。その一色は最強に輝きます。',
   },
@@ -274,6 +280,8 @@ if (typeof document !== 'undefined') {
       }
       const q = NANDERE_QUESTIONS[currentIndex];
       progressFill.style.width = `${(currentIndex / NANDERE_QUESTIONS.length) * 100}%`;
+      progressFill.parentElement.setAttribute('aria-valuenow', String(currentIndex + 1));
+      progressFill.parentElement.setAttribute('aria-valuemax', String(NANDERE_QUESTIONS.length));
       progressText.textContent = `${currentIndex + 1} / ${NANDERE_QUESTIONS.length}`;
       addBubble(q.text, 'ai');
       renderOptions(q);
@@ -319,6 +327,7 @@ if (typeof document !== 'undefined') {
       showScreen('result');
       renderResult(lastResult);
       renderCardPreview(lastResult);
+      document.querySelector('#screen-result .result-title').focus();
     }
 
     function renderResult(result) {
@@ -334,6 +343,7 @@ if (typeof document !== 'undefined') {
 
       const card = document.getElementById('nandere-card');
       card.style.setProperty('--accent', t.color);
+      card.style.setProperty('--accent-text', t.textColor);
 
       const purityWrap = document.getElementById('nandere-purity-wrap');
       const rarityWrap = document.getElementById('nandere-rarity-wrap');
@@ -368,11 +378,22 @@ if (typeof document !== 'undefined') {
     function copyResultUrl() {
       if (!lastResult) return;
       const btn = document.getElementById('btn-copy-url');
-      track('copy_url', { quiz_name: 'nandere', result_type: lastResult.id });
+      // 表示中に連打されても、差し替え前の文言を取り違えない
+      const flash = (label) => {
+        if (!btn._flashTimer) btn._origLabel = btn.textContent;
+        clearTimeout(btn._flashTimer);
+        btn.textContent = label;
+        btn._flashTimer = setTimeout(() => { btn.textContent = btn._origLabel; btn._flashTimer = null; }, 2000);
+      };
+      if (!navigator.clipboard || !navigator.clipboard.writeText) {
+        flash('コピーできませんでした');
+        return;
+      }
       navigator.clipboard.writeText(resultUrl(lastResult)).then(() => {
-        const original = btn.textContent;
-        btn.textContent = 'コピーしました!';
-        setTimeout(() => { btn.textContent = original; }, 2000);
+        track('copy_url', { quiz_name: 'nandere', result_type: lastResult.id });
+        flash('コピーしました!');
+      }).catch(() => {
+        flash('コピーできませんでした');
       });
     }
 
@@ -667,6 +688,7 @@ if (typeof document !== 'undefined') {
 
     async function renderCardPreview(result) {
       const preview = document.getElementById('result-card-preview');
+      if (!preview) return; // 前回の生成失敗で要素ごと外した後は描かない
       preview.innerHTML = '';
       try {
         const illust = loadTypeImage(result.id);
@@ -696,8 +718,9 @@ if (typeof document !== 'undefined') {
       track('save_card', { quiz_name: 'nandere', card_format: mode });
       try {
         const canvas = buildNandereCardCanvas(lastResult, mode, await loadTypeImage(lastResult.id));
-        await new Promise((resolve) => {
+        await new Promise((resolve, reject) => {
           canvas.toBlob((blob) => {
+            if (!blob) { reject(new Error('toBlobがnullを返しました')); return; }
             const a = document.createElement('a');
             const url = URL.createObjectURL(blob);
             a.href = url;
@@ -731,10 +754,9 @@ if (typeof document !== 'undefined') {
       const params = new URLSearchParams(location.search);
       const sRaw = params.get('s');
       const nRaw = params.get('n');
-      if (sRaw === null || nRaw === null) return;
+      if (!/^-?\d{1,2}$/.test(sRaw || '') || !/^-?\d{1,2}$/.test(nRaw || '')) return;
       const sunao = parseInt(sRaw, 10);
       const netsu = parseInt(nRaw, 10);
-      if (!Number.isFinite(sunao) || !Number.isFinite(netsu)) return;
       if (Math.abs(sunao) > 10 || Math.abs(netsu) > 10) return;
       const id = computeNandereType(sunao, netsu);
       const purity = computeNanderePurity(sunao, netsu);

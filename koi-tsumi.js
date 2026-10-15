@@ -258,6 +258,8 @@ if (typeof document !== 'undefined') {
       }
       const q = AKUMA_QUESTIONS[currentIndex];
       progressFill.style.width = `${(currentIndex / AKUMA_QUESTIONS.length) * 100}%`;
+      progressFill.parentElement.setAttribute('aria-valuenow', String(currentIndex + 1));
+      progressFill.parentElement.setAttribute('aria-valuemax', String(AKUMA_QUESTIONS.length));
       progressText.textContent = `${currentIndex + 1} / ${AKUMA_QUESTIONS.length}`;
       addBubble(q.text, 'ai');
       renderOptions(q);
@@ -305,6 +307,7 @@ if (typeof document !== 'undefined') {
       showScreen('result');
       renderResult(lastResult);
       renderCardPreview(lastResult);
+      document.querySelector('#screen-result .result-title').focus();
     }
 
     function renderResult(result) {
@@ -657,6 +660,7 @@ if (typeof document !== 'undefined') {
 
     async function renderCardPreview(result) {
       const preview = document.getElementById('result-card-preview');
+      if (!preview) return; // 前回の生成失敗で要素ごと外した後は描かない
       preview.innerHTML = '';
       try {
         const illust = loadTypeImage(result.id);
@@ -686,9 +690,9 @@ if (typeof document !== 'undefined') {
       track('save_card', { quiz_name: 'koi_tsumi', card_format: mode });
       try {
         const canvas = buildAkumaCardCanvas(lastResult, mode, await loadTypeImage(lastResult.id));
-        await new Promise((resolve) => {
+        await new Promise((resolve, reject) => {
           canvas.toBlob((blob) => {
-            if (!blob) { resolve(); return; }
+            if (!blob) { reject(new Error('toBlobがnullを返しました')); return; }
             const a = document.createElement('a');
             const url = URL.createObjectURL(blob);
             a.href = url;

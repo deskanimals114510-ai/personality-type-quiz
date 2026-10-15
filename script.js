@@ -1005,10 +1005,10 @@ function getElementName(el) { return LANG === 'en' ? ELEMENT_NAME_EN[el] : el; }
 const UI_TEXT = {
   ja: {
     pageTitle: 'MBTI性格・恋愛・仕事タイプ診断',
-    pageDescription: 'AIとチャットするだけの3分診断。性格・恋愛・仕事でタイプが変わるかも?動物・天気・乗り物にたとえてお届けします。',
+    pageDescription: 'チャット形式で答えるだけの3分診断。性格・恋愛・仕事でタイプが変わるかも?動物・天気・乗り物にたとえてお届けします。',
     eyebrow: 'FREE PERSONALITY TEST',
     titleHtml: 'あなたの<span class="grad-text">3つの顔</span>、診断します',
-    lead: 'AIとチャットしながら答えるだけの、MBTIベースの診断。<br>「性格」「恋愛」「仕事」でタイプが変わる、<br>ちょっと不思議な診断です。',
+    lead: 'チャット形式で答えるだけの、MBTIベースの診断。<br>「性格」「恋愛」「仕事」でタイプが変わる、<br>ちょっと不思議な診断です。',
     badges: ['🐢 動物', '☀️ 天気', '🚃 乗り物', '🪄 でたとえます'],
     startBtn: '診断をはじめる ✨',
     sub: '全30問・所要時間 約3分',
@@ -1065,8 +1065,16 @@ const UI_TEXT = {
     hubCtaFrenemyTitle: '友達へのちょっとした毒、何%?',
     hubCtaFrenemySub: 'フレネミー度診断(張り合い・辛口など)',
     hubCtaLovecharTitle: '優しい言葉より、毒舌のほうが刺さることがある',
-    hubCtaLovecharSub: '恋愛キャラ診断(64通り・20問)',
+    hubCtaLovecharSub: '恋愛キャラ診断(64通り・8問)',
+    siteNavAria: 'Desk Animals Labの診断サイト一覧',
+    siteNavLabel: '🐾 他の診断もどうぞ',
+    siteNavKokuyo: '🌙 黒曜診断',
+    siteNavKokuyoHref: 'https://deskanimals114510-ai.github.io/kokuyo-shindan/',
+    siteNavAisho: '💫 相性診断',
+    siteNavLovechar: '💞 恋愛キャラ診断64',
     hubCtaTitle: 'MBTI 16タイプ一覧を見る',
+    footerPortalLink: 'Desk Animals Labのほかの診断・ツールを見る',
+    copyFailedLabel: 'コピーできませんでした',
     hubCtaSubStart: '診断前に全タイプの性格・恋愛・仕事をチェック',
     hubCtaSubResult: '気になる他のタイプの性格・恋愛・仕事もチェック',
     jpOnlyNote: '',
@@ -1101,10 +1109,10 @@ const UI_TEXT = {
   },
   en: {
     pageTitle: 'MBTI Personality, Love & Career Type Quiz',
-    pageDescription: 'A 3-minute quiz you take by chatting with AI. Your Personality, Love, and Career types might all be different — described through animals, weather, and vehicles.',
+    pageDescription: 'A 3-minute quiz you answer in a simple chat format. Your Personality, Love, and Career types might all be different — described through animals, weather, and vehicles.',
     eyebrow: 'FREE PERSONALITY TEST',
     titleHtml: 'Reveal Your <span class="grad-text">3 Hidden Sides</span>',
-    lead: 'Just chat with the AI to find out.<br>Your Personality, Love, and Career types<br>might all be different — a curiously accurate test.',
+    lead: 'Just answer in a simple chat format.<br>Your Personality, Love, and Career types<br>might all be different — a curiously accurate test.',
     badges: ['🐢 Animal', '☀️ Weather', '🚃 Vehicle', '🪄 as your symbol'],
     startBtn: 'Start the Test ✨',
     sub: '30 questions · about 3 minutes',
@@ -1162,8 +1170,16 @@ const UI_TEXT = {
     hubCtaFrenemyTitle: 'How much "frenemy" is in you?',
     hubCtaFrenemySub: 'Frenemy Quiz (rival, blunt, and more)',
     hubCtaLovecharTitle: 'Sometimes blunt words hit harder than kind ones',
-    hubCtaLovecharSub: 'Love Character Quiz (64 types, 20 questions)',
+    hubCtaLovecharSub: 'Love Character Quiz (64 types, 8 questions)',
+    siteNavAria: 'Quiz sites by Desk Animals Lab',
+    siteNavLabel: '🐾 More quizzes',
+    siteNavKokuyo: '🌙 Kokuyo Fortune Reading',
+    siteNavKokuyoHref: 'https://deskanimals114510-ai.github.io/kokuyo-shindan/en/',
+    siteNavAisho: '💫 Compatibility Quiz (Japanese)',
+    siteNavLovechar: '💞 Love Character 64 (Japanese)',
     hubCtaTitle: 'Browse All 16 MBTI Types',
+    footerPortalLink: 'More quizzes & tools from Desk Animals Lab',
+    copyFailedLabel: 'Couldn\'t copy',
     hubCtaSubStart: 'Preview every type before you start',
     hubCtaSubResult: 'Check out the other types too',
     jpOnlyNote: 'Available in Japanese only',
@@ -1333,6 +1349,19 @@ function applyLangUI() {
     footerHubLinkEl.textContent = t.hubCtaTitle;
     footerHubLinkEl.setAttribute('href', hubUrl);
   }
+  // 上部の他サイトナビ(2026-10-16、?lang=enで日本語のまま残っていた)
+  const siteNavEl = document.getElementById('site-nav');
+  if (siteNavEl) {
+    siteNavEl.setAttribute('aria-label', t.siteNavAria);
+    document.getElementById('site-nav-label').textContent = t.siteNavLabel;
+    const kokuyoEl = document.getElementById('site-nav-kokuyo');
+    kokuyoEl.textContent = t.siteNavKokuyo;
+    kokuyoEl.setAttribute('href', t.siteNavKokuyoHref);
+    document.getElementById('site-nav-aisho').textContent = t.siteNavAisho;
+    document.getElementById('site-nav-lovechar64').textContent = t.siteNavLovechar;
+  }
+  const footerPortalLinkEl = document.getElementById('footer-portal-link');
+  if (footerPortalLinkEl) footerPortalLinkEl.textContent = t.footerPortalLink;
   document.documentElement.lang = LANG;
 }
 
@@ -1387,6 +1416,8 @@ function showScreen(name) {
 function startQuiz() {
   // シェア結果(?r=)や予想画面から診断を始めた場合も、自分の結果として表示・計測する
   isSharedView = false;
+  // 開始ボタン・もう一度診断・予想→自分も診断のどの経路でも1回数える(ボタン側の送信は廃止して二重計上を防ぐ)
+  trackEvent('quiz_start', { quiz_name: 'mbti' });
   currentIndex = 0;
   answers = [];
   chatLog.innerHTML = '';
@@ -1556,16 +1587,29 @@ function inviteGuessUrl() {
   if (!lastResult) return location.href;
   return location.origin + location.pathname + '?guess=' + lastResult.personality + '&lang=' + LANG;
 }
+// ボタンの文言を一時的に差し替えて戻す。表示中に連打されても、差し替え前の文言を取り違えない
+function flashButton(btn, label, ms) {
+  if (!btn._flashTimer) btn._origLabel = btn.textContent;
+  clearTimeout(btn._flashTimer);
+  btn.textContent = label;
+  btn._flashTimer = setTimeout(() => { btn.textContent = btn._origLabel; btn._flashTimer = null; }, ms);
+}
+
 function copyInviteGuessUrl() {
   if (!lastResult) return;
   const t = UI_TEXT[LANG];
   const btn = document.getElementById('btn-invite-guess');
+  if (!navigator.clipboard || !navigator.clipboard.writeText) {
+    flashButton(btn, t.copyFailedLabel, 2000);
+    return;
+  }
   navigator.clipboard.writeText(inviteGuessUrl()).then(() => {
-    const original = btn.textContent;
-    btn.textContent = t.guessInviteCopiedLabel;
+    flashButton(btn, t.guessInviteCopiedLabel, 2000);
     trackEvent('guess_invite_copy');
-    setTimeout(() => { btn.textContent = original; }, 2000);
-  }).catch(() => { /* クリップボード権限が無い環境でも診断導線自体は続行する */ });
+  }).catch(() => {
+    // クリップボード権限が無い環境でも診断導線自体は続行する
+    flashButton(btn, t.copyFailedLabel, 2000);
+  });
 }
 
 // ===== 予想クイズ本体 =====
@@ -1637,11 +1681,15 @@ function copyResultUrl() {
   if (!lastResult) return;
   const t = UI_TEXT[LANG];
   const btn = document.getElementById('btn-copy-url');
+  if (!navigator.clipboard || !navigator.clipboard.writeText) {
+    flashButton(btn, t.copyFailedLabel, 2000);
+    return;
+  }
   navigator.clipboard.writeText(resultUrl()).then(() => {
-    const original = btn.textContent;
-    btn.textContent = t.copiedLabel;
+    flashButton(btn, t.copiedLabel, 2000);
     trackEvent('copy_url');
-    setTimeout(() => { btn.textContent = original; }, 2000);
+  }).catch(() => {
+    flashButton(btn, t.copyFailedLabel, 2000);
   });
 }
 
@@ -1687,7 +1735,8 @@ function renderResultCards(types) {
 
     const card = document.createElement('div');
     card.className = 'result-card';
-    card.style.setProperty('--accent', meta.color);
+    card.style.setProperty('--accent', meta.color); // 枠線専用(文字に使うと薄くて読めない)
+    card.style.setProperty('--accent-text', meta.textColor);
     card.style.animationDelay = `${i * 0.15}s`;
     card.innerHTML = `
       <div class="card-icon">${emoji}</div>
@@ -1702,14 +1751,26 @@ function renderResultCards(types) {
       ${luckyHtml}
     `;
     resultCards.appendChild(card);
+    // 商品欄の表示計測(affiliate_clickの分母)。結果を描くたびに付け直す
+    const cardItem = card.querySelector('.lucky-item');
+    if (cardItem) giftObserveOnce(cardItem, () => trackSectionView('result_card'));
   });
   renderGiftSection(types);
+}
+
+function trackSectionView(placement) {
+  if (!lastResult) return;
+  trackEvent('section_view', { quiz_name: 'mbti', result_type: lastResult.personality, placement, mode: isSharedView ? 'gift' : 'self' });
 }
 
 // カード保存の下の「おすすめ」欄(JAのみ)。シェアされた結果を見ている人には「友達に贈るなら」で出す
 function renderGiftSection(types) {
   const el = document.getElementById('gift-section');
-  if (LANG !== 'ja') { el.hidden = true; el.innerHTML = ''; return; }
+  if (LANG !== 'ja') {
+    el.hidden = true; el.innerHTML = '';
+    if (el._giftObs) { el._giftObs.disconnect(); el._giftObs = null; }
+    return;
+  }
   const type = types.personality;
   const [emoji, label] = ANIMAL_MAP[type];
   const g = MBTI_GIFTS[type][1];
@@ -1720,6 +1781,7 @@ function renderGiftSection(types) {
     <p class="gift-season">${giftSeasonLine(mode)}</p>
     ${giftLinkHtml({ href: affiliateUrl(g.keyword), icon: emoji, name: g.name, reason: g.reason, placement: 'gift_section', mode })}`;
   el.hidden = false;
+  giftObserveOnce(el, () => trackSectionView('gift_section'));
 }
 
 // ===== 結果カード画像生成(Canvas、サーバー不要) =====
@@ -2131,6 +2193,7 @@ async function buildLoveCardCanvas(types, mode) {
 // <img>化しておくことで、スマホの長押し保存やPCの右クリック保存もそのまま使える。
 async function renderCardPreview(types) {
   const preview = document.getElementById('result-card-preview');
+  if (!preview) return; // 前回の生成失敗で要素ごと外した後は描かない
   preview.innerHTML = '';
   try {
     const canvas = await buildResultCardCanvas(types, 'x');
@@ -2156,6 +2219,7 @@ async function renderCardPreview(types) {
 async function renderLoveCharCardPreview(types) {
   if (LANG === 'en') return;
   const preview = document.getElementById('lovechar-card-preview');
+  if (!preview) return; // 前回の生成失敗で要素ごと外した後は描かない
   preview.innerHTML = '';
   try {
     const canvas = await buildLoveCharCardCanvas(types, 'x');
@@ -2181,8 +2245,9 @@ async function downloadResultCard(mode) {
   btn.disabled = true;
   try {
     const canvas = await buildResultCardCanvas(lastResult, mode);
-    await new Promise((resolve) => {
+    await new Promise((resolve, reject) => {
       canvas.toBlob((blob) => {
+        if (!blob) { reject(new Error('toBlobがnullを返しました')); return; }
         const a = document.createElement('a');
         const url = URL.createObjectURL(blob);
         a.href = url;
@@ -2261,8 +2326,9 @@ async function downloadLoveCard() {
   btn.disabled = true;
   try {
     const canvas = await buildLoveCardCanvas(lastResult, 'x');
-    await new Promise((resolve) => {
+    await new Promise((resolve, reject) => {
       canvas.toBlob((blob) => {
+        if (!blob) { reject(new Error('toBlobがnullを返しました')); return; }
         const a = document.createElement('a');
         const url = URL.createObjectURL(blob);
         a.href = url;
@@ -2505,8 +2571,9 @@ async function downloadLoveCharCard(mode) {
   btn.disabled = true;
   try {
     const canvas = await buildLoveCharCardCanvas(lastResult, mode);
-    await new Promise((resolve) => {
+    await new Promise((resolve, reject) => {
       canvas.toBlob((blob) => {
+        if (!blob) { reject(new Error('toBlobがnullを返しました')); return; }
         const a = document.createElement('a');
         const url = URL.createObjectURL(blob);
         a.href = url;
@@ -2557,14 +2624,14 @@ if (GA_MEASUREMENT_ID && !isLocalDev) {
   gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
   document.head.appendChild(gaScript);
   window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  gtag('js', new Date());
-  gtag('config', GA_MEASUREMENT_ID);
+  window.gtag = function gtag() { window.dataLayer.push(arguments); };
+  window.gtag('js', new Date());
+  window.gtag('config', GA_MEASUREMENT_ID);
 }
 
 // 行動計測用の共通ヘルパー(gtag未読み込み時は何もしない、計測失敗が機能を止めないよう安全に呼ぶ)
 function trackEvent(name, params) {
-  if (typeof gtag === 'function') gtag('event', name, params || {});
+  if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
 }
 
 // hub-cta(タイプ一覧・何デレ診断への導線)とラッキーアイテム(アフィリエイト)リンクは
@@ -2596,7 +2663,6 @@ document.addEventListener('click', (e) => {
 });
 
 document.getElementById('btn-start').addEventListener('click', startQuiz);
-document.getElementById('btn-start').addEventListener('click', () => trackEvent('quiz_start', { quiz_name: 'mbti' }));
 document.getElementById('btn-share').addEventListener('click', shareResult);
 document.getElementById('btn-share-line').addEventListener('click', shareResultLine);
 document.getElementById('btn-copy-url').addEventListener('click', copyResultUrl);

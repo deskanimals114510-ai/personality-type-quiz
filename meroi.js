@@ -240,6 +240,8 @@ if (typeof document !== 'undefined') {
       }
       const q = MELO_QUESTIONS[currentIndex];
       progressFill.style.width = `${(currentIndex / MELO_QUESTIONS.length) * 100}%`;
+      progressFill.parentElement.setAttribute('aria-valuenow', String(currentIndex + 1));
+      progressFill.parentElement.setAttribute('aria-valuemax', String(MELO_QUESTIONS.length));
       progressText.textContent = `${currentIndex + 1} / ${MELO_QUESTIONS.length}`;
       addBubble(q.text, 'ai');
       renderOptions(q);
@@ -685,9 +687,9 @@ if (typeof document !== 'undefined') {
       track('save_card', { quiz_name: 'meroi', card_format: mode });
       try {
         const canvas = buildMeloCardCanvas(lastResult, mode, await loadTypeImage(lastResult.id));
-        await new Promise((resolve) => {
+        await new Promise((resolve, reject) => {
           canvas.toBlob((blob) => {
-            if (!blob) { resolve(); return; }
+            if (!blob) { reject(new Error('toBlobがnullを返しました')); return; }
             const a = document.createElement('a');
             const url = URL.createObjectURL(blob);
             a.href = url;

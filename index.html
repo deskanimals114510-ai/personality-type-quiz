@@ -6,14 +6,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-site-verification" content="0J0w_U9KWunnJqs_cK5Oh1yQ9owq_4TMpYkJdkPbA4E" />
 <title>MBTI性格・恋愛・仕事タイプ診断</title>
-<meta name="description" content="AIとチャットするだけの3分診断。性格・恋愛・仕事でタイプが変わるかも?動物・天気・乗り物にたとえてお届けします。">
+<meta name="description" content="チャット形式で答えるだけの3分診断。性格・恋愛・仕事でタイプが変わるかも?動物・天気・乗り物にたとえてお届けします。">
 <meta name="google-site-verification" content="44AwGj8h5FZbB6cqRA0v0Dp9L2mlcvKR9AnbuDCQM8U" />
 <meta name="p:domain_verify" content="c3e59e12f8b4698aa9df5b361142a01b"/>
 
 <!-- OGP (Facebook/LINE等) -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="性格・恋愛・仕事タイプ診断">
-<meta property="og:description" content="AIとチャットするだけの3分診断。性格・恋愛・仕事でタイプが変わるかも?動物・天気・乗り物にたとえてお届けします。">
+<meta property="og:description" content="チャット形式で答えるだけの3分診断。性格・恋愛・仕事でタイプが変わるかも?動物・天気・乗り物にたとえてお届けします。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:url" content="https://deskanimals114510-ai.github.io/personality-type-quiz/">
 <link rel="canonical" href="https://deskanimals114510-ai.github.io/personality-type-quiz/">
@@ -24,7 +24,7 @@
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="性格・恋愛・仕事タイプ診断">
-<meta name="twitter:description" content="AIとチャットするだけの3分診断。性格・恋愛・仕事でタイプが変わるかも?">
+<meta name="twitter:description" content="チャット形式で答えるだけの3分診断。性格・恋愛・仕事でタイプが変わるかも?">
 <meta name="twitter:image" content="https://deskanimals114510-ai.github.io/personality-type-quiz/og-image.jpg">
 
 <link rel="icon" href="favicon.ico">
@@ -36,7 +36,7 @@
 <link id="font-link" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" media="print">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet"></noscript>
 <link rel="stylesheet" href="style.css">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"性格・恋愛・仕事タイプ診断","alternateName":"MBTI性格診断","description":"AIとチャットするだけの3分無料MBTI診断。性格・恋愛・仕事でタイプが変わるかも?動物・天気・乗り物にたとえてお届けします。","url":"https://deskanimals114510-ai.github.io/personality-type-quiz/","inLanguage":"ja"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"性格・恋愛・仕事タイプ診断","alternateName":"MBTI性格診断","description":"チャット形式で答えるだけの3分無料MBTI診断。性格・恋愛・仕事でタイプが変わるかも?動物・天気・乗り物にたとえてお届けします。","url":"https://deskanimals114510-ai.github.io/personality-type-quiz/","inLanguage":"ja"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://deskanimals114510-ai.github.io/personality-type-quiz/#organization","name":"Desk Animals Lab","url":"https://deskanimals114510-ai.github.io/personality-type-quiz/","logo":{"@type":"ImageObject","url":"https://deskanimals114510-ai.github.io/personality-type-quiz/og-image.jpg","width":1200,"height":630},"sameAs":["https://x.com/deskanimalslab","https://www.instagram.com/desk.animals114510/","https://www.tiktok.com/@desk.animals"]}</script>
 <!--
   アクセス解析(任意): Google Analytics 4を使う場合は script.js の GA_MEASUREMENT_ID に
@@ -69,12 +69,12 @@
 
   <!-- スタート画面 -->
   <section id="screen-start" class="screen active">
-    <nav class="site-nav" aria-label="Desk Animals Labの診断サイト一覧">
-      <span class="site-nav-label">🐾 他の診断もどうぞ</span>
+    <nav id="site-nav" class="site-nav" aria-label="Desk Animals Labの診断サイト一覧">
+      <span id="site-nav-label" class="site-nav-label">🐾 他の診断もどうぞ</span>
       <div class="site-nav-links">
-        <a class="site-nav-link" href="https://deskanimals114510-ai.github.io/kokuyo-shindan/">🌙 黒曜診断</a>
-        <a class="site-nav-link" href="https://deskanimals114510-ai.github.io/aisho-shindan/">💫 相性診断</a>
-        <a class="site-nav-link" href="https://deskanimals114510-ai.github.io/lovechar64/">💞 恋愛キャラ診断64</a>
+        <a id="site-nav-kokuyo" class="site-nav-link" href="https://deskanimals114510-ai.github.io/kokuyo-shindan/">🌙 黒曜診断</a>
+        <a id="site-nav-aisho" class="site-nav-link" href="https://deskanimals114510-ai.github.io/aisho-shindan/">💫 相性診断</a>
+        <a id="site-nav-lovechar64" class="site-nav-link" href="https://deskanimals114510-ai.github.io/lovechar64/">💞 恋愛キャラ診断64</a>
         <!-- 新しい診断サイトを追加する場合はここに <a class="site-nav-link" href="...">絵文字 サイト名</a> を1行追記 -->
       </div>
     </nav>
@@ -93,7 +93,7 @@
       </div>
       <span id="start-eyebrow" class="eyebrow">FREE PERSONALITY TEST</span>
       <h1 id="start-title">あなたの<span class="grad-text">3つの顔</span>、診断します</h1>
-      <p id="start-lead" class="lead">AIとチャットしながら答えるだけの、MBTIベースの診断。<br>「性格」「恋愛」「仕事」でタイプが変わる、<br>ちょっと不思議な診断です。</p>
+      <p id="start-lead" class="lead">チャット形式で答えるだけの、MBTIベースの診断。<br>「性格」「恋愛」「仕事」でタイプが変わる、<br>ちょっと不思議な診断です。</p>
       <div id="start-badges" class="badges">
         <span class="badge">🐢 動物</span>
         <span class="badge">☀️ 天気</span>
@@ -172,7 +172,7 @@
           <span class="hub-cta-emoji">💞</span>
           <span class="hub-cta-text">
             <span id="hub-cta-lovechar64-title" class="hub-cta-title">優しい言葉より、毒舌のほうが刺さることがある</span>
-            <span id="hub-cta-lovechar64-sub" class="hub-cta-sub">恋愛キャラ診断(64通り・20問)</span>
+            <span id="hub-cta-lovechar64-sub" class="hub-cta-sub">恋愛キャラ診断(64通り・8問)</span>
           </span>
           <span class="hub-cta-arrow" aria-hidden="true">›</span>
         </a>
@@ -235,7 +235,7 @@
       <button id="btn-share-lovechar" class="btn-secondary">💞 恋愛キャラをXでシェア</button>
       <button id="btn-save-lovechar-card" class="btn-secondary">💞 恋愛キャラカードを保存 🖼️</button>
       <button id="btn-save-lovechar-card-story" class="btn-secondary">💞 ストーリーズ用に保存 📱</button>
-      <p style="margin:12px 0 0;font-size:13px;text-align:center;"><a href="https://deskanimals114510-ai.github.io/lovechar64/" target="_blank" rel="noopener" style="color:var(--primary-dark);font-weight:700;">💞 恋愛キャラだけ20問で診断できる専用サイトはこちら →</a></p>
+      <p style="margin:12px 0 0;font-size:13px;text-align:center;"><a href="https://deskanimals114510-ai.github.io/lovechar64/" target="_blank" rel="noopener" style="color:var(--primary-dark);font-weight:700;">💞 恋愛キャラだけ8問で診断できる専用サイトはこちら →</a></p>
     </div>
     <div class="result-actions result-actions-card">
       <p id="love-card-label" class="type-page-sub" style="margin:0 0 8px;">💘 恋愛タイプだけシェアする</p>
@@ -297,7 +297,7 @@
     </div>
     <div id="guess-intro" class="start-card">
       <div class="start-emoji">🔮</div>
-      <h1 id="guess-intro-title">この人の性格、当ててみて!</h1>
+      <h2 id="guess-intro-title" class="start-card-title">この人の性格、当ててみて!</h2>
       <p id="guess-intro-lead" class="lead">友達や知り合いを思い浮かべながら、4問だけ答えてね。<br>正解できるか、ドキドキしながらどうぞ。</p>
       <button id="btn-guess-start" class="btn-primary">予想をはじめる ✨</button>
     </div>
@@ -322,6 +322,7 @@
     <p id="footer-privacy">本診断は名前・生年月日等の個人情報の入力を求めません。回答内容はすべてお使いの端末内で処理され、サーバーへの送信・保存は一切行いません。なお、アクセス解析(Googleアナリティクス)は行っており、閲覧したページの情報が計測されます。計測にはCookieを使用します。商品リンクのリンク先(Amazon)などの第三者がCookieを設定・取得する場合があります。また、Google Fontsの読み込み時にお使いのIPアドレスがGoogleに送信されます。</p>
     <p id="footer-affiliate">🔖 本ページの「PR」表示のある商品リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。Amazonのアソシエイトとして、Desk Animals Labは適格販売により収入を得ています。</p>
     <p><a id="footer-hub-link" href="types/" style="color:var(--primary-dark);font-weight:700;">MBTI 16タイプ一覧を見る</a></p>
+    <p><a id="footer-portal-link" href="https://deskanimals114510-ai.github.io/" style="color:var(--primary-dark);font-weight:700;">Desk Animals Labのほかの診断・ツールを見る</a></p>
   </footer>
 
 </main>

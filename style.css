@@ -82,6 +82,8 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .blob, .sparkle { animation: none; }
+  .bubble { animation: none; }
+  .result-card { animation: none; opacity: 1; }
   .sparkle { opacity: 0.6; }
   html { scroll-behavior: auto; }
 }
@@ -193,6 +195,7 @@ body {
   font-size: 0.74rem;
   font-weight: 700;
   padding: 5px 14px;
+  min-height: 44px;
   border-radius: 999px;
   border: 1.5px solid var(--border);
   background: #fff;
@@ -299,7 +302,8 @@ body {
 .hero-preview-img:first-child { margin-left: 0; transform: rotate(-6deg); }
 .hero-preview-img:nth-child(2) { width: 76px; height: 76px; z-index: 2; transform: translateY(-6px); }
 .hero-preview-img:nth-child(3) { transform: rotate(6deg); }
-.start-card h1 {
+.start-card h1,
+.start-card .start-card-title {
   font-size: 1.55rem;
   font-weight: 900;
   margin: 4px 0 14px;
@@ -403,6 +407,8 @@ body {
   font-size: 0.62rem;
   font-weight: 700;
   padding: 3px 9px;
+  min-height: 24px;
+  min-width: 24px;
   border-radius: 999px;
   border: 1.5px solid var(--border);
   background: #fff;
@@ -579,7 +585,8 @@ body {
 .result-card .cat-name {
   font-size: 0.76rem;
   font-weight: 700;
-  color: var(--accent);
+  /* --accentは枠線専用(薄くて文字には使えない)。文字は濃い同系色、静的ページ(types/)は性格色の既定値 */
+  color: var(--accent-text, #6a3fb0);
   margin: 0 0 4px;
 }
 .result-card .type-name {
@@ -709,7 +716,7 @@ body {
 .lucky-label {
   font-size: 0.66rem;
   font-weight: 700;
-  color: #d18b2a;
+  color: #8a5a12;
   letter-spacing: 0.02em;
 }
 .lucky-name {
@@ -822,11 +829,12 @@ body {
 }
 
 .btn-line {
-  background: rgba(6, 199, 85, 0.08);
+  /* 背景のグラデーションが透けると文字のコントラストが4.5:1を切るため、白の土台に薄い緑を重ねる */
+  background: linear-gradient(rgba(6, 199, 85, 0.08), rgba(6, 199, 85, 0.08)), #fff;
   border-color: #06c755;
-  color: #06c755;
+  color: #04742f;
 }
-.btn-line:hover { background: rgba(6, 199, 85, 0.16); }
+.btn-line:hover { background: linear-gradient(rgba(6, 199, 85, 0.16), rgba(6, 199, 85, 0.16)), #fff; }
 
 .hub-cta {
   display: flex;
@@ -900,6 +908,9 @@ body {
   background: #fff;
   border: 1.5px solid var(--border);
   padding: 6px 16px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
   border-radius: 999px;
   text-decoration: none;
 }
@@ -1106,7 +1117,7 @@ body {
   font-family: "Poppins", "Zen Maru Gothic", sans-serif;
   font-size: 1.7rem;
   font-weight: 900;
-  color: var(--accent, var(--primary-dark));
+  color: var(--accent-text, var(--accent, var(--primary-dark)));
   margin-bottom: 4px;
 }
 .nandere-nickname {
@@ -1140,7 +1151,7 @@ body {
   margin: 8px 0 0;
   font-size: 0.8rem;
   font-weight: 700;
-  color: var(--accent, var(--primary-dark));
+  color: var(--accent-text, var(--accent, var(--primary-dark)));
 }
 .rarity-badge {
   display: inline-block;
@@ -1264,3 +1275,21 @@ body {
 .compat-cta .hub-cta-sub { color: var(--text-sub); opacity: 1; }
 .compat-cta:focus-visible { outline: 3px solid var(--primary-dark); outline-offset: 3px; }
 .result-title:focus { outline: none; }
+
+/* ---- キーボードフォーカス視認性(2026-10-16、相性診断/app/style.cssと同じ一括指定) ---- */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.lang-btn:focus-visible,
+.lang-btn-mini:focus-visible,
+.hub-cta:focus-visible,
+.follow-link:focus-visible,
+.type-hub-card:focus-visible,
+.type-nav-link:focus-visible,
+.option-btn:focus-visible,
+.code-input:focus-visible,
+.lucky-item:focus-visible,
+.site-nav-link:focus-visible,
+.breadcrumb-nav a:focus-visible {
+  outline: 2px solid var(--primary-dark);
+  outline-offset: 2px;
+}
