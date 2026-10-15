@@ -329,6 +329,15 @@ if (typeof document !== 'undefined') {
         onClick: (p) => track('affiliate_click', { quiz_name: 'meroi', result_type: result.id, ...p }),
         onView: () => track('section_view', { quiz_name: 'meroi', result_type: result.id, placement: 'result_card', mode: sharedView ? 'gift' : 'self' }),
       });
+      // プレゼントガイドへの入口(2026-10-16〜)。シェアされた結果を見ている人(贈る側)にだけ出す。
+      // 本人画面は10/13改修の評価(11/10)まで変えない。商品欄の外に置き、計測も別イベントにする
+      const guideEntry = document.getElementById('gift-guide-entry');
+      guideEntry.hidden = !sharedView;
+      if (sharedView) {
+        const guideLink = document.getElementById('gift-guide-link');
+        guideLink.href = `gift/meroi.html#${result.id}`;
+        guideLink.textContent = `🎁 ${t.kei}の友達へのプレゼント、予算別にもっと見る ›`;
+      }
       // 「次はこれ」欄の表示計測(next_quiz_clickの分母)。結果を出すたびに数え直す
       giftObserveOnce(document.querySelector('.next-quiz'), () => {
         track('section_view', { quiz_name: 'meroi', result_type: result.id, placement: 'next_card', mode: sharedView ? 'gift' : 'self' });
@@ -389,6 +398,11 @@ if (typeof document !== 'undefined') {
           placement: el.classList.contains('next-quiz-card') ? 'next_card' : 'follow_links', transport_type: 'beacon',
         });
       });
+    });
+
+    document.getElementById('gift-guide-link').addEventListener('click', () => {
+      if (!lastResult) return;
+      track('gift_guide_click', { quiz_name: 'meroi', result_type: lastResult.id, placement: 'result_card', mode: 'gift', transport_type: 'beacon' });
     });
 
     function restartQuiz() {

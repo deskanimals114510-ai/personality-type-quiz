@@ -16,7 +16,9 @@
   gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
   document.head.appendChild(gaScript);
   window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
+  // プレゼントガイド(gift-guide.js)からイベントを送れるよう window に出す
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  const gtag = window.gtag;
   gtag('js', new Date());
   gtag('config', GA_MEASUREMENT_ID);
 })();

@@ -1074,6 +1074,7 @@ const UI_TEXT = {
     siteNavLovechar: '💞 恋愛キャラ診断64',
     hubCtaTitle: 'MBTI 16タイプ一覧を見る',
     footerPortalLink: 'Desk Animals Labのほかの診断・ツールを見る',
+    footerTrademark: 'MBTIはMyers & Briggs Foundation, Inc.の商標または登録商標です。当サイトは同財団・The Myers-Briggs Company・日本MBTI協会とは関係がなく、公式の検査ではありません。',
     copyFailedLabel: 'コピーできませんでした',
     hubCtaSubStart: '診断前に全タイプの性格・恋愛・仕事をチェック',
     hubCtaSubResult: '気になる他のタイプの性格・恋愛・仕事もチェック',
@@ -1179,6 +1180,7 @@ const UI_TEXT = {
     siteNavLovechar: '💞 Love Character 64 (Japanese)',
     hubCtaTitle: 'Browse All 16 MBTI Types',
     footerPortalLink: 'More quizzes & tools from Desk Animals Lab',
+    footerTrademark: 'MBTI is a trademark or registered trademark of the Myers & Briggs Foundation, Inc. This site is not affiliated with the Foundation, The Myers-Briggs Company, or the Japan MBTI Association, and is not an official assessment.',
     copyFailedLabel: 'Couldn\'t copy',
     hubCtaSubStart: 'Preview every type before you start',
     hubCtaSubResult: 'Check out the other types too',
@@ -1362,6 +1364,9 @@ function applyLangUI() {
   }
   const footerPortalLinkEl = document.getElementById('footer-portal-link');
   if (footerPortalLinkEl) footerPortalLinkEl.textContent = t.footerPortalLink;
+  document.getElementById('footer-trademark').textContent = t.footerTrademark;
+  // プレゼントガイドは日本向け(日本のAmazonリンク)なので英語表示では出さない
+  document.getElementById('footer-gift-guide').hidden = LANG === 'en';
   document.documentElement.lang = LANG;
 }
 

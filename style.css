@@ -1293,3 +1293,42 @@ body {
   outline: 2px solid var(--primary-dark);
   outline-offset: 2px;
 }
+
+/* プレゼントガイド(gift/*.html、2026-10-16) */
+.guide-crumbs { font-size: 0.74rem; color: var(--text); margin: 0 0 10px; }
+.guide-crumbs a { color: var(--primary-dark); }
+.guide-season { margin: 6px 0 0; font-size: 0.8rem; color: var(--text); }
+.guide-season:empty { display: none; }
+.guide-pr { margin: 14px 0 0; font-size: 0.78rem; line-height: 1.6; color: var(--text); }
+.guide-page .result-header { margin-bottom: 8px; }
+/* メロい度ページのタイプ移動。スマホの最初の1画面に1つ目の商品が入るよう1〜2行に収める */
+.guide-toc { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 12px 0 0; }
+.guide-toc a { font-size: 0.74rem; font-weight: 700; color: var(--primary-dark); background: #fff; border: 1px solid var(--border); border-radius: 999px; padding: 6px 10px; text-decoration: none; }
+.guide-toc a:focus-visible { outline: 2px solid var(--primary-dark); outline-offset: 2px; }
+.guide-pr .lucky-pr-tag { margin-right: 4px; }
+.guide-lead { margin: 12px 0 0; font-size: 0.92rem; line-height: 1.75; color: var(--text); }
+.guide-band { margin-top: 22px; }
+.guide-band .lucky-item { margin-top: 10px; }
+.guide-band-title { margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--primary-dark); }
+.guide-band-note { margin: 2px 0 0; font-size: 0.7rem; color: var(--text-sub); }
+.guide-safe {
+  display: inline-block; align-self: flex-start; margin-top: 4px; padding: 1px 8px; border-radius: 999px;
+  font-size: 0.7rem; font-weight: 700; color: #1e6f5c; background: #e3f5ee;
+}
+.guide-card { margin-top: 22px; text-align: left; }
+.guide-list { margin: 8px 0 0; padding-left: 1.2em; font-size: 0.88rem; line-height: 1.7; color: var(--text); }
+.guide-list li + li { margin-top: 6px; }
+.guide-msg { margin: 12px 0 0; font-size: 0.84rem; color: var(--text); }
+.guide-meroi { position: relative; }
+.guide-meroi-img { float: right; width: 56px; height: 56px; border-radius: 50%; object-fit: cover; margin: 0 0 6px 10px; }
+.guide-meroi .guide-band { clear: both; }
+.guide-meroi .guide-band-title { font-size: 0.86rem; }
+.guide-back .result-actions { margin-top: 12px; }
+.guide-btn { display: block; text-decoration: none; text-align: center; box-sizing: border-box; }
+.guide-more { margin: 10px 0 0; font-size: 0.8rem; text-align: center; }
+.guide-soon { color: var(--text-sub); background: transparent; }
+.guide-soon small { display: block; font-family: "Zen Maru Gothic", sans-serif; font-size: 0.62rem; font-weight: 400; }
+.gift-guide-entry { margin: 10px 0 0; font-size: 0.84rem; text-align: center; }
+.gift-guide-entry a { color: var(--primary-dark); font-weight: 700; }
+.type-page-gift { margin: 14px 0 0; font-size: 0.88rem; text-align: center; }
+.type-page-gift a { color: var(--primary-dark); font-weight: 700; }
