@@ -356,6 +356,11 @@ if (typeof document !== 'undefined') {
         mode: 'gift', heading: t.rare ? 'その一人に贈るなら' : `${t.kei}の人に贈るなら`,
         items: MELO_GIFTS[result.id].map((g, i) => ({ ...g, reason: MERORU_GIFT_REASON[result.id][i] })), href: affiliateUrl,
         onClick: (p) => track('affiliate_click', { quiz_name: 'meroru', result_type: result.id, ...p }),
+        onView: () => track('section_view', { quiz_name: 'meroru', result_type: result.id, placement: 'result_card', mode: 'gift' }),
+      });
+      // 「次はこれ」欄の表示計測(next_quiz_clickの分母)。結果を出すたびに数え直す
+      giftObserveOnce(document.querySelector('.next-quiz'), () => {
+        track('section_view', { quiz_name: 'meroru', result_type: result.id, placement: 'next_card', mode: sharedView ? 'gift' : 'self' });
       });
     }
 
@@ -648,7 +653,7 @@ if (typeof document !== 'undefined') {
       ctx.fillText('あなたは何系にメロる? 無料1分診断', W / 2, y);
       ctx.fillStyle = CARD_PAL.sub;
       ctx.font = `600 ${opts.brandSize}px Poppins, sans-serif`;
-      ctx.fillText('Desk Animals | 何系にメロる?診断', W / 2, y + opts.brandOffset);
+      ctx.fillText('Desk Animals | 「何系にメロる診断」で検索', W / 2, y + opts.brandOffset);
       ctx.textAlign = 'left';
     }
 
@@ -710,7 +715,7 @@ if (typeof document !== 'undefined') {
       const original = btn.textContent;
       btn.textContent = '生成中…';
       btn.disabled = true;
-      track('save_card', { quiz_name: 'meroru', mode });
+      track('save_card', { quiz_name: 'meroru', card_format: mode });
       try {
         const canvas = buildMeloCardCanvas(lastResult, mode, await loadTypeImage(lastResult.id));
         await new Promise((resolve) => {

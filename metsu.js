@@ -345,6 +345,7 @@ if (typeof document !== 'undefined') {
         mode: sharedView ? 'gift' : 'self', typeName: t.name, item: lucky,
         iconMap: METSU_LUCKY_ICON_MAP, bridge: METSU_LUCKY_BRIDGE[result.id], href: affiliateUrl(lucky.keyword),
         onClick: (p) => track('affiliate_click', { quiz_name: 'metsu', result_type: result.id, ...p }),
+        onView: () => track('section_view', { quiz_name: 'metsu', result_type: result.id, placement: 'result_card', mode: sharedView ? 'gift' : 'self' }),
       });
     }
 
@@ -684,7 +685,7 @@ if (typeof document !== 'undefined') {
       const original = btn.textContent;
       btn.textContent = '生成中…';
       btn.disabled = true;
-      track('save_card', { quiz_name: 'metsu', mode });
+      track('save_card', { quiz_name: 'metsu', card_format: mode });
       try {
         const canvas = buildMetsuCardCanvas(lastResult, mode, await loadTypeImage(lastResult.id));
         await new Promise((resolve) => {

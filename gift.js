@@ -58,11 +58,16 @@ function renderGiftBox(el, o) {
   el.querySelector('.lucky-item').addEventListener('click', () => {
     o.onClick({ placement: 'result_card', mode: o.mode, item_name: o.item.name });
   });
+  giftObserveOnce(el, o.onView);
 }
 
 // 2点+理由つきの結果欄(2026-10-14、メロい度から)。理由文は主語なしなので本人にもシェア閲覧者にも同じ文を出す
 function renderGiftList(el, o) {
-  if (!o.items || !o.items.length) { el.innerHTML = ''; return; }
+  if (!o.items || !o.items.length) {
+    el.innerHTML = '';
+    if (el._giftObs) { el._giftObs.disconnect(); el._giftObs = null; }
+    return;
+  }
   const heading = o.heading ? o.heading : o.mode === 'gift'
     ? `「${o.typeName}」の友達に贈るなら`
     : `「${o.typeName}」のあなたに`;
@@ -78,4 +83,17 @@ function renderGiftList(el, o) {
       o.onClick({ placement: 'result_card', mode: o.mode, item_name: o.items[i].name });
     });
   });
+  giftObserveOnce(el, o.onView);
+}
+
+// 欄が画面に半分以上入ったら一度だけcbを呼ぶ(商品欄・次はこれの表示計測。クリック率の分母)。
+// 描き直すたびに前の監視を止めて付け直す
+function giftObserveOnce(el, cb) {
+  if (!el || !cb || typeof IntersectionObserver === 'undefined') return;
+  if (el._giftObs) el._giftObs.disconnect();
+  const obs = new IntersectionObserver((entries) => {
+    if (entries.some((e) => e.isIntersecting)) { obs.disconnect(); el._giftObs = null; cb(); }
+  }, { threshold: 0.5 });
+  el._giftObs = obs;
+  obs.observe(el);
 }

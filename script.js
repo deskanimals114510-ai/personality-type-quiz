@@ -2194,7 +2194,7 @@ async function downloadResultCard(mode) {
         resolve();
       }, 'image/png');
     });
-    trackEvent('save_card', { mode });
+    trackEvent('save_card', { quiz_name: 'mbti', card_format: mode });
   } catch (e) {
     console.error('結果カード生成に失敗しました', e);
   } finally {
@@ -2274,7 +2274,7 @@ async function downloadLoveCard() {
         resolve();
       }, 'image/png');
     });
-    trackEvent('save_card', { mode: 'love' });
+    trackEvent('save_card', { quiz_name: 'mbti', card_format: 'love' });
   } catch (e) {
     console.error('恋愛タイプカード生成に失敗しました', e);
   } finally {
@@ -2518,7 +2518,7 @@ async function downloadLoveCharCard(mode) {
         resolve();
       }, 'image/png');
     });
-    trackEvent('save_card', { mode: mode === 'story' ? 'lovechar_story' : 'lovechar', group_key: groupKey });
+    trackEvent('save_card', { quiz_name: 'mbti', card_format: mode === 'story' ? 'lovechar_story' : 'lovechar', group_key: groupKey });
   } catch (e) {
     console.error('恋愛キャラカード生成に失敗しました', e);
   } finally {

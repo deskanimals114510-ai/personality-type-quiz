@@ -344,6 +344,7 @@ if (typeof document !== 'undefined') {
         mode: sharedView ? 'gift' : 'self', typeName: t.name, item: lucky,
         iconMap: AKUMA_LUCKY_ICON_MAP, bridge: AKUMA_LUCKY_BRIDGE[result.id], href: affiliateUrl(lucky.keyword),
         onClick: (p) => track('affiliate_click', { quiz_name: 'koi_tsumi', result_type: result.id, ...p }),
+        onView: () => track('section_view', { quiz_name: 'koi_tsumi', result_type: result.id, placement: 'result_card', mode: sharedView ? 'gift' : 'self' }),
       });
     }
 
@@ -682,7 +683,7 @@ if (typeof document !== 'undefined') {
       const original = btn.textContent;
       btn.textContent = '生成中…';
       btn.disabled = true;
-      track('save_card', { quiz_name: 'koi_tsumi', mode });
+      track('save_card', { quiz_name: 'koi_tsumi', card_format: mode });
       try {
         const canvas = buildAkumaCardCanvas(lastResult, mode, await loadTypeImage(lastResult.id));
         await new Promise((resolve) => {

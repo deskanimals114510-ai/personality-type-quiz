@@ -357,6 +357,7 @@ if (typeof document !== 'undefined') {
         mode: sharedView ? 'gift' : 'self', typeName: t.name, item: lucky,
         iconMap: NANDERE_LUCKY_ICON_MAP, bridge: NANDERE_LUCKY_BRIDGE[result.id], href: affiliateUrl(lucky.keyword),
         onClick: (p) => track('affiliate_click', { quiz_name: 'nandere', result_type: result.id, ...p }),
+        onView: () => track('section_view', { quiz_name: 'nandere', result_type: result.id, placement: 'result_card', mode: sharedView ? 'gift' : 'self' }),
       });
     }
 
@@ -692,7 +693,7 @@ if (typeof document !== 'undefined') {
       const original = btn.textContent;
       btn.textContent = '生成中…';
       btn.disabled = true;
-      track('save_card', { quiz_name: 'nandere', mode });
+      track('save_card', { quiz_name: 'nandere', card_format: mode });
       try {
         const canvas = buildNandereCardCanvas(lastResult, mode, await loadTypeImage(lastResult.id));
         await new Promise((resolve) => {
@@ -763,9 +764,10 @@ if (typeof document !== 'undefined') {
       gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
       document.head.appendChild(gaScript);
       window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
-      gtag('js', new Date());
-      gtag('config', GA_MEASUREMENT_ID);
+      // track()はwindow.gtagを見るので、ブロック内の関数宣言ではなくwindowに置く(2026-10-15修正。以前はカスタムイベントが全く届いていなかった)
+      window.gtag = function () { dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      window.gtag('config', GA_MEASUREMENT_ID);
     }
   })();
 }
