@@ -1301,6 +1301,7 @@ body {
 .guide-season:empty { display: none; }
 .guide-pr { margin: 14px 0 0; font-size: 0.78rem; line-height: 1.6; color: var(--text); }
 .guide-page .result-header { margin-bottom: 8px; }
+.guide-page .result-title { font-size: clamp(1.15rem, 5.4vw, 1.4rem); text-wrap: balance; }
 /* メロい度ページのタイプ移動。スマホの最初の1画面に1つ目の商品が入るよう1〜2行に収める */
 .guide-toc { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 12px 0 0; }
 .guide-toc a { font-size: 0.74rem; font-weight: 700; color: var(--primary-dark); background: #fff; border: 1px solid var(--border); border-radius: 999px; padding: 6px 10px; text-decoration: none; }
@@ -1311,6 +1312,10 @@ body {
 .guide-band .lucky-item { margin-top: 10px; }
 .guide-band-title { margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--primary-dark); }
 .guide-band-note { margin: 2px 0 0; font-size: 0.7rem; color: var(--text-sub); }
+/* ガイドのカードは商品名→理由→価格の順(2026-10-17)。PRタグは商品名の行の先頭に置く */
+.guide-page .lucky-name > .lucky-pr-tag { margin: 0 6px 0 0; }
+.guide-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; margin-top: 2px; }
+.guide-meta .guide-safe { margin-top: 0; }
 .guide-safe {
   display: inline-block; align-self: flex-start; margin-top: 4px; padding: 1px 8px; border-radius: 999px;
   font-size: 0.7rem; font-weight: 700; color: #1e6f5c; background: #e3f5ee;
