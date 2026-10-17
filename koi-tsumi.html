@@ -135,7 +135,11 @@
 
     <div class="result-actions">
       <button id="btn-share" class="btn-primary">結果をXでシェア 🚀</button>
-      <button id="btn-share-line" class="btn-secondary btn-line">LINEでシェア</button>
+      <div id="send-quiz-wrap" class="send-quiz-wrap">
+        <button id="btn-invite-line" type="button" class="btn-secondary btn-line send-quiz-btn" aria-describedby="send-quiz-hint">💌 友達にもこの診断を送る(LINE)</button>
+        <p id="send-quiz-hint" class="send-quiz-hint">結果は見せずに、診断だけ送れます</p>
+      </div>
+      <button id="btn-share-line" class="btn-secondary btn-line">結果をLINEで送る</button>
       <button id="btn-copy-url" class="btn-secondary">結果URLをコピー 🔗</button>
       <button id="btn-restart" class="btn-secondary">もう一度診断する</button>
     </div>

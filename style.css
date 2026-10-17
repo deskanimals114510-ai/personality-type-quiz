@@ -1332,3 +1332,67 @@ body {
 .gift-guide-entry a { color: var(--primary-dark); font-weight: 700; }
 .type-page-gift { margin: 14px 0 0; font-size: 0.88rem; text-align: center; }
 .type-page-gift a { color: var(--primary-dark); font-weight: 700; }
+
+/* もらってうれしいプレゼント診断(present.html、2026-10-17)。商品欄を結果の主役にする */
+.present-gift-box { margin-top: 14px; text-align: left; }
+.present-gift-box .gift-heading { text-align: center; }
+.present-gift-box .gift-season { text-align: center; }
+.present-relations { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 12px 0 0; }
+.present-relation-btn {
+  font-family: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer;
+  padding: 8px 14px; min-height: 44px; border-radius: 999px;
+  color: var(--primary-dark); background: #fff; border: 1.5px solid var(--border);
+}
+.present-relation-btn[aria-pressed="true"] { color: #fff; background: var(--primary-dark); border-color: var(--primary-dark); }
+.present-relation-btn:focus-visible { outline: 2px solid var(--primary-dark); outline-offset: 2px; }
+.present-band { margin-top: 16px; }
+/* 商品名を先に読ませ、理由文は見た目だけ2行で切る(全文はDOMに残るので読み上げでは全部読まれる) */
+.present-band .gift-reason {
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
+}
+/* 新規3本の結果画面のタイプ名は行の長さをそろえて折り返す */
+:is(.page-present, .page-reishou, .page-koidopa) :is(.result-title, .nandere-type-name) { text-wrap: balance; }
+.present-gift-box + .nandere-tagline { margin-top: 18px; }
+.result-actions-card .present-story-btn {
+  font-size: 0.95rem; padding: 13px 22px; opacity: 1;
+  color: #fff; background: var(--primary-dark); border-color: var(--primary-dark);
+}
+.present-guide-entry { margin-top: 20px; }
+
+/* 冷笑系度診断(reishou.html、2026-10-17)。段階ラベル・縦長保存ボタン・「次はこれ」の絵文字サムネ */
+.reishou-level { margin: 8px 0 0; text-align: center; }
+.reishou-level-label {
+  display: inline-block; padding: 3px 12px; border-radius: 999px;
+  font-size: 0.86rem; font-weight: 700; color: #fff; background: var(--primary-dark);
+}
+.reishou-level-note { display: block; margin-top: 6px; font-size: 0.8rem; line-height: 1.6; color: var(--text); }
+.result-actions-card .reishou-story-btn {
+  font-size: 0.95rem; padding: 13px 22px; opacity: 1;
+  color: #fff; background: var(--primary-dark); border-color: var(--primary-dark);
+}
+.reishou-next-emoji { display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+.reishou-season-card[hidden] { display: none; }
+
+/* 恋のドパガキ度診断(koidopa.html、2026-10-17)。段階ラベル・免責文・縦長保存を主にしたボタン列・「次はこれ」の絵文字サムネ */
+.koidopa-level { margin: 8px 0 0; text-align: center; }
+.koidopa-level-label {
+  display: inline-block; padding: 3px 12px; border-radius: 999px;
+  font-size: 0.86rem; font-weight: 700; color: #fff; background: var(--primary-dark);
+}
+.koidopa-level-caption { display: block; margin-top: 6px; font-size: 0.8rem; line-height: 1.6; color: var(--text); }
+.koidopa-disclaimer { margin: 12px 0 0; font-size: 0.76rem; line-height: 1.6; color: var(--text-sub); text-align: center; }
+.koidopa-disclaimer-result { margin-top: 14px; padding-top: 10px; border-top: 1px dashed rgba(130, 140, 175, 0.35); }
+.koidopa-actions .koidopa-story-btn.btn-primary { font-size: 1.05rem; padding: 16px 30px; }
+.koidopa-story-hint { margin: 6px 0 14px; font-size: 0.78rem; color: var(--text-sub); text-align: center; }
+.koidopa-actions .koidopa-x-btn { color: #fff; background: #111; border-color: #111; }
+.koidopa-actions .koidopa-x-btn:hover { background: #333; }
+.koidopa-next-emoji { display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+.koidopa-season-card[hidden] { display: none; }
+
+/* 「友達にもこの診断を送る(LINE)」ボタン(何デレ・恋の罪・滅・フレネミー、2026-10-17)。結果ではなく診断の入口を送る */
+.send-quiz-btn {
+  min-height: 44px; max-width: 100%;
+  white-space: normal; line-height: 1.4;
+}
+.send-quiz-btn:focus-visible { outline: 3px solid #04742f; outline-offset: 3px; }
+.send-quiz-hint { margin: 4px 0 0; font-size: 0.8rem; line-height: 1.5; color: var(--text-sub); text-align: center; }

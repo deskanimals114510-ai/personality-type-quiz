@@ -390,9 +390,18 @@ if (typeof document !== 'undefined') {
     function shareResultLine() {
       if (!lastResult) return;
       const text = shareText(lastResult);
-      const url = encodeURIComponent(resultUrl(lastResult));
+      const url = encodeURIComponent(`${resultUrl(lastResult)}&utm_source=line&utm_medium=social&utm_campaign=metsu_result`);
       const shareUrl = `https://social-plugins.line.me/lineit/share?url=${url}&text=${encodeURIComponent(text)}`;
       track('share', { method: 'line', quiz_name: 'metsu', content_type: 'metsu', item_id: lastResult.id });
+      window.open(shareUrl, '_blank', 'noopener,noreferrer');
+    }
+
+    // 結果ではなく「診断の入口」を友達にLINEで送る(タイプ名は出さない)
+    function inviteFriendLine() {
+      const url = `${location.origin}${location.pathname}?utm_source=line&utm_medium=social&utm_campaign=metsu_invite`;
+      const text = '何すぎて滅?診断やってみて!10問1分。結果見せ合お👀';
+      const shareUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+      track('invite_send', { quiz_name: 'metsu', result_type: lastResult ? lastResult.id : undefined, mode: sharedView ? 'gift' : 'self' });
       window.open(shareUrl, '_blank', 'noopener,noreferrer');
     }
 
@@ -406,6 +415,7 @@ if (typeof document !== 'undefined') {
       restartBtn.className = 'btn-secondary';
       shareBtn.parentNode.prepend(shareBtn);
       restartBtn.parentNode.appendChild(restartBtn);
+      shareBtn.after(document.getElementById('send-quiz-wrap'));
       document.getElementById('btn-restart').textContent = 'もう一度診断する';
       history.replaceState(null, '', location.pathname);
       startQuiz();
@@ -719,6 +729,7 @@ if (typeof document !== 'undefined') {
     document.getElementById('btn-share').addEventListener('click', shareResultX);
     document.getElementById('btn-share-line').addEventListener('click', shareResultLine);
     document.getElementById('btn-copy-url').addEventListener('click', copyResultUrl);
+    document.getElementById('btn-invite-line').addEventListener('click', inviteFriendLine);
     document.getElementById('btn-restart').addEventListener('click', restartQuiz);
     document.getElementById('btn-save-card').addEventListener('click', () => downloadResultCard('x'));
     document.getElementById('btn-save-card-story').addEventListener('click', () => downloadResultCard('story'));
@@ -749,6 +760,7 @@ if (typeof document !== 'undefined') {
       restartBtn.className = 'btn-primary';
       shareBtn.className = 'btn-secondary';
       restartBtn.parentNode.prepend(restartBtn);
+      restartBtn.parentNode.appendChild(document.getElementById('send-quiz-wrap'));
     })();
 
     // ===== アクセス解析(メインサイトと同一GA4プロパティ) =====
