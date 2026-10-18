@@ -1401,3 +1401,27 @@ body {
 }
 .send-quiz-btn:focus-visible { outline: 3px solid #04742f; outline-offset: 3px; }
 .send-quiz-hint { margin: 4px 0 0; font-size: 0.8rem; line-height: 1.5; color: var(--text-sub); text-align: center; }
+
+/* メロい度の商品カード(2026-10-18〜、gift.js の pill)。商品名を見出しに、価格と「Amazonで見てみる」を1行に */
+.gift-item-pill .gift-name-head { font-size: 0.95rem; line-height: 1.45; }
+.gift-item-pill .gift-name-head .lucky-pr-tag { margin: 0 6px 0 0; font-size: 0.72rem; }
+.gift-meta .lucky-price { margin: 0; }
+.gift-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 8px; margin-top: 4px; }
+.gift-pill {
+  flex: none; font-size: 0.74rem; font-weight: 700; color: #fff; background: var(--primary-dark);
+  border-radius: 999px; padding: 3px 10px;
+}
+/* 本人画面の「LINEで友達に見せる」。シェアボタン群より控えめな文字ボタン */
+.gift-wish { margin: 10px 0 0; text-align: center; }
+.gift-wish-btn {
+  font-family: inherit; font-size: 0.84rem; font-weight: 700; color: var(--primary-dark); cursor: pointer;
+  background: transparent; border: 1.5px dashed #c0507e; border-radius: 999px; padding: 8px 14px; min-height: 44px;
+}
+.gift-wish-btn:focus-visible { outline: 2px solid var(--primary-dark); outline-offset: 2px; }
+/* メロい度のシェア閲覧画面のガイド入口を、商品カードと同じ幅の枠に */
+#gift-guide-entry a {
+  display: block; min-height: 44px; box-sizing: border-box; padding: 10px 12px; border: 1.5px solid #c0507e; border-radius: 14px; background: #fff;
+  text-decoration: none;
+}
+#gift-guide-entry a:focus-visible { outline: 2px solid var(--primary-dark); outline-offset: 2px; }
+.gift-wish-btn .nowrap { white-space: nowrap; }

@@ -292,6 +292,8 @@ if (typeof document !== 'undefined') {
       const id = computeMeloType(kyori, hyogen);
       const purity = computeMeloPurity(kyori, hyogen);
       lastResult = { id, kyori, hyogen, purity };
+      // 自分の結果URLを開き直した時にシェア閲覧画面にしないよう、このタブで出た自分の結果を覚えておく(2026-10-18〜)
+      try { sessionStorage.setItem('meroi_own', `${kyori},${hyogen}`); } catch (e) { /* 保存できなくても動作は続ける */ }
       track('quiz_complete', { quiz_name: 'meroi', result_type: id });
       showScreen('result');
       renderResult(lastResult);
@@ -333,12 +335,16 @@ if (typeof document !== 'undefined') {
 
       renderGiftList(document.getElementById('nandere-lucky'), {
         mode: sharedView ? 'gift' : 'self', typeName: t.name, items: MELO_GIFTS[result.id].map((it) => ({ ...it, priceLabel: (MELO_BANDS[it.band] || MELO_BANDS[2]).label })),
-        href: (kw, it) => affiliateUrl(kw, it && it.band),
+        href: (kw, it) => affiliateUrl(kw, it && it.band), pill: true,
         onClick: (p) => track('affiliate_click', { quiz_name: 'meroi', result_type: result.id, ...p }),
         onView: () => track('section_view', { quiz_name: 'meroi', result_type: result.id, placement: 'result_card', mode: sharedView ? 'gift' : 'self' }),
       });
+      // 本人画面だけ、商品の下に「この結果、LINEで友達に見せる」(2026-10-18〜)。中身はシェア閲覧画面(mode=gift)のURL+目印w=1
+      // (GA4ではpage_locationのw=1で見分ける)。本文は結果が主で、商品・「買って」等・Amazonのリンクは入れない。計測はshareと混ぜず wishlist_share
+      // 商品欄(#nandere-lucky)の外に置く=商品欄の表示計測(section_view)の範囲を変えない
+      document.getElementById('gift-wish').hidden = sharedView || !(MELO_GIFTS[result.id] || []).length;
       // プレゼントガイドへの入口(2026-10-16〜)。シェアされた結果を見ている人(贈る側)にだけ出す。
-      // 本人画面は10/13改修の評価(11/10)まで変えない。商品欄の外に置き、計測も別イベントにする
+      // 商品欄の外に置き、計測も別イベントにする(本人画面は10/18に購買導線改修で品・カードの見た目を変えた)
       const guideEntry = document.getElementById('gift-guide-entry');
       guideEntry.hidden = !sharedView;
       if (sharedView) {
@@ -396,6 +402,15 @@ if (typeof document !== 'undefined') {
       window.open(shareUrl, '_blank', 'noopener,noreferrer');
     }
 
+    function shareGiftWish() {
+      if (!lastResult) return;
+      const t = MELO_TYPES[lastResult.id];
+      const text = `私は${t.kei}だった!結果見て👀`;
+      const url = encodeURIComponent(`${resultUrl(lastResult)}&w=1`);
+      track('wishlist_share', { quiz_name: 'meroi', result_type: lastResult.id, method: 'line', placement: 'result_card', mode: 'self' });
+      window.open(`https://social-plugins.line.me/lineit/share?url=${url}&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+    }
+
     // 「次はこれ」カードのクリック計測(どの診断へ回せているか)
     // カード(next_card)と下の文字リンク(follow_links)を同じイベントで数え、placementで区別する。
     // 同じタブで遷移するので beacon で送り、遷移で送信が消えないようにする
@@ -412,6 +427,8 @@ if (typeof document !== 'undefined') {
       if (!lastResult) return;
       track('gift_guide_click', { quiz_name: 'meroi', result_type: lastResult.id, placement: 'result_card', mode: 'gift', transport_type: 'beacon' });
     });
+
+    document.getElementById('btn-gift-wish').addEventListener('click', shareGiftWish);
 
     function restartQuiz() {
       lastResult = null;
@@ -753,6 +770,15 @@ if (typeof document !== 'undefined') {
       const id = computeMeloType(kyori, hyogen);
       const purity = computeMeloPurity(kyori, hyogen);
       lastResult = { id, kyori, hyogen, purity };
+      let own = false;
+      try { own = sessionStorage.getItem('meroi_own') === `${kyori},${hyogen}`; } catch (e) { own = false; }
+      if (own) {
+        // 自分の結果を開き直した(再読み込みなど)時は本人画面のまま出す
+        showScreen('result');
+        renderResult(lastResult);
+        renderCardPreview(lastResult);
+        return;
+      }
       sharedView = true;
       showScreen('result');
       renderResult(lastResult);

@@ -30,7 +30,22 @@ function giftIconHtml(iconMap, emoji) {
 // o.priceLabel(任意、2026-10-17〜プレゼント診断): 価格表示の文言。未指定なら従来どおり「¥1,000〜3,000の価格帯で検索」
 // o.safe(任意): 外しにくい理由の小さなタグ(gift/ の .guide-safe と同じ見た目)。未指定なら出さない
 // o.nameFirst(任意、2026-10-17〜プレゼント診断): trueなら商品名を理由文より上に出す。未指定なら従来どおり理由文→商品名
+// o.pill(任意、2026-10-18〜メロい度): trueなら「PR+商品名」を太字の見出しにし、理由文→価格と「Amazonで見てみる ›」の小さなボタンの順。
+// 右端の矢印は出さない。未指定なら従来どおり
 function giftLinkHtml(o) {
+  if (o.pill) {
+    return `
+    <a class="lucky-item gift-item-pill" href="${o.href}" target="_blank" rel="noopener sponsored"
+       data-aff-placement="${o.placement}" data-aff-mode="${o.mode}" data-aff-item="${giftEsc(o.name)}">
+      <span class="lucky-emoji" aria-hidden="true">${o.icon}</span>
+      <span class="lucky-text">
+        <span class="lucky-name gift-name-head"><span class="lucky-pr-tag" aria-hidden="true">PR</span>${giftEsc(o.name)}<span class="sr-only">(広告)</span></span>
+        ${o.reason ? `<span class="gift-reason">${giftEsc(o.reason)}</span>` : ''}
+        <span class="gift-meta"><span class="lucky-price">${o.priceLabel ? giftEsc(o.priceLabel) : '¥1,000〜3,000の価格帯で検索'}</span><span class="gift-pill">Amazonで見てみる<span aria-hidden="true"> ›</span></span></span>
+      </span>
+      <span class="sr-only">(新しいタブで開きます)</span>
+    </a>`;
+  }
   const reasonHtml = o.reason ? `<span class="gift-reason">${giftEsc(o.reason)}</span>` : '';
   const nameHtml = `<span class="lucky-name">${giftEsc(o.name)}をAmazonで見る</span>`;
   const prHtml = '<span class="lucky-pr-tag">PR</span><span class="sr-only">(広告)</span>';
@@ -86,7 +101,7 @@ function renderGiftList(el, o) {
     <p class="gift-season">${giftSeasonLine(o.mode)}</p>
     ${o.items.map((it) => giftLinkHtml({
       href: o.href(it.keyword, it), icon: it.emoji, name: it.name, reason: it.reason,
-      placement: 'result_card', mode: o.mode, priceLabel: it.priceLabel,
+      placement: 'result_card', mode: o.mode, priceLabel: it.priceLabel, pill: o.pill,
     })).join('')}`;
   el.querySelectorAll('.lucky-item').forEach((a, i) => {
     a.addEventListener('click', () => {
