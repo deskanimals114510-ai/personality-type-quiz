@@ -27,15 +27,25 @@ function giftIconHtml(iconMap, emoji) {
 }
 
 // 商品リンク1件。data-aff-*はクリック計測(GA4 affiliate_click)で読む
+// o.priceLabel(任意、2026-10-17〜プレゼント診断): 価格表示の文言。未指定なら従来どおり「¥1,000〜3,000の価格帯で検索」
+// o.safe(任意): 外しにくい理由の小さなタグ(gift/ の .guide-safe と同じ見た目)。未指定なら出さない
+// o.nameFirst(任意、2026-10-17〜プレゼント診断): trueなら商品名を理由文より上に出す。未指定なら従来どおり理由文→商品名
 function giftLinkHtml(o) {
+  const reasonHtml = o.reason ? `<span class="gift-reason">${giftEsc(o.reason)}</span>` : '';
+  const nameHtml = `<span class="lucky-name">${giftEsc(o.name)}をAmazonで見る</span>`;
+  const prHtml = '<span class="lucky-pr-tag">PR</span><span class="sr-only">(広告)</span>';
+  const bodyHtml = o.nameFirst
+    ? `<span class="lucky-label">${prHtml}</span>
+        ${nameHtml}${reasonHtml}`
+    : `<span class="lucky-label">${prHtml}${reasonHtml}</span>
+        ${nameHtml}`;
   return `
     <a class="lucky-item" href="${o.href}" target="_blank" rel="noopener sponsored"
        data-aff-placement="${o.placement}" data-aff-mode="${o.mode}" data-aff-item="${giftEsc(o.name)}">
       <span class="lucky-emoji" aria-hidden="true">${o.icon}</span>
       <span class="lucky-text">
-        <span class="lucky-label"><span class="lucky-pr-tag">PR</span><span class="sr-only">(広告)</span>${o.reason ? `<span class="gift-reason">${giftEsc(o.reason)}</span>` : ''}</span>
-        <span class="lucky-name">${giftEsc(o.name)}をAmazonで見る</span>
-        <span class="lucky-price">¥1,000〜3,000の価格帯で検索</span>
+        ${bodyHtml}
+        <span class="lucky-price">${o.priceLabel ? giftEsc(o.priceLabel) : '¥1,000〜3,000の価格帯で検索'}</span>${o.safe ? `<span class="guide-safe">${giftEsc(o.safe)}</span>` : ''}
       </span>
       <span class="lucky-arrow" aria-hidden="true">›</span><span class="sr-only">(新しいタブで開きます)</span>
     </a>`;
@@ -75,8 +85,8 @@ function renderGiftList(el, o) {
     <p class="gift-heading">${heading}</p>
     <p class="gift-season">${giftSeasonLine(o.mode)}</p>
     ${o.items.map((it) => giftLinkHtml({
-      href: o.href(it.keyword), icon: it.emoji, name: it.name, reason: it.reason,
-      placement: 'result_card', mode: o.mode,
+      href: o.href(it.keyword, it), icon: it.emoji, name: it.name, reason: it.reason,
+      placement: 'result_card', mode: o.mode, priceLabel: it.priceLabel,
     })).join('')}`;
   el.querySelectorAll('.lucky-item').forEach((a, i) => {
     a.addEventListener('click', () => {

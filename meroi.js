@@ -128,36 +128,43 @@ const MELO_COMPAT = {
 // JA単独ページ(LANG切り替えなし)なのでUS向けタグ分岐は持たない。
 const AFFILIATE_TAG = 'tinywonders-22';
 
-// script.jsのaffiliateUrl()と同仕様: ¥1,000〜3,000の価格帯フィルタ+レビュー評価順ソートを
+// script.jsのaffiliateUrl()と同仕様: 価格帯フィルタ+レビュー評価順ソートを
 // URLパラメータで強制する(amazon.co.jpで動作確認済み)。
-function affiliateUrl(keyword) {
+// 2026-10-18〜 品ごとの予算帯(band 1=〜¥1,500、2=¥1,500〜3,000)。p_36は円×100、下限0円は1円として扱う
+const MELO_BANDS = {
+  1: { range: '100-150000', label: '〜¥1,500で検索' },
+  2: { range: '150000-300000', label: '¥1,500〜3,000で検索' },
+};
+function affiliateUrl(keyword, band) {
+  const b = MELO_BANDS[band] || MELO_BANDS[2];
   let base = `https://www.amazon.co.jp/s?k=${encodeURIComponent(keyword)}`;
-  base += '&rh=p_36%3A100000-300000&s=review-rank';
+  base += `&rh=p_36%3A${b.range}&s=review-rank`;
   return AFFILIATE_TAG ? `${base}&tag=${encodeURIComponent(AFFILIATE_TAG)}` : base;
 }
 
 // タイプ別おすすめ2点+理由1行(2026-10-14、Fable執筆。正本は診断ツール群/MBTI診断/meroi_gift_copy.json)。
+// 2026-10-18 新版: 10代向けに入れ替え、band 1=〜¥1,500・2=¥1,500〜3,000(ガイドと同じ帯)。meroru.jsの写しは10/28判定まで旧版
 // 理由文は主語を「あなた」にしない形なので、シェア閲覧者(友達に贈る人)にもそのまま出す
 const MELO_GIFTS = {
   wanko: [
-    { emoji: '🎤', name: 'アクスタ収納ケース', keyword: 'アクリルスタンド 収納ケース 推し活', reason: 'ライブ後に「やばい」しか残らない夜も、推しだけは無事に持ち帰る。' },
-    { emoji: '📱', name: '折りたたみスマホスタンド', keyword: 'スマホスタンド 卓上 折りたたみ', reason: '既読と同時に返信が飛んでいく人の、机の上の定位置に。' },
+    { emoji: '📌', name: '缶バッジカバー', keyword: '缶バッジカバー 大容量', band: 1, reason: '好きを全部胸につけて走る日も、推しの顔だけは守っておきたい。' },
+    { emoji: '📱', name: 'スマホショルダー', keyword: 'スマホショルダー ストラップ 全機種対応', band: 2, reason: '返事はいつも全力。だからスマホは、手の届く胸元に。' },
   ],
   anshin: [
-    { emoji: '🥃', name: 'ダブルウォールグラス', keyword: 'ダブルウォールグラス 耐熱 おしゃれ', reason: '何も聞かずに「おつかれ」と差し出す、その一杯の置き場に。' },
-    { emoji: '🧦', name: 'もこもこルームソックス', keyword: 'ルームソックス もこもこ ユニセックス', reason: '沈黙が気まずくならない隣。足元までゆるむと、長居が始まる。' },
+    { emoji: '🧦', name: 'もこもこルームソックス', keyword: 'ルームソックス もこもこ ユニセックス', band: 1, reason: 'ここにいると、足元から先に今日がほどけていく。' },
+    { emoji: '🛋️', name: 'ひざ掛けブランケット', keyword: 'ひざ掛け ブランケット かわいい', band: 2, reason: 'ひざにひとつ掛けた瞬間、そこがいちばん落ち着く場所になる。' },
   ],
   gap: [
-    { emoji: '🃏', name: 'トレカ用ケース', keyword: 'トレカケース 推し活 硬質', reason: 'スタンプ1個で終わる人も、推しの話では早口。その推しを守る一枚。' },
-    { emoji: '👜', name: 'リバーシブルトート', keyword: 'トートバッグ リバーシブル キャンバス', reason: '表はクール、裏返すと別の顔。週1で誰かを驚かせる落差を持ち歩く。' },
+    { emoji: '🃏', name: 'トレカケースとスリーブ', keyword: 'トレカケース 硬質 推し活 スリーブ', band: 1, reason: '返信はスタンプ1個。でも推しのカードは、二重に守ってから持ち歩く。' },
+    { emoji: '👜', name: 'クリアショルダーバッグ', keyword: 'クリアバッグ ショルダー 推し活', band: 2, reason: '素っ気ない顔のまま、肩から下げた推しだけが、全部を言ってしまう。' },
   ],
   mystery: [
-    { emoji: '✉️', name: '一筆箋', keyword: '一筆箋 おしゃれ シンプル', reason: 'グループLINEに置いていく一言と同じ、短くて残る紙を一枚。' },
-    { emoji: '✨', name: '揺れるイヤーカフ', keyword: 'イヤーカフ 揺れる シルバー', reason: '「じゃあね」で振り返った横顔に、ひとつだけ揺れるものを。' },
+    { emoji: '🎀', name: '大きめバンスクリップ', keyword: 'バンスクリップ 大きめ', band: 1, reason: '無造作にまとめた髪が、ほどける瞬間だけ予告なし。目が離せない理由がひとつ増える。' },
+    { emoji: '✨', name: '揺れるイヤーカフ', keyword: 'イヤーカフ 揺れる シルバー', band: 2, reason: '「じゃあね」で振り返った横顔に、ひとつだけ揺れるものを。' },
   ],
   rare: [
-    { emoji: '🎞️', name: 'マスキングテープセット', keyword: 'マスキングテープ セット 和紙 おしゃれ', reason: 'どの系統にも寄らない人の手帳は、その日の気分で柄を変えればいい。' },
-    { emoji: '🔤', name: '卓上レターボード', keyword: 'レターボード 卓上 インテリア', reason: '褒められても信じない人の机に、言われた言葉を一週間貼っておく板。' },
+    { emoji: '🌸', name: 'フレークシールセット', keyword: 'フレークシール 大容量 セット', band: 1, reason: '手帳の端にひとつ、何気なく貼る。その何気なさが、周りには全部見えてる。' },
+    { emoji: '📒', name: 'シール帳バインダー', keyword: 'シール帳 バインダー A5', band: 2, reason: '集めたつもりはないのに、気づけば1冊。かわいいが勝手に増えていく。' },
   ],
 };
 
@@ -325,7 +332,8 @@ if (typeof document !== 'undefined') {
       document.getElementById('compat-note').textContent = compat.note;
 
       renderGiftList(document.getElementById('nandere-lucky'), {
-        mode: sharedView ? 'gift' : 'self', typeName: t.name, items: MELO_GIFTS[result.id], href: affiliateUrl,
+        mode: sharedView ? 'gift' : 'self', typeName: t.name, items: MELO_GIFTS[result.id].map((it) => ({ ...it, priceLabel: (MELO_BANDS[it.band] || MELO_BANDS[2]).label })),
+        href: (kw, it) => affiliateUrl(kw, it && it.band),
         onClick: (p) => track('affiliate_click', { quiz_name: 'meroi', result_type: result.id, ...p }),
         onView: () => track('section_view', { quiz_name: 'meroi', result_type: result.id, placement: 'result_card', mode: sharedView ? 'gift' : 'self' }),
       });
