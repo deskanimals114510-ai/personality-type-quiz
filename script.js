@@ -1064,6 +1064,12 @@ const UI_TEXT = {
     hubCtaMetsuSub: '何すぎて滅?診断(ギャップ・尊いなど)',
     hubCtaFrenemyTitle: '友達へのちょっとした毒、何%?',
     hubCtaFrenemySub: 'フレネミー度診断(張り合い・辛口など)',
+    hubCtaPresentTitle: '私がもらってうれしいのは何派?',
+    hubCtaPresentSub: 'もらってうれしいプレゼント診断(結果を送って「これ見といて」)',
+    hubCtaReishouTitle: '心の中のツッコミ量は何%?',
+    hubCtaReishouSub: '冷笑系度診断(観察眼とツッコミ力を5タイプで)',
+    hubCtaKoidopaTitle: '恋と推しに飛びつく速さは何%?',
+    hubCtaKoidopaSub: '恋のドパガキ度診断(ときめきの瞬発力を5タイプで)',
     hubCtaLovecharTitle: '優しい言葉より、毒舌のほうが刺さることがある',
     hubCtaLovecharSub: '恋愛キャラ診断(64通り・8問)',
     siteNavAria: 'Desk Animals Labの診断サイト一覧',
@@ -1170,6 +1176,12 @@ const UI_TEXT = {
     hubCtaMetsuSub: '"Too Much" Type Quiz (gap, cuteness, and more)',
     hubCtaFrenemyTitle: 'How much "frenemy" is in you?',
     hubCtaFrenemySub: 'Frenemy Quiz (rival, blunt, and more)',
+    hubCtaPresentTitle: 'Which kind of gift makes you happiest?',
+    hubCtaPresentSub: 'Gift Type Quiz (send your result as a hint)',
+    hubCtaReishouTitle: 'How much do you quietly roast in your head?',
+    hubCtaReishouSub: 'Inner Commentary Quiz (5 observer types)',
+    hubCtaKoidopaTitle: 'How fast do you fall for crushes and faves?',
+    hubCtaKoidopaSub: 'Crush Spark Quiz (5 types)',
     hubCtaLovecharTitle: 'Sometimes blunt words hit harder than kind ones',
     hubCtaLovecharSub: 'Love Character Quiz (64 types, 8 questions)',
     siteNavAria: 'Quiz sites by Desk Animals Lab',
@@ -1335,6 +1347,21 @@ function applyLangUI() {
   const hubCtaFrenemyNoteEl = document.getElementById('hub-cta-frenemy-note');
   hubCtaFrenemyNoteEl.textContent = t.jpOnlyNote;
   hubCtaFrenemyNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
+  document.getElementById('hub-cta-present-title').textContent = t.hubCtaPresentTitle;
+  document.getElementById('hub-cta-present-sub').textContent = t.hubCtaPresentSub;
+  const hubCtaPresentNoteEl = document.getElementById('hub-cta-present-note');
+  hubCtaPresentNoteEl.textContent = t.jpOnlyNote;
+  hubCtaPresentNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
+  document.getElementById('hub-cta-reishou-title').textContent = t.hubCtaReishouTitle;
+  document.getElementById('hub-cta-reishou-sub').textContent = t.hubCtaReishouSub;
+  const hubCtaReishouNoteEl = document.getElementById('hub-cta-reishou-note');
+  hubCtaReishouNoteEl.textContent = t.jpOnlyNote;
+  hubCtaReishouNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
+  document.getElementById('hub-cta-koidopa-title').textContent = t.hubCtaKoidopaTitle;
+  document.getElementById('hub-cta-koidopa-sub').textContent = t.hubCtaKoidopaSub;
+  const hubCtaKoidopaNoteEl = document.getElementById('hub-cta-koidopa-note');
+  hubCtaKoidopaNoteEl.textContent = t.jpOnlyNote;
+  hubCtaKoidopaNoteEl.style.display = t.jpOnlyNote ? '' : 'none';
   document.getElementById('hub-cta-lovechar64-title').textContent = t.hubCtaLovecharTitle;
   document.getElementById('hub-cta-lovechar64-sub').textContent = t.hubCtaLovecharSub;
   const hubCtaLovecharNoteEl = document.getElementById('hub-cta-lovechar64-note');
