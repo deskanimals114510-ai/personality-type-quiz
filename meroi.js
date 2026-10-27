@@ -107,11 +107,112 @@ const MELO_TYPES = {
   },
   rare: {
     emoji: '🦦', kei: 'カワウソ系', name: '無自覚オールメロ',
-    nickname: '本人だけ気づいてない全方位たらし',
-    tagline: 'どこを切ってもメロい、激レア',
+    nickname: '本人だけ気づいてない全方位メロ',
+    tagline: 'どこを切ってもメロい、隠しレア',
     color: '#b5175a',
     rare: true,
     description: '診断上、どの系統にも寄らなかった人。かなり珍しいです。LINEでは全力で喜んだかと思えば、次の日は一言で場を落ち着かせ、教室や職場では距離の詰め方が相手に合わせて変わる。本人は「普通にしてるだけ」なのに、周りからは「あの人のメロさ、説明できない」と言われている可能性が高い。これはブレてるんじゃなくて、相手が一番ほしいメロさを無意識に出せているということ。わんこ系の全力も、きつね系の余韻も、気づいたら全部使ってます。ただしご本人、ほぼ自覚なし。だから「なんで自分なの?」と首をかしげるし、褒められても信じない。今日からは少しだけ信じてみてください。無自覚なのが一番メロいという事実、周りはとっくに知っています。',
+  },
+};
+
+// ---- 12タイプ化(2026-10-29〜): 4系統×3通り(距離型/バランス型/表現型)の名前と文面。カワウソ(rare)は分けない隠しレア ----
+// 正本は ../meroi_subtypes_draft.json(Fable作・2026-10-25)。キーは `${系統ID}_${computeMeloSub()}`
+const MELO_SUBTYPES = {
+  wanko_kyori: {
+    sub_name: "寄ってく側",
+    name: "まっしぐらわんこメロ",
+    nickname: "気づいたら隣の席に来てる人",
+    tagline: "距離ゼロが、いちばん効く",
+    share_line: "隣に来るわんこ側だった",
+    description: "休み時間、気づけばもう隣にいる。「ちょっと話そ」も言わずに自然と輪に入ってきて、転校生でも初対面の後輩でも、1週間後にはあだ名で呼び合ってる。LINEは用事がなくても「今これ見た?」が飛んでくるし、友達が落ち込んでると、何も聞かずにまず隣に座る。同じわんこ系の「顔に出る側」が気持ちから先、「寄って伝える側」が両方同時なら、あなたは体が先に動く人。言葉より前に、そばに来ちゃう。周りがメロメロになるのは、その「来てくれる」が特別扱いに感じるから。本人は「しつこいかな」と心配しがちだけど、その距離の近さは、相手にとって「ここに居場所がある」というサインになってます。今日もいつもの勢いで、隣に行っちゃおう。",
+  },
+  wanko_balance: {
+    sub_name: "寄って伝える側",
+    name: "まるごとわんこメロ",
+    nickname: "隣に来て、そのまま顔がゆるんでる人",
+    tagline: "来るし、出る。だから迷わない",
+    share_line: "来て顔に出るわんこ側",
+    description: "友達が教室に入ってきた瞬間、立って手を振りながらそっちへ歩いていく。近づくのと、うれしいのが顔に出るのが、ほぼ同時。修学旅行の班決めでは「一緒になろ」と最初に言い出して、決まった瞬間に小さくガッツポーズまで出てる。LINEは自分から送るし、返事が来たら絵文字が3つ増える。同じわんこ系の「寄ってく側」が体から先、「顔に出る側」が気持ちから先だとしたら、あなたはその両方が同時に動く人。来てくれて、しかも喜んでるのが見える。周りがメロメロになるのは、「会えてうれしい」が足と顔のどっちからも伝わってきて、疑いようがないから。本人は「落ち着きがない」と言われて気にしがちだけど、距離も気持ちも隠さない人は、相手の緊張を一気にほどける人です。今日もその足で近づいて、その顔で笑っちゃおう。",
+  },
+  wanko_hyogen: {
+    sub_name: "顔に出る側",
+    name: "だだ漏れわんこメロ",
+    nickname: "感情が全部顔と文字に出てる人",
+    tagline: "隠せてないのが、かわいい",
+    share_line: "顔に全部出るわんこ側",
+    description: "推しの新ビジュが出た瞬間、語彙が「無理」だけになる。友達が髪型を変えたら「えっ!?似合う!」が教室の端まで届くし、LINEは絵文字と「!」がいつも多め。うれしい日は歌を口ずさんでるし、楽しみな前日は「寝れない」をストーリーズに上げてる。同じわんこ系の「寄ってく側」が体から先、「寄って伝える側」が両方同時なら、あなたは気持ちが先に届く人。離れた席からでも、顔を見ればだいたいわかる。周りがメロメロになるのは、その素直さがうそをつかないから。「うれしい」と言われた側は、そのまま信じられる。本人は「わかりやすすぎ」と言われて気にしがちだけど、感情を隠さない人は、相手の感情も引き出せる人です。今日もその顔のまま、好きを好きって言っちゃおう。",
+  },
+  anshin_kyori: {
+    sub_name: "そばにいる側",
+    name: "となりで安心メロ",
+    nickname: "隣が空いてると座りに来る人",
+    tagline: "来てくれるだけで、ほっとする",
+    share_line: "黙って隣にいるくま側",
+    description: "疲れた顔をしてると、何も聞かずに隣の席に来て、自分のスマホをいじりながら一緒にいてくれる。グループLINEでは静かなのに、個別には「今日いる?」と気軽に送ってくる。推し活でも、遠征の待ち時間をなんとなく一緒に過ごしてくれる人。同じゆるくま系の「さりげない側」が言わずに置く人、「そばで気づく側」が隣で差し出す人なら、あなたはとりあえず隣に来る人。口数は少ないのに、席が隣だと空気が軽くなる。周りがメロメロになるのは、自分から寄ってくるのに、ぜんぜん圧がないから。本人は「何もしてない」と思いがちですが、「黙って隣にいる」を自然にできる人はめったにいません。たまには「一緒にいて楽しかった」と言葉にしてみて。そばにいる時間が、もっと特別になります。",
+  },
+  anshin_balance: {
+    sub_name: "そばで気づく側",
+    name: "そばで気づく安心メロ",
+    nickname: "隣にいて、欲しいものが先に出てくる人",
+    tagline: "隣にいて、ちょうどよく気づく",
+    share_line: "隣で気づくくま側だった",
+    description: "体育の見学で一人になってる子がいたら、隣に腰を下ろして「寒くない?」とだけ聞いて、ひざ掛けを半分渡す。そばに来るのも、気づいて動くのも、どっちも自然に出てくる。LINEは短いけど、「今日の体調どう?」が必要な日にちょうど届く。同じゆるくま系の「そばにいる側」が隣に来るところまで、「さりげない側」が気づいて置くところまでなら、あなたは隣に来たうえで、要るものを差し出す人。周りがメロメロになるのは、そこにいてくれる安心と、見てくれてる安心が、同時に来るから。本人は「おせっかいかも」と心配しがちだけど、隣にいる人が気づいてくれるのは、相手にとって一番楽な形の優しさです。たまには「今日はこっちが頼っていい?」と言ってみて。両方向になると、もっとあたたかくなります。",
+  },
+  anshin_hyogen: {
+    sub_name: "さりげない側",
+    name: "さりげなく安心メロ",
+    nickname: "気づいてるのを言わない人",
+    tagline: "言わないけど、見てくれてる",
+    share_line: "言わずに気づくくま側",
+    description: "友達が机に伏せてると、声はかけない。でも帰るころには、その子のカバンの横にのど飴が置いてある。LINEの返信は短めで、顔もあまり変わらない。だけど推しの話をしたら、次に会ったとき「これ、好きそうだったから」と写真を見せてくる。同じゆるくま系の「そばにいる側」がまず隣に来る人、「そばで気づく側」が隣で差し出す人なら、あなたは気づいたことを行動にだけ出す人。そばにはいる、でも言葉にはしない。周りがメロメロになるのは、そのさりげなさが「ちゃんと見てくれてた」とあとから気づく形で効くから。じわじわ来るタイプの安心感です。本人は「地味で損してる」と思いがちだけど、言わずにやる優しさは、言ったら減ってしまうやつ。だから今のままでいい。でも1回くらい「気づいてたよ」と言ってみても、損はしません。",
+  },
+  gap_kyori: {
+    sub_name: "遠くてツン側",
+    name: "寄らないギャップメロ",
+    nickname: "近づかないのに、話すと全開の人",
+    tagline: "遠いのに、たまに近い",
+    share_line: "寄らないのに全開のねこ側",
+    description: "休み時間は自分の席から動かないし、グループLINEもほぼ既読だけ。初対面では黙って観察して、相手がどんな人かわかるまで口を開かない。なのに、誰かが好きなアニメの話を振った瞬間、目が開いて早口でしゃべり出す。同じツンねこ系の「顔に出てる側」が反応で全部バレる人、「遠いのに出る側」が遠いまま漏れる人なら、あなたは寄ってこないのに、話せば全開の人。距離の遠さそのものがクールな土台で、たまに開く入口が狭いぶん、入れた人の特別感がすごい。周りがメロメロになるのは、「あの人が自分には話してくれる」が宝物になるから。本人は「人付き合いが下手」と思いがちだけど、距離を取るのは慎重なだけ。開くときに全力で開けるなら、それはもう十分すぎる持ち味です。",
+  },
+  gap_balance: {
+    sub_name: "遠いのに出る側",
+    name: "遠いままギャップメロ",
+    nickname: "席は遠いのに、反応だけ毎回届く人",
+    tagline: "遠い席から、全部バレてる",
+    share_line: "遠いのに出てるねこ側",
+    description: "クラスの出し物の話し合い、自分は後ろの席で腕を組んで聞いてるだけ。なのに友達の案が通った瞬間、こっそり拳を握ってるのを見られてる。LINEは自分から送らないし、返信も短い。でも推しの出演が発表された日は、その短い返信のあとに、同じスクショを3回送り直してくる。同じツンねこ系の「遠くてツン側」が話すと全開、「顔に出てる側」が隠すのに失敗してる人だとしたら、あなたは遠い場所にいながら、うれしさが同じ量で漏れてる人。周りがメロメロになるのは、近づいてこない人の感情が見えると、見つけた側が「自分だけ気づいた」と思えるから。本人は「もっとサラッとしてたい」と悩みがちだけど、距離を保ったまま気持ちが伝わるのは、めったにないいい場所取りです。遠い席のまま、たまに手を振ってみてもいい。",
+  },
+  gap_hyogen: {
+    sub_name: "顔に出てる側",
+    name: "バレバレギャップメロ",
+    nickname: "そっけないふりが全然できてない人",
+    tagline: "ツンのつもりが、全部出てる",
+    share_line: "隠せてないねこ側だった",
+    description: "LINEは「おけ」の2文字で終わらせるし、自分からはあまり誘わない。なのに友達の髪型が変わった瞬間、「えっ!?」が先に出る。推しの話になれば顔がゆるむのを隠せなくて、「ツンのつもりだったのに」と周りに笑われてる。同じツンねこ系の「遠くてツン側」が話すと全開の人、「遠いのに出る側」が遠いまま漏れる人なら、あなたは寄ってはこないのに、顔と声が全部言ってる人。自分からは動かない、でも反応はわかりやすい。周りがメロメロになるのは、クールにしようとして失敗してる感じが、見てる側にはいちばん愛おしいから。本人は「もっと落ち着いた人に見られたい」と悩みがちですが、隠しきれない気持ちって、隠そうとしてるからこそ刺さるんです。たまには「隠せてないな」と自分で笑っちゃって大丈夫。それが、このタイプの一番の持ち味。",
+  },
+  mystery_kyori: {
+    sub_name: "遠くで見てる側",
+    name: "遠巻き余韻メロ",
+    nickname: "たまに現れて、ひとこと置いて消える人",
+    tagline: "いない時間が、効いてる",
+    share_line: "たまに現れるきつね側",
+    description: "教室でも推し活の集まりでも、輪の少し外にいる。自分から話しかけることは少なくて、グループLINEにも滅多に出てこない。でも、たまに顔を出した日に言った一言を、みんな翌日まで覚えてる。ストーリーズは月に1回あるかないか、だから上がった瞬間、全員が見にいく。同じきつね系の「読めない側」が近くても読めない人、「遠くて読めない側」が両方の人なら、あなたはそもそもあまり現れない人。距離そのものが余韻をつくっていて、会えない時間に相手の中であなたが育っていく。周りがメロメロになるのは、「次いつ話せるかわからない」が、話せた日の価値を上げるから。本人は「輪に入れてない」と気にしがちだけど、全員と等しく仲良くする必要はありません。たまに現れて、ひとこと置いて帰る。それでちゃんと、残ってます。",
+  },
+  mystery_balance: {
+    sub_name: "遠くて読めない側",
+    name: "霧の中の余韻メロ",
+    nickname: "いつ来るかも、何考えてるかも読めない人",
+    tagline: "遠くて、読めなくて、残る",
+    share_line: "遠くて読めないきつね側",
+    description: "文化祭の準備で、ふらっと来て看板の文字だけ直して帰っていった人がいる。その顔は最初から最後まで変わらなくて、何を思って直したのか誰もわからない。グループLINEは月に数回、返事は一行、絵文字なし。推しについて聞かれても「いいよね」で終わるのに、その推しの誕生日だけはちゃんと覚えてる。同じきつね系の「遠くで見てる側」が現れないことで、「読めない側」が表情を見せないことで余韻を残すなら、あなたはいつ来るかも、来たときに何を考えてるかも読めない人。周りがメロメロになるのは、手がかりが二重に少ないぶん、残った一言やひとつの行動を、相手がずっと大事に持ち続けるから。本人は「存在感がない」と気にしがちだけど、少ししか出さないものほど、受け取った側は忘れません。来た日に一言だけ、誰かの名前を呼んでみて。",
+  },
+  mystery_hyogen: {
+    sub_name: "読めない側",
+    name: "涼しい顔余韻メロ",
+    nickname: "隣にいるのに何考えてるかわからない人",
+    tagline: "顔に出ないから、気になる",
+    share_line: "顔に出ないきつね側",
+    description: "席は近いし、話しかければ普通に返してくれる。でも、推しの新情報が出ても表情は変わらず、無言で保存して壁紙だけ替わってる。「ありがとう」は言葉じゃなくて、気づいたら相手の好きなお菓子が机にある形。同じきつね系の「遠くで見てる側」があまり現れない人、「遠くて読めない側」が両方の人なら、あなたは近くにいるのに、感情だけ読めない人。距離は普通、でも中身が見えない。周りがメロメロになるのは、「本当はどう思ってるんだろう」を考える時間が、そのまま気になる時間になるから。笑った瞬間を見た人は、たぶんその日の日記に書きたくなってます。本人は「冷めてると思われてる」と心配しがちだけど、感情を外に出さないのは、雑に扱わないということ。1日1回、「それ好き」とだけ口に出してみて。少ないからこそ、その一言はちゃんと届きます。",
   },
 };
 
@@ -194,11 +295,21 @@ function computeMeloPurity(kyori, hyogen) {
   return 80 + Math.round(Math.max(0, Math.min(100, p)) * 0.2);
 }
 
+// 12タイプ化(2026-10-29〜): 系統の中の3通り。距離と表現の強さの差が2以上ならその軸の側、1以内ならバランス型。
+// カワウソ(rare)は分けないのでnull。全回答で各タイプ5.7〜9.0%・カワウソ5.1%になる境目(企画書の試算)
+function computeMeloSub(kyori, hyogen) {
+  if (computeMeloType(kyori, hyogen) === 'rare') return null;
+  const d = Math.abs(kyori) - Math.abs(hyogen);
+  if (d >= 2) return 'kyori';
+  if (d <= -2) return 'hyogen';
+  return 'balance';
+}
+
 // Node(検証スクリプト)からも読み込めるようにエクスポート(ブラウザでは無視される)
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     MELO_QUESTIONS, MELO_TYPES, MELO_COMPAT,
-    computeMeloScores, computeMeloType, computeMeloPurity,
+    computeMeloScores, computeMeloType, computeMeloPurity, computeMeloSub, MELO_SUBTYPES,
   };
 }
 
@@ -224,6 +335,17 @@ if (typeof document !== 'undefined') {
     // GA4イベント送信(ローカル開発時・GA未読込時は何もしない)
     function track(name, params) {
       if (typeof window.gtag === 'function') window.gtag('event', name, params);
+    }
+
+    // 12タイプ化(2026-10-29〜): 系統(MELO_TYPES)に3通りの名前・文面(MELO_SUBTYPES)を重ねた表示用の型。
+    // 相性・商品・イラスト・計測のresult_typeは系統IDのまま(5値)で、3通りはsub_typeで別に数える
+    function meloView(result) {
+      const t = MELO_TYPES[result.id];
+      const st = result.sub ? MELO_SUBTYPES[`${result.id}_${result.sub}`] : null;
+      return st ? { ...t, ...st } : { ...t, sub_name: '' };
+    }
+    function subTypeParam(result) {
+      return result.sub || 'rare';
     }
 
     function showScreen(name) {
@@ -291,10 +413,10 @@ if (typeof document !== 'undefined') {
       const { kyori, hyogen } = computeMeloScores(answers);
       const id = computeMeloType(kyori, hyogen);
       const purity = computeMeloPurity(kyori, hyogen);
-      lastResult = { id, kyori, hyogen, purity };
+      lastResult = { id, sub: computeMeloSub(kyori, hyogen), kyori, hyogen, purity };
       // 自分の結果URLを開き直した時にシェア閲覧画面にしないよう、このタブで出た自分の結果を覚えておく(2026-10-18〜)
       try { sessionStorage.setItem('meroi_own', `${kyori},${hyogen}`); } catch (e) { /* 保存できなくても動作は続ける */ }
-      track('quiz_complete', { quiz_name: 'meroi', result_type: id });
+      track('quiz_complete', { quiz_name: 'meroi', result_type: id, sub_type: subTypeParam(lastResult) });
       showScreen('result');
       renderResult(lastResult);
       renderCardPreview(lastResult);
@@ -302,13 +424,29 @@ if (typeof document !== 'undefined') {
     }
 
     function renderResult(result) {
-      const t = MELO_TYPES[result.id];
+      const t = meloView(result);
       const compat = MELO_COMPAT[result.id];
       const partner = MELO_TYPES[compat.partner];
 
       setTypeIllust(document.getElementById('nandere-emoji'), result.id, t, 'type-illust');
       document.getElementById('nandere-name').textContent = t.name;
-      document.querySelector('#screen-result .result-title').innerHTML = `あなたは<wbr><span class="grad-text" style="white-space:nowrap">「${t.kei}」</span><wbr><span style="white-space:nowrap">のメロい人</span>`;
+      document.querySelector('#screen-result .result-title').innerHTML = t.sub_name
+        ? `あなたは<wbr><span class="grad-text" style="white-space:nowrap">「${t.kei}」</span><wbr>の<span class="grad-text" style="white-space:nowrap">「${t.sub_name}」</span>`
+        : `あなたは<wbr><span class="grad-text" style="white-space:nowrap">「${t.kei}」</span><wbr><span style="white-space:nowrap">の隠しレア</span>`;
+      // 同じ系統の3通りを並べて、友達と「どっち側?」を比べやすくする(カワウソは隠しレアなので出さない)
+      const siblings = document.getElementById('meroi-siblings');
+      if (siblings && t.sub_name) {
+        // 名前は自前の固定データなのでinnerHTMLで組む(語の途中で折り返さないよう1つずつnowrap、自分の側は太字)
+        const names = ['kyori', 'balance', 'hyogen'].map((k) => {
+          const n = MELO_SUBTYPES[`${result.id}_${k}`].sub_name;
+          return k === result.sub ? `<strong class="nowrap">${n}${sharedView ? '(この結果)' : '(あなた)'}</strong>` : `<span class="nowrap">${n}</span>`;
+        });
+        siblings.innerHTML = `${t.kei}は3タイプ: ${names.join(' / ')}<br><span class="nowrap">全12タイプ+隠しレア</span>`;
+        siblings.hidden = false;
+      } else if (siblings) {
+        siblings.textContent = '';
+        siblings.hidden = true;
+      }
       document.getElementById('nandere-nickname').textContent = t.nickname;
       document.getElementById('nandere-tagline').textContent = t.tagline;
       document.getElementById('nandere-desc').textContent = t.description;
@@ -329,15 +467,15 @@ if (typeof document !== 'undefined') {
       }
 
       setTypeIllust(document.getElementById('compat-emoji'), compat.partner, partner, 'compat-illust');
-      document.getElementById('compat-name').textContent = partner.name;
+      document.getElementById('compat-name').textContent = `${partner.kei}`;
       document.getElementById('compat-percent').textContent = `相性 ${compat.percent}%`;
       document.getElementById('compat-note').textContent = compat.note;
 
       renderGiftList(document.getElementById('nandere-lucky'), {
         mode: sharedView ? 'gift' : 'self', typeName: t.name, items: MELO_GIFTS[result.id].map((it) => ({ ...it, priceLabel: (MELO_BANDS[it.band] || MELO_BANDS[2]).label })),
         href: (kw, it) => affiliateUrl(kw, it && it.band), pill: true,
-        onClick: (p) => track('affiliate_click', { quiz_name: 'meroi', result_type: result.id, ...p }),
-        onView: () => track('section_view', { quiz_name: 'meroi', result_type: result.id, placement: 'result_card', mode: sharedView ? 'gift' : 'self' }),
+        onClick: (p) => track('affiliate_click', { quiz_name: 'meroi', result_type: result.id, sub_type: subTypeParam(result), ...p }),
+        onView: () => track('section_view', { quiz_name: 'meroi', result_type: result.id, sub_type: subTypeParam(result), placement: 'result_card', mode: sharedView ? 'gift' : 'self' }),
       });
       // 本人画面だけ、商品の下に「この結果、LINEで友達に見せる」(2026-10-18〜)。中身はシェア閲覧画面(mode=gift)のURL+目印w=1
       // (GA4ではpage_locationのw=1で見分ける)。本文は結果が主で、商品・「買って」等・Amazonのリンクは入れない。計測はshareと混ぜず wishlist_share
@@ -354,7 +492,7 @@ if (typeof document !== 'undefined') {
       }
       // 「次はこれ」欄の表示計測(next_quiz_clickの分母)。結果を出すたびに数え直す
       giftObserveOnce(document.querySelector('.next-quiz'), () => {
-        track('section_view', { quiz_name: 'meroi', result_type: result.id, placement: 'next_card', mode: sharedView ? 'gift' : 'self' });
+        track('section_view', { quiz_name: 'meroi', result_type: result.id, sub_type: subTypeParam(result), placement: 'next_card', mode: sharedView ? 'gift' : 'self' });
       });
     }
 
@@ -367,7 +505,7 @@ if (typeof document !== 'undefined') {
       if (!lastResult || !navigator.clipboard) return;
       const btn = document.getElementById('btn-copy-url');
       navigator.clipboard.writeText(resultUrl(lastResult)).then(() => {
-        track('copy_url', { quiz_name: 'meroi', result_type: lastResult.id });
+        track('copy_url', { quiz_name: 'meroi', result_type: lastResult.id, sub_type: subTypeParam(lastResult) });
         btn.textContent = 'コピーしました!';
         clearTimeout(copyTimer);
         copyTimer = setTimeout(() => { btn.textContent = '結果URLをコピー 🔗'; }, 2000);
@@ -379,9 +517,11 @@ if (typeof document !== 'undefined') {
     }
 
     function shareText(result) {
-      const t = MELO_TYPES[result.id];
-      const score = t.rare ? '測定不能' : `${result.purity}%`;
-      return `私のメロい度は${score}!${t.emoji}${t.kei}の「${t.name}」でした(${t.nickname})\nみんなのメロさは?\n#メロい度診断 #あなたは何メロ`;
+      const t = meloView(result);
+      if (t.rare) {
+        return `私のメロい度は測定不能!${t.emoji}${t.kei}の隠しレア「${t.name}」でした\n12タイプ+隠しレア、みんなはどれ?\n#メロい度診断 #あなたは何メロ`;
+      }
+      return `私は${t.emoji}${t.kei}の「${t.sub_name}」=${t.name}、メロい度${result.purity}%。同じ${t.kei}でも3つに分かれるらしい\n12タイプ中、みんなはどれ?\n#メロい度診断 #あなたは何メロ`;
     }
 
     function shareResultX() {
@@ -389,7 +529,7 @@ if (typeof document !== 'undefined') {
       const text = shareText(lastResult);
       const url = encodeURIComponent(resultUrl(lastResult));
       const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`;
-      track('share', { method: 'x', quiz_name: 'meroi', content_type: 'meroi', item_id: lastResult.id });
+      track('share', { method: 'x', quiz_name: 'meroi', content_type: 'meroi', item_id: lastResult.id, sub_type: subTypeParam(lastResult) });
       window.open(shareUrl, '_blank', 'noopener,noreferrer');
     }
 
@@ -398,16 +538,16 @@ if (typeof document !== 'undefined') {
       const text = shareText(lastResult);
       const url = encodeURIComponent(resultUrl(lastResult));
       const shareUrl = `https://social-plugins.line.me/lineit/share?url=${url}&text=${encodeURIComponent(text)}`;
-      track('share', { method: 'line', quiz_name: 'meroi', content_type: 'meroi', item_id: lastResult.id });
+      track('share', { method: 'line', quiz_name: 'meroi', content_type: 'meroi', item_id: lastResult.id, sub_type: subTypeParam(lastResult) });
       window.open(shareUrl, '_blank', 'noopener,noreferrer');
     }
 
     function shareGiftWish() {
       if (!lastResult) return;
-      const t = MELO_TYPES[lastResult.id];
-      const text = `私は${t.kei}だった!結果見て👀`;
+      const t = meloView(lastResult);
+      const text = t.sub_name ? `私は${t.kei}の「${t.sub_name}」だった!結果見て👀` : `私は${t.kei}だった!結果見て👀`;
       const url = encodeURIComponent(`${resultUrl(lastResult)}&w=1`);
-      track('wishlist_share', { quiz_name: 'meroi', result_type: lastResult.id, method: 'line', placement: 'result_card', mode: 'self' });
+      track('wishlist_share', { quiz_name: 'meroi', result_type: lastResult.id, sub_type: subTypeParam(lastResult), method: 'line', placement: 'result_card', mode: 'self' });
       window.open(`https://social-plugins.line.me/lineit/share?url=${url}&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
     }
 
@@ -429,6 +569,23 @@ if (typeof document !== 'undefined') {
     });
 
     document.getElementById('btn-gift-wish').addEventListener('click', shareGiftWish);
+
+    // 絵文字の入口(LINE STORE、新しいタブ)とプレゼント診断への1行(2026-10-29〜)。
+    // Amazonのaffiliate_clickや「次はこれ」のnext_cardとは混ぜず、それぞれ別に数える
+    const emojiLink = document.getElementById('meroi-emoji-link');
+    const presentLink = document.getElementById('meroi-present-link');
+    // 古いHTMLのキャッシュに新しいJSが当たっても初期化が止まらないよう、要素がある時だけ紐づける
+    if (emojiLink) emojiLink.addEventListener('click', () => {
+      track('emoji_store_click', {
+        quiz_name: 'meroi', result_type: lastResult ? lastResult.id : '', sub_type: lastResult ? subTypeParam(lastResult) : '',
+        placement: 'result_extra', mode: sharedView ? 'gift' : 'self', transport_type: 'beacon',
+      });
+    });
+    if (presentLink) presentLink.addEventListener('click', () => {
+      track('next_quiz_click', {
+        quiz_name: 'meroi', target: 'present', mode: sharedView ? 'gift' : 'self', placement: 'present_line', transport_type: 'beacon',
+      });
+    });
 
     function restartQuiz() {
       lastResult = null;
@@ -579,7 +736,7 @@ if (typeof document !== 'undefined') {
     }
 
     function drawMeloCard(ctx, W, H, result, opts) {
-      const t = MELO_TYPES[result.id];
+      const t = meloView(result);
       const compat = MELO_COMPAT[result.id];
       const partner = MELO_TYPES[compat.partner];
       cardDrawBackground(ctx, W, H);
@@ -614,7 +771,7 @@ if (typeof document !== 'undefined') {
 
       ctx.font = "700 26px 'Zen Maru Gothic', sans-serif";
       ctx.fillStyle = CARD_PAL.sub;
-      ctx.fillText(`メロい度診断 RESULT|${t.kei}`, W / 2, y);
+      ctx.fillText(t.sub_name ? `メロい度診断 RESULT|${t.kei}・${t.sub_name}` : `メロい度診断 RESULT|${t.kei}・隠しレア`, W / 2, y);
       y += opts.eyebrowGap;
 
       const fit = cardFitTextMultiline(ctx, t.name, W - 140, '900', "'Zen Maru Gothic', sans-serif", opts.nameSize, opts.nameMinSize, 1);
@@ -645,7 +802,7 @@ if (typeof document !== 'undefined') {
       // 相性
       ctx.font = `600 ${opts.compatFont}px 'Zen Maru Gothic', sans-serif`;
       ctx.fillStyle = CARD_PAL.sub;
-      ctx.fillText(`相性◎ ${partner.emoji} ${partner.name}(${compat.percent}%)`, W / 2, y);
+      ctx.fillText(`相性◎ ${partner.emoji} ${partner.kei}(${compat.percent}%)`, W / 2, y);
       y += opts.compatGap;
 
       ctx.strokeStyle = 'rgba(160,130,175,0.28)';
@@ -723,7 +880,7 @@ if (typeof document !== 'undefined') {
       const original = btn.textContent;
       btn.textContent = '生成中…';
       btn.disabled = true;
-      track('save_card', { quiz_name: 'meroi', card_format: mode });
+      track('save_card', { quiz_name: 'meroi', card_format: mode, result_type: lastResult.id, sub_type: subTypeParam(lastResult) });
       try {
         const canvas = buildMeloCardCanvas(lastResult, mode, await loadTypeImage(lastResult.id));
         await new Promise((resolve, reject) => {
@@ -732,7 +889,7 @@ if (typeof document !== 'undefined') {
             const a = document.createElement('a');
             const url = URL.createObjectURL(blob);
             a.href = url;
-            a.download = `meroi-shindan-${lastResult.id}-${mode}.png`;
+            a.download = `meroi-shindan-${lastResult.id}${lastResult.sub ? `-${lastResult.sub}` : ''}-${mode}.png`;
             document.body.appendChild(a);
             a.click();
             a.remove();
@@ -769,7 +926,7 @@ if (typeof document !== 'undefined') {
       if (Math.abs(kyori) > 10 || Math.abs(hyogen) > 10) return;
       const id = computeMeloType(kyori, hyogen);
       const purity = computeMeloPurity(kyori, hyogen);
-      lastResult = { id, kyori, hyogen, purity };
+      lastResult = { id, sub: computeMeloSub(kyori, hyogen), kyori, hyogen, purity };
       let own = false;
       try { own = sessionStorage.getItem('meroi_own') === `${kyori},${hyogen}`; } catch (e) { own = false; }
       if (own) {
@@ -784,7 +941,8 @@ if (typeof document !== 'undefined') {
       renderResult(lastResult);
       renderCardPreview(lastResult);
       // シェアされたURLから来た人向けに、見出しとボタンを「自分も診断する」導線にする
-      document.querySelector('#screen-result .result-title').innerHTML = `シェアされたメロさは<wbr><span class="grad-text" style="white-space:nowrap">「${MELO_TYPES[id].kei}」</span>`;
+      const sv = meloView(lastResult);
+      document.querySelector('#screen-result .result-title').innerHTML = `シェアされたメロさは<wbr><span class="grad-text" style="white-space:nowrap">「${sv.kei}${sv.sub_name ? `・${sv.sub_name}` : '・隠しレア'}」</span>`;
       document.getElementById('btn-restart').textContent = '自分のメロい度も診断する 💗';
       // 他人の結果を「私は〜」とシェアしないよう、自分で診断するボタンを先頭・主ボタンにする
       const restartBtn = document.getElementById('btn-restart');

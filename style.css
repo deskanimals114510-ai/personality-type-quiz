@@ -1425,3 +1425,19 @@ body {
 }
 #gift-guide-entry a:focus-visible { outline: 2px solid var(--primary-dark); outline-offset: 2px; }
 .gift-wish-btn .nowrap { white-space: nowrap; }
+
+/* メロい度12タイプ化(2026-10-29): 同じ系統の3タイプ一覧、絵文字の入口、プレゼント診断への1行 */
+.meroi-siblings { margin: 8px 0 0; font-size: 0.84rem; line-height: 1.7; color: var(--text-sub); text-align: center; }
+.meroi-siblings strong { color: var(--primary-dark); }
+.meroi-siblings .nowrap { white-space: nowrap; }
+.meroi-extra { margin: 18px 0 0; text-align: center; }
+.meroi-emoji-entry { margin: 0; }
+.meroi-emoji-entry a {
+  display: block; min-height: 44px; box-sizing: border-box; padding: 10px 12px; border: 1.5px solid #c0507e; border-radius: 14px; background: #fff;
+  color: var(--primary-dark); font-weight: 700; font-size: 0.86rem; text-decoration: none;
+}
+.meroi-emoji-entry .lucky-pr-tag { margin: 0 6px 0 0; }
+.meroi-emoji-note { display: block; margin: 4px 0 0; font-size: 0.78rem; color: var(--text-sub); }
+.meroi-present-line { margin: 12px 0 0; font-size: 0.86rem; }
+.meroi-present-line a { display: inline-block; padding: 10px 4px; color: var(--primary-dark); font-weight: 700; }
+.meroi-emoji-entry a:focus-visible, .meroi-present-line a:focus-visible { outline: 2px solid var(--primary-dark); outline-offset: 2px; }
