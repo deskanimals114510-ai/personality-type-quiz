@@ -134,15 +134,15 @@ const MERORU_COMPAT_NOTE = {
   rare:    'カワウソ系をメロらせやすいのは、きつね系かも。何でも受け止める人が、余韻を残す相手の前だけ言葉に迷う。あなたは何系?',
 };
 
-// ---- おすすめ欄の理由文(商品はmeroi_gift_copy.jsonの各タイプ2品をそのまま使う。視点は「あなたがメロる系統の人へ贈る」) ----
-// 配列の順序はmeroi_gift_copy.jsonの品目順(wanko: アクスタ収納ケース/折りたたみスマホスタンド、anshin: ダブルウォールグラス/もこもこルームソックス、
-// gap: トレカ用ケース/リバーシブルトート、mystery: 一筆箋/揺れるイヤーカフ、rare: マスキングテープセット/卓上レターボード)
+// ---- おすすめ欄の理由文(商品はmeroi.jsのMELO_GIFTSと同じ各タイプ2品。視点は「あなたがメロる系統の人へ贈る」、2026-10-28 Fable) ----
+// 配列の順序はMELO_GIFTSの品目順(wanko: 缶バッジカバー/スマホショルダー、anshin: もこもこルームソックス/ひざ掛けブランケット、
+// gap: トレカケースとスリーブ/クリアショルダーバッグ、mystery: 大きめバンスクリップ/揺れるイヤーカフ、rare: フレークシールセット/シール帳バインダー)
 const MERORU_GIFT_REASON = {
-  wanko:   ['好きを隠さない人の推しを、ちゃんと守って持ち帰れる場所に。', '返事が早い人の机に、スマホの定位置をひとつ。'],
-  anshin:  ['隣で静かに過ごす時間に、あたたかい一杯を足す。', 'そばにいる時間が長くなる人へ、足元のぬくもりを。'],
-  gap:     ['好きなものの話で目の色が変わる人の、その推しを守る一枚。', '一歩引いた印象と、全開の瞬間。両面を持つ人に。'],
-  mystery: ['言葉を選ぶ人には、短く書ける紙がいちばん合う。', '多くを語らない人に、動くたび光る小さな一点を。'],
-  rare:    ['その一人の手帳には、気分で柄を選べる余白があっていい。', '説明できない一点を、言葉にして置いておける板。'],
+  wanko:   ['好きを胸に付けて歩く人の、その一つひとつに透明な守りを。', 'すぐ返したい人の両手を、スマホごと自由にしてあげる。'],
+  anshin:  ['何も言わずに隣にいる人の足元へ、やわらかい温度を。', '同じ部屋で過ごす時間ごと、ふわりと包んでおく。'],
+  gap:     ['普段は素っ気ない人が、唯一ゆるめない場所を一枚ずつ守る。', '推しの前でだけ全開になる人に、好きが透けて見える鞄を。'],
+  mystery: ['全部は見せない人の髪を、ひと動作で軽くまとめる余裕を。', '読めない人の横顔に、ふと目で追いたくなる揺れをひとつ。'],
+  rare:    ['型に収まらない人の日々を、気ままに貼って彩る小さな一枚。', '誰とも違うその人の好きを、増やして並べ替えられる一冊に。'],
 };
 
 // ---- 参考: meroi.js MELO_COMPAT の note 修正案(gap・rareの2件は「左(本人)が右(partner)をメロらせる」向きと逆になっているため) ----
@@ -153,36 +153,40 @@ const MERORU_MELTER = { wanko: 'gap', anshin: 'wanko', gap: 'anshin', mystery: '
 
 const AFFILIATE_TAG = 'tinywonders-22';
 
-// script.jsのaffiliateUrl()と同仕様: ¥1,000〜3,000の価格帯フィルタ+レビュー評価順ソートを
-// URLパラメータで強制する(amazon.co.jpで動作確認済み)。
-function affiliateUrl(keyword) {
+// meroi.jsと同じ価格帯(band 1=〜¥1,500・2=¥1,500〜3,000)+レビュー評価順の検索URL(2026-10-28、メロい度の10/18新版に同期)
+const MELO_BANDS = {
+  1: { range: '100-150000', label: '〜¥1,500で検索' },
+  2: { range: '150000-300000', label: '¥1,500〜3,000で検索' },
+};
+function affiliateUrl(keyword, band) {
+  const b = MELO_BANDS[band] || MELO_BANDS[2];
   let base = `https://www.amazon.co.jp/s?k=${encodeURIComponent(keyword)}`;
-  base += '&rh=p_36%3A100000-300000&s=review-rank';
+  base += `&rh=p_36%3A${b.range}&s=review-rank`;
   return AFFILIATE_TAG ? `${base}&tag=${encodeURIComponent(AFFILIATE_TAG)}` : base;
 }
 
-// メロい度診断と同じタイプ別おすすめ2点(正本は診断ツール群/MBTI診断/meroi_gift_copy.json、meroi.jsのMELO_GIFTSと同一)。
-// ここでは「あなたがメロる系統の人に贈るなら」として出す
+// メロい度診断と同じタイプ別おすすめ2点(meroi.jsのMELO_GIFTSの写し、2026-10-28同期。正本はmeroi.js)。
+// ここでは「あなたがメロる系統の人に贈るなら」として出す(理由文だけMERORU_GIFT_REASONに差し替える)
 const MELO_GIFTS = {
   wanko: [
-    { emoji: '🎤', name: 'アクスタ収納ケース', keyword: 'アクリルスタンド 収納ケース 推し活', reason: 'ライブ後に「やばい」しか残らない夜も、推しだけは無事に持ち帰る。' },
-    { emoji: '📱', name: '折りたたみスマホスタンド', keyword: 'スマホスタンド 卓上 折りたたみ', reason: '既読と同時に返信が飛んでいく人の、机の上の定位置に。' },
+    { emoji: '📌', name: '缶バッジカバー', keyword: '缶バッジカバー 大容量', band: 1, reason: '好きを全部胸につけて走る日も、推しの顔だけは守っておきたい。' },
+    { emoji: '📱', name: 'スマホショルダー', keyword: 'スマホショルダー ストラップ 全機種対応', band: 2, reason: '返事はいつも全力。だからスマホは、手の届く胸元に。' },
   ],
   anshin: [
-    { emoji: '🥃', name: 'ダブルウォールグラス', keyword: 'ダブルウォールグラス 耐熱 おしゃれ', reason: '何も聞かずに「おつかれ」と差し出す、その一杯の置き場に。' },
-    { emoji: '🧦', name: 'もこもこルームソックス', keyword: 'ルームソックス もこもこ ユニセックス', reason: '沈黙が気まずくならない隣。足元までゆるむと、長居が始まる。' },
+    { emoji: '🧦', name: 'もこもこルームソックス', keyword: 'ルームソックス もこもこ ユニセックス', band: 1, reason: 'ここにいると、足元から先に今日がほどけていく。' },
+    { emoji: '🛋️', name: 'ひざ掛けブランケット', keyword: 'ひざ掛け ブランケット かわいい', band: 2, reason: 'ひざにひとつ掛けた瞬間、そこがいちばん落ち着く場所になる。' },
   ],
   gap: [
-    { emoji: '🃏', name: 'トレカ用ケース', keyword: 'トレカケース 推し活 硬質', reason: 'スタンプ1個で終わる人も、推しの話では早口。その推しを守る一枚。' },
-    { emoji: '👜', name: 'リバーシブルトート', keyword: 'トートバッグ リバーシブル キャンバス', reason: '表はクール、裏返すと別の顔。週1で誰かを驚かせる落差を持ち歩く。' },
+    { emoji: '🃏', name: 'トレカケースとスリーブ', keyword: 'トレカケース 硬質 推し活 スリーブ', band: 1, reason: '返信はスタンプ1個。でも推しのカードは、二重に守ってから持ち歩く。' },
+    { emoji: '👜', name: 'クリアショルダーバッグ', keyword: 'クリアバッグ ショルダー 推し活', band: 2, reason: '素っ気ない顔のまま、肩から下げた推しだけが、全部を言ってしまう。' },
   ],
   mystery: [
-    { emoji: '✉️', name: '一筆箋', keyword: '一筆箋 おしゃれ シンプル', reason: 'グループLINEに置いていく一言と同じ、短くて残る紙を一枚。' },
-    { emoji: '✨', name: '揺れるイヤーカフ', keyword: 'イヤーカフ 揺れる シルバー', reason: '「じゃあね」で振り返った横顔に、ひとつだけ揺れるものを。' },
+    { emoji: '🎀', name: '大きめバンスクリップ', keyword: 'バンスクリップ 大きめ', band: 1, reason: '無造作にまとめた髪が、ほどける瞬間だけ予告なし。目が離せない理由がひとつ増える。' },
+    { emoji: '✨', name: '揺れるイヤーカフ', keyword: 'イヤーカフ 揺れる シルバー', band: 2, reason: '「じゃあね」で振り返った横顔に、ひとつだけ揺れるものを。' },
   ],
   rare: [
-    { emoji: '🎞️', name: 'マスキングテープセット', keyword: 'マスキングテープ セット 和紙 おしゃれ', reason: 'どの系統にも寄らない人の手帳は、その日の気分で柄を変えればいい。' },
-    { emoji: '🔤', name: '卓上レターボード', keyword: 'レターボード 卓上 インテリア', reason: '褒められても信じない人の机に、言われた言葉を一週間貼っておく板。' },
+    { emoji: '🌸', name: 'フレークシールセット', keyword: 'フレークシール 大容量 セット', band: 1, reason: '手帳の端にひとつ、何気なく貼る。その何気なさが、周りには全部見えてる。' },
+    { emoji: '📒', name: 'シール帳バインダー', keyword: 'シール帳 バインダー A5', band: 2, reason: '集めたつもりはないのに、気づけば1冊。かわいいが勝手に増えていく。' },
   ],
 };
 
@@ -265,6 +269,8 @@ if (typeof document !== 'undefined') {
       }
       const q = MERORU_QUESTIONS[currentIndex];
       progressFill.style.width = `${(currentIndex / MERORU_QUESTIONS.length) * 100}%`;
+      progressFill.parentElement.setAttribute('aria-valuenow', String(currentIndex + 1));
+      progressFill.parentElement.setAttribute('aria-valuemax', String(MERORU_QUESTIONS.length));
       progressText.textContent = `${currentIndex + 1} / ${MERORU_QUESTIONS.length}`;
       addBubble(q.text, 'ai');
       renderOptions(q);
@@ -308,7 +314,7 @@ if (typeof document !== 'undefined') {
       const id = computeMeloType(kyori, hyogen);
       const purity = computeMeloPurity(kyori, hyogen);
       lastResult = { id, kyori, hyogen, purity };
-      track('quiz_complete', { quiz_name: 'meroru', result_type: id });
+      track('quiz_complete', { quiz_name: 'meroru', result_type: id, score: `${kyori},${hyogen}` });
       showScreen('result');
       renderResult(lastResult);
       renderCardPreview(lastResult);
@@ -354,7 +360,8 @@ if (typeof document !== 'undefined') {
       // 商品は「あなたがメロる系統の人」向け(メロい度診断の同じ系統のおすすめ)。贈る場面なのでmodeはgift
       renderGiftList(document.getElementById('nandere-lucky'), {
         mode: 'gift', heading: t.rare ? 'その一人に贈るなら' : `${t.kei}の人に贈るなら`,
-        items: MELO_GIFTS[result.id].map((g, i) => ({ ...g, reason: MERORU_GIFT_REASON[result.id][i] })), href: affiliateUrl,
+        items: MELO_GIFTS[result.id].map((g, i) => ({ ...g, reason: MERORU_GIFT_REASON[result.id][i], priceLabel: (MELO_BANDS[g.band] || MELO_BANDS[2]).label })),
+        href: (kw, it) => affiliateUrl(kw, it && it.band), pill: true,
         onClick: (p) => track('affiliate_click', { quiz_name: 'meroru', result_type: result.id, ...p }),
         onView: () => track('section_view', { quiz_name: 'meroru', result_type: result.id, placement: 'result_card', mode: 'gift' }),
       });
@@ -423,6 +430,15 @@ if (typeof document !== 'undefined') {
       });
     });
 
+    // 結果ではなく「診断の入口」を友達にLINEで送る(タイプ名は出さない)
+    function inviteFriendLine() {
+      const url = `${location.origin}${location.pathname}?utm_source=line&utm_medium=social&utm_campaign=meroru_invite`;
+      const text = '何系にメロる?診断やってみて!10問1分。結果見せ合お👀';
+      const shareUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+      track('invite_send', { quiz_name: 'meroru', result_type: lastResult ? lastResult.id : undefined, mode: sharedView ? 'gift' : 'self' });
+      window.open(shareUrl, '_blank', 'noopener,noreferrer');
+    }
+
     function restartQuiz() {
       lastResult = null;
       sharedView = false;
@@ -433,6 +449,8 @@ if (typeof document !== 'undefined') {
       restartBtn.className = 'btn-secondary';
       shareBtn.parentNode.prepend(shareBtn);
       restartBtn.parentNode.appendChild(restartBtn);
+      const sendWrap = document.getElementById('send-quiz-wrap');
+      if (sendWrap) shareBtn.after(sendWrap);
       document.getElementById('btn-restart').textContent = 'もう一度診断する';
       history.replaceState(null, '', location.pathname);
       startQuiz();
@@ -718,9 +736,9 @@ if (typeof document !== 'undefined') {
       track('save_card', { quiz_name: 'meroru', card_format: mode });
       try {
         const canvas = buildMeloCardCanvas(lastResult, mode, await loadTypeImage(lastResult.id));
-        await new Promise((resolve) => {
+        await new Promise((resolve, reject) => {
           canvas.toBlob((blob) => {
-            if (!blob) { resolve(); return; }
+            if (!blob) { reject(new Error('toBlobがnullを返しました')); return; }
             const a = document.createElement('a');
             const url = URL.createObjectURL(blob);
             a.href = url;
@@ -745,7 +763,17 @@ if (typeof document !== 'undefined') {
     document.getElementById('btn-share').addEventListener('click', shareResultX);
     document.getElementById('btn-share-line').addEventListener('click', shareResultLine);
     document.getElementById('btn-copy-url').addEventListener('click', copyResultUrl);
+    const inviteBtn = document.getElementById('btn-invite-line');
+    if (inviteBtn) inviteBtn.addEventListener('click', inviteFriendLine);
     document.getElementById('btn-restart').addEventListener('click', restartQuiz);
+    // LINE絵文字の入口(古いHTMLのキャッシュに新しいJSが当たっても止まらないよう、要素がある時だけ紐づける)
+    const emojiLink = document.getElementById('meroru-emoji-link');
+    if (emojiLink) emojiLink.addEventListener('click', () => {
+      track('emoji_store_click', {
+        quiz_name: 'meroru', result_type: lastResult ? lastResult.id : '',
+        placement: 'result_extra', mode: sharedView ? 'gift' : 'self', transport_type: 'beacon',
+      });
+    });
     document.getElementById('btn-save-card').addEventListener('click', () => downloadResultCard('x'));
     document.getElementById('btn-save-card-story').addEventListener('click', () => downloadResultCard('story'));
 
@@ -775,6 +803,8 @@ if (typeof document !== 'undefined') {
       restartBtn.className = 'btn-primary';
       shareBtn.className = 'btn-secondary';
       restartBtn.parentNode.prepend(restartBtn);
+      const sendWrap = document.getElementById('send-quiz-wrap');
+      if (sendWrap) restartBtn.parentNode.appendChild(sendWrap);
     })();
 
     // ===== アクセス解析(メインサイトと同一GA4プロパティ) =====

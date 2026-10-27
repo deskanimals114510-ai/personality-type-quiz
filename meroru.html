@@ -34,8 +34,8 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Poppins:wght@600;700;800&display=swap">
 <link id="font-link" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" media="print">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="style.css">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"何系にメロる?診断 - 好きになる相手の系統をわんこ系・ツンねこ系など5タイプで診断","description":"10問1分の無料「何系にメロる?診断」。あなたがメロってしまう(好きになる・ドキッとする)相手の系統を診断。わんこ系・ゆるくま系・ツンねこ系・きつね系、激レアのカワウソ系も。メロい度診断の姉妹診断。","url":"https://deskanimals114510-ai.github.io/personality-type-quiz/meroru.html","inLanguage":"ja","isPartOf":{"@type":"WebSite","name":"性格・恋愛・仕事タイプ診断","url":"https://deskanimals114510-ai.github.io/personality-type-quiz/"},"image":"https://deskanimals114510-ai.github.io/personality-type-quiz/og-meroru.jpg","datePublished":"2026-10-14","dateModified":"2026-10-14","publisher":{"@id":"https://deskanimals114510-ai.github.io/personality-type-quiz/#organization"}}</script>
+<link rel="stylesheet" href="style.css?v=20261029">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"何系にメロる?診断 - 好きになる相手の系統をわんこ系・ツンねこ系など5タイプで診断","description":"10問1分の無料「何系にメロる?診断」。あなたがメロってしまう(好きになる・ドキッとする)相手の系統を診断。わんこ系・ゆるくま系・ツンねこ系・きつね系、激レアのカワウソ系も。メロい度診断の姉妹診断。","url":"https://deskanimals114510-ai.github.io/personality-type-quiz/meroru.html","inLanguage":"ja","isPartOf":{"@type":"WebSite","name":"性格・恋愛・仕事タイプ診断","url":"https://deskanimals114510-ai.github.io/personality-type-quiz/"},"image":"https://deskanimals114510-ai.github.io/personality-type-quiz/og-meroru.jpg","datePublished":"2026-10-14","dateModified":"2026-10-28","publisher":{"@id":"https://deskanimals114510-ai.github.io/personality-type-quiz/#organization"}}</script>
 </head>
 <body>
 <div class="bg-blobs" aria-hidden="true">
@@ -88,7 +88,7 @@
   <section id="screen-chat" class="screen">
     <div class="chat-header">
       <span class="block-label">何系にメロる?診断</span>
-      <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="10" aria-valuenow="1" aria-label="診断の進捗"><div id="progress-fill" class="progress-fill"></div></div>
       <span id="progress-text" class="progress-text">1 / 10</span>
     </div>
     <div id="chat-log" class="chat-log" aria-live="polite"></div>
@@ -137,6 +137,10 @@
 
     <div class="result-actions">
       <button id="btn-share" class="btn-primary">結果をXでシェア 🚀</button>
+      <div id="send-quiz-wrap" class="send-quiz-wrap">
+        <button id="btn-invite-line" type="button" class="btn-secondary btn-line send-quiz-btn" aria-describedby="send-quiz-hint">💌 友達にもこの診断を送る(LINE)</button>
+        <p id="send-quiz-hint" class="send-quiz-hint">結果は見せずに、診断だけ送れます</p>
+      </div>
       <button id="btn-share-line" class="btn-secondary btn-line">LINEでシェア</button>
       <button id="btn-copy-url" class="btn-secondary">結果URLをコピー 🔗</button>
       <button id="btn-restart" class="btn-secondary">もう一度診断する</button>
@@ -145,6 +149,14 @@
       <button id="btn-save-card" class="btn-secondary">結果カードを保存 🖼️</button>
       <button id="btn-save-card-story" class="btn-secondary">ストーリーズ用に保存 📱</button>
     </div>
+    <!-- LINE絵文字の入口(No.56①、2026-10-28〜)。メロい度と同じ部品。商品欄・次はこれ欄の外に置き、計測も別イベント -->
+    <div class="meroi-extra">
+      <p class="meroi-emoji-entry">
+        <a id="meroru-emoji-link" href="https://store.line.me/emojishop/product/6adad48dc2685a2a91556ff6/ja" target="_blank" rel="noopener"><span class="lucky-pr-tag" aria-hidden="true">PR</span><span aria-hidden="true">🐶🐻🐱🦊🦦 </span>この5匹がLINE絵文字になりました<span aria-hidden="true">(LINE STORE) ›</span><span class="sr-only">(広告・Desk Animals Labの作品のLINE STOREページ、新しいタブで開きます)</span></a>
+        <span class="meroi-emoji-note">Desk Animals Labの作品です(LINEでの販売者名はuuhai)。購入はおうちの人と相談してね</span>
+      </p>
+    </div>
+
     <section class="next-quiz" aria-labelledby="next-quiz-heading">
       <h2 id="next-quiz-heading" class="next-quiz-heading">メロる系統がわかったら、次はこれ</h2>
       <a class="hub-cta next-quiz-card" href="nandere.html" data-next="nandere">
@@ -179,13 +191,13 @@
 
   <footer class="site-footer">
     <p>本診断はエンタメ目的のコンテンツです。科学的な心理診断に代わるものではありません。</p>
-    <p>本診断は名前・生年月日等の個人情報の入力を求めません。回答内容はすべてお使いの端末内で処理され、サーバーへの送信・保存は一切行いません。なお、アクセス解析(Googleアナリティクス)は行っており、閲覧したページの情報が計測されます。計測にはCookieを使用します。商品リンクのリンク先(Amazon)などの第三者がCookieを設定・取得する場合があります。診断結果のタイプなどの利用状況も匿名で計測しています。また、Google Fontsの読み込み時にお使いのIPアドレスがGoogleに送信されます。</p>
-    <p>🔖 本ページの「PR」表示のある商品リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。Amazonのアソシエイトとして、Desk Animals Labは適格販売により収入を得ています。</p>
+    <p>本診断は名前・生年月日等の個人情報の入力を求めません。回答内容はすべてお使いの端末内で処理され、サーバーへの送信・保存は一切行いません。なお、アクセス解析(Googleアナリティクス)は行っており、閲覧したページの情報が計測されます。計測にはCookieを使用します。商品リンクのリンク先(Amazon)やLINE絵文字のリンク先(LINE STORE)などの第三者がCookieを設定・取得する場合があります。診断結果のタイプなどの利用状況も匿名で計測しています。また、Google Fontsの読み込み時にお使いのIPアドレスがGoogleに送信されます。</p>
+    <p>🔖 本ページの「PR」表示のある商品リンクにはアフィリエイト(広告)リンクを含みます。リンク経由の購入により、当サイトが紹介料を得る場合があります。Amazonのアソシエイトとして、Desk Animals Labは適格販売により収入を得ています。「PR」表示のあるLINE絵文字のリンクは当サイト自身の作品の宣伝で、購入されると当サイトの収入になります(Amazonの紹介料とは別のものです)。</p>
     <p><a href="index.html" style="color:var(--text-sub);">MBTI性格・恋愛・仕事タイプ診断はこちら</a></p>
   </footer>
 
 </div>
 <script src="gift.js"></script>
-<script src="meroru.js"></script>
+<script src="meroru.js?v=20261028"></script>
 </body>
 </html>
