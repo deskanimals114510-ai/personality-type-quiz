@@ -570,7 +570,7 @@ if (typeof document !== 'undefined') {
 
     document.getElementById('btn-gift-wish').addEventListener('click', shareGiftWish);
 
-    // 絵文字の入口(LINE STORE、新しいタブ)とプレゼント診断への1行(2026-10-29〜)。
+    // 絵文字の入口(LINE STORE、新しいタブ)とプレゼント診断への1行(2026-10-27〜)。
     // Amazonのaffiliate_clickや「次はこれ」のnext_cardとは混ぜず、それぞれ別に数える
     const emojiLink = document.getElementById('meroi-emoji-link');
     const presentLink = document.getElementById('meroi-present-link');
@@ -584,6 +584,13 @@ if (typeof document !== 'undefined') {
     if (presentLink) presentLink.addEventListener('click', () => {
       track('next_quiz_click', {
         quiz_name: 'meroi', target: 'present', mode: sharedView ? 'gift' : 'self', placement: 'present_line', transport_type: 'beacon',
+      });
+    });
+    // 推しと荷づくり(別サイト)への1行。診断間の回遊(next_quiz_click)とは分けて数える
+    const oshiLink = document.getElementById('meroi-oshi-link');
+    if (oshiLink) oshiLink.addEventListener('click', () => {
+      track('cross_site_click', {
+        quiz_name: 'meroi', target: 'oshi_nizukuri', result_type: lastResult ? lastResult.id : '', sub_type: lastResult ? subTypeParam(lastResult) : '', mode: sharedView ? 'gift' : 'self', placement: 'result_extra',
       });
     });
 
