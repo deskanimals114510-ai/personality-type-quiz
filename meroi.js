@@ -246,6 +246,9 @@ function affiliateUrl(keyword, band) {
 // タイプ別おすすめ2点+理由1行(2026-10-14、Fable執筆。正本は診断ツール群/MBTI診断/meroi_gift_copy.json)。
 // 2026-10-18 新版: 10代向けに入れ替え、band 1=〜¥1,500・2=¥1,500〜3,000(ガイドと同じ帯)。meroru.jsの写しは10/28判定まで旧版
 // 理由文は主語を「あなた」にしない形なので、シェア閲覧者(友達に贈る人)にもそのまま出す
+// LINE絵文字(メロい5匹)のストアページ。meroi.htmlの#meroi-emoji-linkと同じURL
+const MELO_EMOJI_STORE = 'https://store.line.me/emojishop/product/6adad48dc2685a2a91556ff6/ja';
+
 const MELO_GIFTS = {
   wanko: [
     { emoji: '📌', name: '缶バッジカバー', keyword: '缶バッジカバー 大容量', band: 1, reason: '好きを全部胸につけて走る日も、推しの顔だけは守っておきたい。' },
@@ -471,7 +474,27 @@ if (typeof document !== 'undefined') {
       document.getElementById('compat-percent').textContent = `相性 ${compat.percent}%`;
       document.getElementById('compat-note').textContent = compat.note;
 
-      renderGiftList(document.getElementById('nandere-lucky'), {
+      // シェア閲覧画面(贈る側)では、Amazonの2点の代わりにLINE絵文字(自作・友だちにプレゼントできる)を出す(2026-10-31〜)。
+      // 10代はAmazonだと親のアカウントで買うことが多く紹介料が付かないため。Amazonはプレゼントガイド(#gift-guide-entry)から残す
+      const luckyEl = document.getElementById('nandere-lucky');
+      const extraEmoji = document.querySelector('.meroi-extra .meroi-emoji-entry');
+      if (extraEmoji) extraEmoji.hidden = sharedView;
+      if (sharedView) {
+        renderGiftList(luckyEl, { items: [] });
+        luckyEl.innerHTML = `
+          <p class="gift-heading">${t.kei}の友達に贈るなら</p>
+          <p class="meroi-emoji-entry meroi-emoji-gift">
+            <a id="meroi-emoji-gift-link" href="${MELO_EMOJI_STORE}" target="_blank" rel="noopener"><span class="lucky-pr-tag" aria-hidden="true">PR</span><span aria-hidden="true">🐶🐻🐱🦊🦦 </span>この5匹のLINE絵文字は、友だちに贈ることもできます<span aria-hidden="true">(有料・LINE STORE) ›</span><span class="sr-only">(広告・有料。Desk Animals Labの作品のLINE STOREページ、新しいタブで開きます)</span></a>
+            <span class="meroi-emoji-note">LINE STOREの「プレゼントする」から贈れます。Desk Animals Labの作品です(LINEでの販売者名はuuhai)。購入はおうちの人と相談してね</span>
+          </p>`;
+        luckyEl.querySelector('#meroi-emoji-gift-link').addEventListener('click', () => {
+          track('emoji_store_click', {
+            quiz_name: 'meroi', result_type: result.id, sub_type: subTypeParam(result),
+            placement: 'emoji_card', mode: 'gift', transport_type: 'beacon',
+          });
+        });
+        giftObserveOnce(luckyEl, () => track('section_view', { quiz_name: 'meroi', result_type: result.id, sub_type: subTypeParam(result), placement: 'emoji_card', mode: 'gift' }));
+      } else renderGiftList(luckyEl, {
         mode: sharedView ? 'gift' : 'self', typeName: t.name, items: MELO_GIFTS[result.id].map((it) => ({ ...it, priceLabel: (MELO_BANDS[it.band] || MELO_BANDS[2]).label })),
         href: (kw, it) => affiliateUrl(kw, it && it.band), pill: true,
         onClick: (p) => track('affiliate_click', { quiz_name: 'meroi', result_type: result.id, sub_type: subTypeParam(result), ...p }),
@@ -554,6 +577,13 @@ if (typeof document !== 'undefined') {
     // 「次はこれ」カードのクリック計測(どの診断へ回せているか)
     // カード(next_card)と下の文字リンク(follow_links)を同じイベントで数え、placementで区別する。
     // 同じタブで遷移するので beacon で送り、遷移で送信が消えないようにする
+    // 2027年の運勢(黒曜診断=別サイト)へのリンク。診断間の回遊(next_quiz_click)とは分けて数える
+    const nenunLink = document.getElementById('meroi-nenun-link');
+    if (nenunLink) nenunLink.addEventListener('click', () => {
+      track('cross_site_click', {
+        quiz_name: 'meroi', target: 'kokuyo_nenun', mode: sharedView ? 'gift' : 'self', placement: 'follow_links', transport_type: 'beacon',
+      });
+    });
     document.querySelectorAll('.next-quiz-card, .follow-links a[data-next]').forEach((el) => {
       el.addEventListener('click', () => {
         track('next_quiz_click', {
@@ -594,9 +624,19 @@ if (typeof document !== 'undefined') {
       });
     });
 
+    // シェア閲覧画面から「自分も診断する」を押した数(上のボタン=top、ボタン列=actions)。quiz_startとは別に数える
+    function startOwnFromShared(placement) {
+      track('shared_start_click', { quiz_name: 'meroi', placement, transport_type: 'beacon' });
+      restartQuiz();
+    }
+    const startOwnBtn = document.getElementById('btn-start-own');
+    if (startOwnBtn) startOwnBtn.addEventListener('click', () => startOwnFromShared('top'));
+
     function restartQuiz() {
       lastResult = null;
       sharedView = false;
+      const topCta = document.getElementById('shared-top-cta');
+      if (topCta) topCta.hidden = true;
       // シェアURL経由で入れ替えたボタンの並び・役割を元に戻す
       const restartBtn = document.getElementById('btn-restart');
       const shareBtn = document.getElementById('btn-share');
@@ -917,7 +957,7 @@ if (typeof document !== 'undefined') {
     document.getElementById('btn-share').addEventListener('click', shareResultX);
     document.getElementById('btn-share-line').addEventListener('click', shareResultLine);
     document.getElementById('btn-copy-url').addEventListener('click', copyResultUrl);
-    document.getElementById('btn-restart').addEventListener('click', restartQuiz);
+    document.getElementById('btn-restart').addEventListener('click', () => (sharedView ? startOwnFromShared('actions') : restartQuiz()));
     document.getElementById('btn-save-card').addEventListener('click', () => downloadResultCard('x'));
     document.getElementById('btn-save-card-story').addEventListener('click', () => downloadResultCard('story'));
 
@@ -957,6 +997,8 @@ if (typeof document !== 'undefined') {
       restartBtn.className = 'btn-primary';
       shareBtn.className = 'btn-secondary';
       restartBtn.parentNode.prepend(restartBtn);
+      const topCta = document.getElementById('shared-top-cta');
+      if (topCta) topCta.hidden = false;
     })();
 
     // ===== アクセス解析(メインサイトと同一GA4プロパティ) =====

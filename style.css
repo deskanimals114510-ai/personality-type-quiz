@@ -1441,3 +1441,9 @@ body {
 .meroi-present-line { margin: 12px 0 0; font-size: 0.86rem; }
 .meroi-present-line a { display: inline-block; padding: 10px 4px; color: var(--primary-dark); font-weight: 700; }
 .meroi-emoji-entry a:focus-visible, .meroi-present-line a:focus-visible { outline: 2px solid var(--primary-dark); outline-offset: 2px; }
+
+/* シェア閲覧画面の「自分も診断する」(meroi、2026-10-31〜) */
+.shared-top-cta { margin: 0 0 16px; text-align: center; }
+.shared-top-cta .btn-primary { width: 100%; }
+.shared-top-sub { display: block; margin-top: 2px; font-size: 0.78rem; font-weight: 500; }
+.meroi-emoji-gift { margin: 4px 0 0; }

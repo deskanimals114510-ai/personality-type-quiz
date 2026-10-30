@@ -81,7 +81,7 @@ function renderGiftBox(el, o) {
       placement: 'result_card', mode: o.mode,
     })}`;
   el.querySelector('.lucky-item').addEventListener('click', () => {
-    o.onClick({ placement: 'result_card', mode: o.mode, item_name: o.item.name });
+    o.onClick({ placement: 'result_card', mode: o.mode, item_name: o.item.name, transport_type: 'beacon' });
   });
   giftObserveOnce(el, o.onView);
 }
@@ -105,7 +105,7 @@ function renderGiftList(el, o) {
     })).join('')}`;
   el.querySelectorAll('.lucky-item').forEach((a, i) => {
     a.addEventListener('click', () => {
-      o.onClick({ placement: 'result_card', mode: o.mode, item_name: o.items[i].name });
+      o.onClick({ placement: 'result_card', mode: o.mode, item_name: o.items[i].name, transport_type: 'beacon' });
     });
   });
   giftObserveOnce(el, o.onView);
