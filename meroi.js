@@ -604,6 +604,8 @@ if (typeof document !== 'undefined') {
     // Amazonのaffiliate_clickや「次はこれ」のnext_cardとは混ぜず、それぞれ別に数える
     const emojiLink = document.getElementById('meroi-emoji-link');
     const presentLink = document.getElementById('meroi-present-link');
+    // 12月だけプレゼント診断への1行をクリスマス向けに(2026-11-05、No.62)
+    if (presentLink && new Date().getMonth() === 11) presentLink.textContent = '🎁 クリスマス、何あげる?「もらってうれしいプレゼント診断」 ›';
     // 古いHTMLのキャッシュに新しいJSが当たっても初期化が止まらないよう、要素がある時だけ紐づける
     if (emojiLink) emojiLink.addEventListener('click', () => {
       track('emoji_store_click', {
