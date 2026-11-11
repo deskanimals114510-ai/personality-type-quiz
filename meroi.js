@@ -478,7 +478,17 @@ if (typeof document !== 'undefined') {
       // 10代はAmazonだと親のアカウントで買うことが多く紹介料が付かないため。Amazonはプレゼントガイド(#gift-guide-entry)から残す
       const luckyEl = document.getElementById('nandere-lucky');
       const extraEmoji = document.querySelector('.meroi-extra .meroi-emoji-entry');
-      if (extraEmoji) extraEmoji.hidden = sharedView;
+      // 本人画面は商品欄の上の1行(#meroi-emoji-self)に絵文字を出し、下部の行は隠す。古いHTMLのキャッシュでは#meroi-emoji-selfが無いので下部の行を残す
+      const selfEmoji = document.getElementById('meroi-emoji-self');
+      if (extraEmoji) extraEmoji.hidden = sharedView || !!selfEmoji;
+      if (selfEmoji) {
+        selfEmoji.hidden = sharedView;
+        if (!sharedView) {
+          document.getElementById('meroi-emoji-self-icon').textContent = `${t.emoji} `;
+          document.getElementById('meroi-emoji-self-kei').textContent = t.kei;
+          giftObserveOnce(selfEmoji, () => track('section_view', { quiz_name: 'meroi', result_type: result.id, sub_type: subTypeParam(result), placement: 'emoji_self', mode: 'self' }));
+        }
+      }
       if (sharedView) {
         renderGiftList(luckyEl, { items: [] });
         luckyEl.innerHTML = `
@@ -607,6 +617,13 @@ if (typeof document !== 'undefined') {
     // 12月だけプレゼント診断への1行をクリスマス向けに(2026-11-05、No.62)
     if (presentLink && new Date().getMonth() === 11) presentLink.textContent = '🎁 クリスマス、何あげる?「もらってうれしいプレゼント診断」 ›';
     // 古いHTMLのキャッシュに新しいJSが当たっても初期化が止まらないよう、要素がある時だけ紐づける
+    const emojiSelfLink = document.getElementById('meroi-emoji-self-link');
+    if (emojiSelfLink) emojiSelfLink.addEventListener('click', () => {
+      track('emoji_store_click', {
+        quiz_name: 'meroi', result_type: lastResult ? lastResult.id : '', sub_type: lastResult ? subTypeParam(lastResult) : '',
+        placement: 'emoji_self', mode: 'self', transport_type: 'beacon',
+      });
+    });
     if (emojiLink) emojiLink.addEventListener('click', () => {
       track('emoji_store_click', {
         quiz_name: 'meroi', result_type: lastResult ? lastResult.id : '', sub_type: lastResult ? subTypeParam(lastResult) : '',
