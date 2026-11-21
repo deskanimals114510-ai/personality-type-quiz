@@ -66,6 +66,9 @@ function giftLinkHtml(o) {
     </a>`;
 }
 
+// 未成年方針(2026-11-18確定・11/22追加): Amazonの商品欄には必ず添える。見た目は季節の一言と同じ小さい文字
+const GIFT_ASK_HTML = '<p class="gift-season gift-ask" style="margin-top:8px">購入はおうちの人と相談してね</p>';
+
 // 単発診断の結果欄。mode='self'は本人の結果、'gift'はシェアされた結果を見ている人向け
 function renderGiftBox(el, o) {
   const heading = o.mode === 'gift'
@@ -79,7 +82,8 @@ function renderGiftBox(el, o) {
       // 本人向けの一言(bridge)は「あなた」宛てなので、シェア閲覧者には出さない
       reason: o.mode === 'gift' ? '' : o.bridge,
       placement: 'result_card', mode: o.mode,
-    })}`;
+    })}
+    ${GIFT_ASK_HTML}`;
   el.querySelector('.lucky-item').addEventListener('click', () => {
     o.onClick({ placement: 'result_card', mode: o.mode, item_name: o.item.name, transport_type: 'beacon' });
   });
@@ -102,7 +106,8 @@ function renderGiftList(el, o) {
     ${o.items.map((it) => giftLinkHtml({
       href: o.href(it.keyword, it), icon: it.emoji, name: it.name, reason: it.reason,
       placement: 'result_card', mode: o.mode, priceLabel: it.priceLabel, pill: o.pill,
-    })).join('')}`;
+    })).join('')}
+    ${GIFT_ASK_HTML}`;
   el.querySelectorAll('.lucky-item').forEach((a, i) => {
     a.addEventListener('click', () => {
       o.onClick({ placement: 'result_card', mode: o.mode, item_name: o.items[i].name, transport_type: 'beacon' });

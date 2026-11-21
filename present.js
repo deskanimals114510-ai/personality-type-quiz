@@ -538,7 +538,7 @@ if (typeof document !== 'undefined') {
             priceLabel: presentPriceLabel(band.min, band.max), safe: it.safe,
             placement: `present_band${bi + 1}`, mode, nameFirst: true,
           })).join('')}
-        </div>`).join('');
+        </div>`).join('') + (typeof GIFT_ASK_HTML === 'string' ? GIFT_ASK_HTML : '');
       el.querySelectorAll('.lucky-item').forEach((a) => {
         a.addEventListener('click', () => {
           track('affiliate_click', {

@@ -1754,7 +1754,7 @@ function renderResultCards(types) {
       luckyHtml = giftLinkHtml({
         href: affiliateUrl(g.keyword), icon: emoji, name: g.name, reason: g.reason,
         placement: 'result_card', mode: isSharedView ? 'gift' : 'self',
-      });
+      }) + (typeof GIFT_ASK_HTML === 'string' ? GIFT_ASK_HTML : '');
     } else if (block === 'personality' && AFFILIATE_TAG_EN) {
       luckyHtml = `
       <div class="lucky-bridge">${luckyBridge}</div>
@@ -1811,7 +1811,8 @@ function renderGiftSection(types) {
   el.innerHTML = `
     <p class="gift-heading">${heading}</p>
     <p class="gift-season">${giftSeasonLine(mode)}</p>
-    ${giftLinkHtml({ href: affiliateUrl(g.keyword), icon: emoji, name: g.name, reason: g.reason, placement: 'gift_section', mode })}`;
+    ${giftLinkHtml({ href: affiliateUrl(g.keyword), icon: emoji, name: g.name, reason: g.reason, placement: 'gift_section', mode })}
+    ${typeof GIFT_ASK_HTML === 'string' ? GIFT_ASK_HTML : ''}`;
   el.hidden = false;
   giftObserveOnce(el, () => trackSectionView('gift_section'));
 }
