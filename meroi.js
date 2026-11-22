@@ -614,8 +614,11 @@ if (typeof document !== 'undefined') {
     // Amazonのaffiliate_clickや「次はこれ」のnext_cardとは混ぜず、それぞれ別に数える
     const emojiLink = document.getElementById('meroi-emoji-link');
     const presentLink = document.getElementById('meroi-present-link');
-    // 12月だけプレゼント診断への1行をクリスマス向けに(2026-11-05、No.62)
-    if (presentLink && new Date().getMonth() === 11) presentLink.textContent = '🎁 クリスマス、何あげる?「もらってうれしいプレゼント診断」 ›';
+    // 12月だけプレゼント診断への1行をクリスマス向けに(2026-11-05、No.62)。2026年はブラックフライデーの先行(11/27〜)から出す
+    // 日付はgift.jsの季節の一言と同じ日本時間で判定する
+    const xmasJst = new Date(Date.now() + 9 * 60 * 60 * 1000);
+    const xmasM = xmasJst.getUTCMonth() + 1;
+    if (presentLink && (xmasM === 12 || (xmasJst.getUTCFullYear() === 2026 && xmasM === 11 && xmasJst.getUTCDate() >= 27))) presentLink.textContent = '🎁 クリスマス、何あげる?「もらってうれしいプレゼント診断」 ›';
     // 古いHTMLのキャッシュに新しいJSが当たっても初期化が止まらないよう、要素がある時だけ紐づける
     const emojiSelfLink = document.getElementById('meroi-emoji-self-link');
     if (emojiSelfLink) emojiSelfLink.addEventListener('click', () => {

@@ -669,6 +669,7 @@ body {
   margin: 2px 0 0;
   font-size: 0.74rem;
   color: var(--text-sub);
+  text-wrap: balance; /* 320px幅で「にも」だけ2行目に残らないように */
 }
 .gift-season + .lucky-item { margin-top: 10px; }
 /* PC3カラムでは性格カードが約295px幅になり商品枠の文字幅が狭いため、余白と矢印を詰める */

@@ -5,9 +5,11 @@
 // 日本時間の月日で季節の一言を返す(端末のタイムゾーンに依存しないようAsia/Tokyoで判定)。
 // mode='gift'(友達に贈る人向け)では年末年始も「贈り物」の言い方にする
 function giftSeasonLine(mode, date) {
-  const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo', month: '2-digit', day: '2-digit' })
+  const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit' })
     .formatToParts(date || new Date());
   const md = Number(parts.find((p) => p.type === 'month').value) * 100 + Number(parts.find((p) => p.type === 'day').value);
+  // Amazonブラックフライデー2026(先行11/27〜本番12/7、11/19公式発表)の期間だけ。年ごとに日程が変わるので2026年に限る
+  if (parts.find((p) => p.type === 'year').value === '2026' && md >= 1127 && md <= 1207) return 'ブラックフライデー・クリスマスの贈り物にも';
   if (md >= 1101 && md <= 1225) return 'クリスマスの贈り物にも';
   if (md >= 1226 || md <= 110) return mode === 'gift' ? '年末年始のちょっとした贈り物にも' : '年末年始の自分へのご褒美にも';
   if (md >= 201 && md <= 214) return 'バレンタインの贈り物にも';
