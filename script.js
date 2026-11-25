@@ -2320,12 +2320,12 @@ async function shareResult() {
       const file = new File([blob], `deskanimals-quiz-${lastResult.personality}.png`, { type: 'image/png' });
       if (navigator.canShare({ files: [file] })) {
         await navigator.share({ files: [file], text, url: resultUrl() });
-        trackEvent('share', { method: 'native_image' });
+        trackEvent('share', { method: 'native_image', quiz_name: 'mbti', mode: isSharedView ? 'gift' : 'self' });
         return;
       }
     } catch (e) {
       // ユーザーによる共有シートのキャンセル、または非対応環境。下のフォールバックへ続ける。
-      if (e && e.name === 'AbortError') { trackEvent('share_cancelled', { method: 'native_image' }); return; }
+      if (e && e.name === 'AbortError') { trackEvent('share_cancelled', { method: 'native_image', quiz_name: 'mbti', mode: isSharedView ? 'gift' : 'self' }); return; }
       console.error('ネイティブ共有に失敗しました、テキストシェアにフォールバックします', e);
     }
   }
@@ -2333,7 +2333,7 @@ async function shareResult() {
   const url = encodeURIComponent(shareOgUrl());
   const shareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`;
   window.open(shareUrl, '_blank', 'noopener,noreferrer');
-  trackEvent('share', { method: 'x' });
+  trackEvent('share', { method: 'x', quiz_name: 'mbti', mode: isSharedView ? 'gift' : 'self' });
 }
 
 function shareResultLine() {
@@ -2347,7 +2347,7 @@ function shareResultLine() {
   const url = encodeURIComponent(shareOgUrl());
   const shareUrl = `https://social-plugins.line.me/lineit/share?url=${url}&text=${encodeURIComponent(text)}`;
   window.open(shareUrl, '_blank', 'noopener,noreferrer');
-  trackEvent('share', { method: 'line' });
+  trackEvent('share', { method: 'line', quiz_name: 'mbti', mode: isSharedView ? 'gift' : 'self' });
 }
 
 async function downloadLoveCard() {
@@ -2391,7 +2391,7 @@ function shareLoveResult() {
   const url = encodeURIComponent(resultUrl());
   const shareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`;
   window.open(shareUrl, '_blank', 'noopener,noreferrer');
-  trackEvent('share', { method: 'x_love' });
+  trackEvent('share', { method: 'x_love', quiz_name: 'mbti', mode: isSharedView ? 'gift' : 'self' });
 }
 
 // ===== 恋愛キャラ診断・全64通り(2026-09-05、「ラブキャラ診断64」トレンド対応) =====
@@ -2636,7 +2636,7 @@ function shareLoveCharResult() {
   const url = encodeURIComponent(resultUrl());
   const shareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`;
   window.open(shareUrl, '_blank', 'noopener,noreferrer');
-  trackEvent('share', { method: 'x_lovechar', group_key: groupKey });
+  trackEvent('share', { method: 'x_lovechar', quiz_name: 'mbti', mode: isSharedView ? 'gift' : 'self', group_key: groupKey });
 }
 
 function restartQuiz() {
